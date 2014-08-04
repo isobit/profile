@@ -1,0 +1,232 @@
+set nocompatible              " be iMproved, required
+
+" ===================== Vundle ============================
+
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" User defined Plugins
+Plugin 'vim-scripts/Conque-Shell'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
+Plugin 'aperezdc/vim-template'
+Plugin 'bling/vim-airline'
+Plugin 'othree/xml.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+" Plugin 'user/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" ================ General Config ====================
+
+set number                      "Line numbers are good
+set numberwidth=4
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+set backspace=indent,eol,start  "Allow backspace in insert mode
+set history=1000                "Store lots of :cmdline history
+set showcmd                     "Show incomplete cmds down the bottom
+set showmode                    "Show current mode down the bottom
+set visualbell                  "No sounds
+set autoread                    "Reload files changed outside vim
+set showmode                    "Displays current mode all the time
+set mouse=a                     "Enables the mouse
+
+" Set up vertical line cursor for insert mode in iTerm2
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" upon hitting escape to change modes,
+" send successive move-left and move-right
+" commands to immediately redraw the cursor
+"inoremap <special> <Esc> <Esc>hl
+
+" This makes vim act like all other editors, buffers can
+" exist in the background without being in a window.
+" http://items.sjbach.com/319/configuring-vim-right
+set hidden
+
+"turn on syntax highlighting
+syntax on
+
+"set default colorscheme
+"let solarized_termtrans = 1
+"set background=dark
+colors darcula
+
+" Highlights characters past column 80 with a red tint
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
+
+" ================ Search Settings  =================
+
+set incsearch        "Find the next match as we type the search
+"set hlsearch         "Highlight searches by default
+set viminfo='100,f1  "Save up to 100 marks, enable capital marks
+set smartcase
+
+" ================ Turn Off Swap Files ==============
+
+set noswapfile
+set nobackup
+set nowb
+
+" ================ Persistent Undo ==================
+" Keep undo history across sessions, by storing in file.
+" Only works all the time.
+
+silent !mkdir ~/.vim/backups > /dev/null 2>&1
+set undodir=~/.vim/backups
+set undofile
+
+" ================ Indentation ======================
+
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set noexpandtab
+
+"--- Toggle ----------------------------------------
+" Allow toggling between space-based or full tabbing
+function TabToggle()
+  if &expandtab
+    set shiftwidth=8
+    set softtabstop=0
+    set noexpandtab
+  else
+    set shiftwidth=4
+    set softtabstop=4
+    set expandtab
+  endif
+endfunction
+
+" Map \tab to toggle tab mode.
+map <Leader><Tab> mz:execute TabToggle()<CR>`z
+"---------------------------------------------------
+
+filetype on
+filetype plugin on
+filetype indent on
+
+" Allow toggling between wrapping and not wrapping
+function WrapToggle()
+   if &wrap
+      set nowrap
+   else
+      set wrap
+   endif
+endfunction
+" Mapped to \w
+map <Leader>w mz:execute WrapToggle()<CR>`z
+
+" Display tabs and trailing spaces visually with middle dot char
+"set list listchars=tab:\ \ ,trail:·
+
+"set nowrap       "Don't wrap lines
+set linebreak    "Wrap lines at convenient points
+
+" ================ Folds ============================
+
+set foldmethod=manual   "fold manually, set to indent for indent
+"set foldnestmax=3       "deepest fold is 3 levels
+"set nofoldenable        "dont fold by default
+
+" ================ Completion =======================
+
+set wildmode=list:longest
+set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+
+" ================ Scrolling ========================
+
+set scrolloff=3         "Start scrolling when we're this many lines away from margins
+set sidescrolloff=15
+set sidescroll=1
+
+
+" ================ Window Moving Shortcuts ==========
+
+nmap <silent> gk :wincmd k<CR>
+nmap <silent> gj :wincmd j<CR>
+nmap <silent> gh :wincmd h<CR>
+nmap <silent> gl :wincmd l<CR>
+
+" ================ Custom Keystrokes  ===============
+
+nnoremap <Space> i<Space>
+nnoremap <Del>   i<Del>
+
+"Allow (shift or alt)+return to escape insert mode
+inoremap <S-CR> <Esc>
+inoremap <A-CR> <Esc>
+
+" ================ Mappings ==========================
+
+" \T for ConqueTerm zsh
+noremap <Leader>T :ConqueTermSplit zsh<CR>
+
+" \s to save
+noremap <Leader>s :update<CR>
+
+" \c to comment out
+noremap <silent> <Leader>c :call NERDComment("n","Toggle")<CR>
+
+" \C for sexy commenting
+noremap <silent> <Leader>C :call NERDComment("n","Sexy")<CR>
+
+" \t to toggle NERDTree
+noremap <silent> <Leader>t :NERDTreeToggle<CR>
+
+" :w!! to sudo write
+cmap w!! w !sudo tee % >/dev/null
+
+" HTML Tag Auto-Completion
+map! <// </<C-X><C-O>

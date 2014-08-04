@@ -1,0 +1,54 @@
+
+# ------------------------------------------------
+# Silly fixes                                    |
+# ------------------------------------------------
+
+alias dus="du -m -d 1 | sort -gr"
+
+# Make these commands ask before clobbering a file. Use -f to override.
+alias rm="rm -R -i"
+
+
+# ------------------------------------------------
+# Custom functions                               |
+# ------------------------------------------------
+
+# Compile .java, then run its .class
+runjava () {
+  javac -g $1.java;
+  java $1;
+}
+
+# Extract function, courtesy of Itai Ferber
+extract () {
+    if [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2)  tar -jxvf $1        ;;
+            *.tar.gz)   tar -zxvf $1        ;;
+            *.bz2)      bunzip2 $1          ;;
+            *.dmg)      hdiutul mount $1    ;;
+            *.gz)       gunzip $1           ;;
+            *.tar)      tar -xvf $1         ;;
+            *.tbz2)     tar -jxvf $1        ;;
+            *.tgz)      tar -zxvf $1        ;;
+            *.zip)      unzip $1            ;;
+            *.Z)        uncompress $1       ;;
+            *)          echo "'$1' cannot be extracted/mounted via extract()." ;;
+        esac
+    else
+        echo "'$1' is not a valid file."
+    fi
+}
+
+# Package tar function
+tarz () {
+    tar -cvzf $1.tar.gz $1
+}
+
+#--------------------------------------------------
+# Environment Variables                           |
+#--------------------------------------------------
+export EDITOR=vim
+export VISUAL=vim
+export GIT_EDITOR=vim
+
