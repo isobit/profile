@@ -1,0 +1,23 @@
+task :git do
+	install 'git'
+end
+
+task :vim => :git do
+	install 'vim'
+	mkdir_p '~/.vim/colors'
+	mkdir_p '~/.vim/bundle'
+	if !exists('~/.vim/bundle/Vundle.vim')
+		sh 'git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim'
+	end
+	ln_s "~/profile/vim/vimrc", '~/.vimrc'
+	sh 'vim +PluginInstall +qall'
+end
+
+task :zsh do
+	install 'zsh'
+	if !exists('~/.oh-my-zsh')
+		install 'curl'
+		sh 'curl -L http://install.ohmyz.sh | sh'
+	end
+	ln_s "~/profile/zsh/zshrc", '~/.zshrc'
+end

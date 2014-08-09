@@ -14,7 +14,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " User defined Plugins
-Plugin 'vim-scripts/Conque-Shell'
+Plugin 'nicoraffo/conque'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
@@ -67,6 +67,7 @@ set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set showmode                    "Displays current mode all the time
 set mouse=a                     "Enables the mouse
+set laststatus=2				"Enables status line even in single buffer
 
 " Set up vertical line cursor for insert mode in iTerm2
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
