@@ -23,6 +23,11 @@ source $ZSH/oh-my-zsh.sh
 
 # End oh-my-zsh config
 
+# Load localrc for local-only shell config
+if [ -e ~/.localrc ]; then
+	source ~/.localrc
+fi
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000

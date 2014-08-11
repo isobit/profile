@@ -6,8 +6,8 @@ task :vim => :git do
 	install 'vim'
 	mkdir "~/.vim/colors"
 	mkdir "~/.vim/bundle"
-	ln_s "~/profile/vim/vimrc", "~/.vimrc"
-	ln_s "~/profile/vim/colors/darcula.vim", "~/.vim/colors/darcula.vim"
+	ln_s "~/profile/vim/vimrc", "~/.vimrc", :force => true
+	ln_s "~/profile/vim/colors/darcula.vim", "~/.vim/colors/darcula.vim", :force => true
 	if !exists("~/.vim/bundle/Vundle.vim")
 		sh "git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
 	end
@@ -23,8 +23,8 @@ task :zsh => :git do
 			sh "git pull"
 		end
 	end
-	ln_s "~/profile/zsh/zshrc", "~/.zshrc"
-	sh "chsh -s $(which zsh)"
+	ln_s "~/profile/zsh/zshrc", "~/.zshrc", :force => true
+	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually."
 end
 
 task :install => [:zsh, :vim]
