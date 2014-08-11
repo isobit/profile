@@ -3,23 +3,23 @@ task :git do
 end
 
 task :vim => :git do
-	home = File.expand_path('~')
 	install 'vim'
-	mkdir_p "#{home}/.vim/colors"
-	mkdir_p "#{home}/.vim/bundle"
-	if !exists("#{home}/.vim/bundle/Vundle.vim")
-		sh "git clone https://github.com/gmarik/Vundle.vim.git #{home}/.vim/bundle/Vundle.vim"
+	mkdir "~/.vim/colors"
+	mkdir "~/.vim/bundle"
+	if !exists("~/.vim/bundle/Vundle.vim")
+		sh "git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
 	end
-	ln_s "#{home}/profile/vim/vimrc", "#{home}/.vimrc"
+	ln_s "~/profile/vim/vimrc", "~/.vimrc"
 	sh 'vim +PluginInstall +qall'
 end
 
 task :zsh do
-	home = File.expand_path('~')
 	install 'zsh'
-	if !exists("#{home}/.oh-my-zsh")
+	if !exists("~/.oh-my-zsh")
 		install 'curl'
 		sh 'curl -L http://install.ohmyz.sh | sh'
 	end
-	ln_s "#{home}/profile/zsh/zshrc", "#{home}/.zshrc"
+	ln_s "~/profile/zsh/zshrc", "~/.zshrc"
 end
+
+task :install => [:zsh, :vim]
