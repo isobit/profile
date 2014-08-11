@@ -14,17 +14,17 @@ task :vim => :git do
 	sh 'vim +PluginInstall +qall'
 end
 
-task :zsh do
+task :zsh => :git do
 	install 'zsh'
 	if !exists("~/.oh-my-zsh")
-		install 'curl'
-		begin
-			sh 'curl -L http://install.ohmyz.sh | sh'
-		rescue
-			puts "oh-my-zsh is being a bitch"
+		sh "git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh"
+	else
+		cd "~/.oh-my-zsh" do
+			sh "git pull"
 		end
 	end
 	ln_s "~/profile/zsh/zshrc", "~/.zshrc"
+	sh "chsh -s $(which zsh)"
 end
 
 task :install => [:zsh, :vim]
