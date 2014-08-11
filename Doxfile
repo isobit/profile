@@ -24,7 +24,7 @@ task :zsh => :git do
 		end
 	end
 	ln_s "~/profile/zsh/zshrc", "~/.zshrc", :force => true
-	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually."
+	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually.", 1
 end
 
 task :install => [:zsh, :vim]
