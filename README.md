@@ -5,4 +5,4 @@ profile
 
 ### Debian
 
-`wget -O - https://raw.githubusercontent.com/joshglendenning/profile/master/bootstrap-deb.sh | sh`
+`wget -O - https://raw.githubusercontent.com/joshglendenning/profile/master/bootstrap-deb.sh | bash`
