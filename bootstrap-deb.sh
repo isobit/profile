@@ -5,8 +5,7 @@
 #
 # Distributed under terms of the MIT license.
 #
-set -e 
-set -o pipefail
+set -e
 
 sudo apt-get update
 sudo apt-get install -y git
