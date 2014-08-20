@@ -5,10 +5,13 @@
 #
 # Distributed under terms of the MIT license.
 #
+set -e 
+set -o pipefail
 
-sudo apt-get install git
+sudo apt-get update
+sudo apt-get install -y git
 git clone https://github.com/joshglendenning/profile.git ~/profile
-sudo apt-get install ruby
+sudo apt-get install -y ruby
 sudo gem install shaddox
 cd ~/profile
 shaddox install
