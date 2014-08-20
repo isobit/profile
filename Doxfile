@@ -27,4 +27,38 @@ task :zsh => :git do
 	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually.", 1
 end
 
-task :install => [:zsh, :vim]
+task :ranger do
+	install 'ranger'
+end
+
+task :install => [:zsh, :vim, :ranger]
+
+task :linuxbrew => :git do
+	def ensure_file_contains_line(filename, line)
+		path = filename.exp_path
+		line = "#{line}\n" unless line.end_with? '\n'
+		info "Ensuring '#{path}' contains '#{line.strip}'", 1
+		FileUtils.touch path
+		unless File.readlines(path).grep(
+			Regexp.new(Regexp.escape(line))).size > 0
+
+			File.open(path, 'a') do |f|
+				f << line
+			end
+		end
+	end
+
+	sh 'git clone https://github.com/joshglendenning/linuxbrew.git ~/.linuxbrew'
+	ensure_file_contains_line('~/.localrc', %q{
+# Until LinuxBrew is fixed, the following is required.
+# See: https://github.com/Homebrew/linuxbrew/issues/47
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH
+## Setup linux brew
+export LINUXBREWHOME=$HOME/.linuxbrew
+export PATH=$LINUXBREWHOME/bin:$PATH
+export MANPATH=$LINUXBREWHOME/man:$MANPATH
+export PKG_CONFIG_PATH=$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH
+	})
+	sh 'brew update'
+end
