@@ -9,9 +9,9 @@ set -e
 set -o pipefail
 
 sudo apt-get update
-sudo apt-get install -y git
+sudo apt-get install -Y git
 git clone https://github.com/joshglendenning/profile.git ~/profile
-sudo apt-get install -y ruby
+sudo apt-get install -Y ruby
 sudo gem install shaddox
 cd ~/profile
 shaddox install
