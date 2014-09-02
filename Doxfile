@@ -33,6 +33,14 @@ end
 
 task :install => [:zsh, :vim, :ranger]
 
+task :fluxbox do
+	warn 'It is not recommended to use Homebrew to install this.'
+	install 'amixer'
+	install 'gmrun'
+	install 'fluxbox'
+	ln_s "~/profile/fluxbox", "~/.fluxbox", :force => true
+end
+
 task :linuxbrew => :git do
 	def ensure_file_contains_line(filename, line)
 		path = filename.exp_path
