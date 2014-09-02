@@ -21,6 +21,10 @@ Plugin 'tpope/vim-surround'
 Plugin 'aperezdc/vim-template'
 Plugin 'bling/vim-airline'
 Plugin 'othree/xml.vim'
+Plugin 'groenewege/vim-less'
+Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex vim-latex-vim-latex'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-notes'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -231,3 +235,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " HTML Tag Auto-Completion
 map! <// </<C-X><C-O>
+
+" ===================== Plugin Config ==================
+
+:let g:notes_directories = ['~/Documents/vim-notes']
