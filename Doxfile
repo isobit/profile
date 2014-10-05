@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 task :git do
 	install 'git'
 end
@@ -42,6 +45,9 @@ task :fluxbox do
 end
 
 task :linuxbrew => :git do
+	%w[build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev].each do |dep|
+		install dep
+	end
 	def ensure_file_contains_line(filename, line)
 		path = filename.exp_path
 		line = "#{line}\n" unless line.end_with? '\n'
