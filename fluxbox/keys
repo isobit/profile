@@ -121,8 +121,8 @@ Mod4 w :Exec x-www-browser
 
 # Volume control using PgUp and PgDn
 # if these don't work, use xev to find out your real keycodes
-112 :Exec amixer sset Master,0 1+
-117 :Exec amixer sset Master,0 1-
+112 :Exec amixer -q sset Master 3%+
+117 :Exec amixer -q sset Master 3%-
 
 # current window commands
 Mod1 Shift x :Close
