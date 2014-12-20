@@ -20,17 +20,19 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'aperezdc/vim-template'
 Plugin 'bling/vim-airline'
-Plugin 'vim-scripts/DrawIt'
+Plugin 'embear/vim-localvimrc'
+Plugin 'ervandew/supertab'
+Plugin 'godlygeek/tabular'
 
 " Languages
 Plugin 'othree/xml.vim'
 Plugin 'groenewege/vim-less'
-Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex vim-latex-vim-latex'
 Plugin 'pangloss/vim-javascript'
-Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'dart-lang/dart-vim-plugin'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
