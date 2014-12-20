@@ -104,7 +104,7 @@ syntax on
 colors darcula
 
 " Highlights characters past column 80 with a red tint
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+highlight OverLength ctermbg=darkyellow
 match OverLength /\%81v.\+/
 
 " ================ Search Settings  =================
