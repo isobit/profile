@@ -17,6 +17,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'nicoraffo/conque'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-surround'
 Plugin 'bling/vim-airline'
 Plugin 'embear/vim-localvimrc'
@@ -236,7 +237,7 @@ noremap <silent> <Leader>c :call NERDComment("n","Toggle")<CR>
 noremap <silent> <Leader>C :call NERDComment("n","Sexy")<CR>
 
 " \t to toggle NERDTree
-noremap <silent> <Leader>t :NERDTreeToggle<CR>
+noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
 
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
