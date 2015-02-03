@@ -15,6 +15,7 @@ task :vim => :git do
 
 	mkdir "~/.vim/ftplugin"
 	ln_s "~/profile/vim/ftplugin/mkd.vim", "~/.vim/ftplugin/mkd.vim", :force => true
+	ln_s "~/profile/vim/ftplugin/lisp.vim", "~/.vim/ftplugin/lisp.vim", :force => true
 
 	mkdir "~/.vim/bundle"
 	if !exists("~/.vim/bundle/Vundle.vim")
