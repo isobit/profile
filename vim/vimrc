@@ -136,25 +136,6 @@ set smarttab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-set noexpandtab
-
-"--- Toggle ----------------------------------------
-" Allow toggling between space-based or full tabbing
-function TabToggle()
-  if &expandtab
-    set shiftwidth=8
-    set softtabstop=0
-    set noexpandtab
-  else
-    set shiftwidth=4
-    set softtabstop=4
-    set expandtab
-  endif
-endfunction
-
-" Map \tab to toggle tab mode.
-map <Leader><Tab> mz:execute TabToggle()<CR>`z
-"---------------------------------------------------
 
 filetype on
 filetype plugin on
