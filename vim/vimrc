@@ -23,6 +23,7 @@ Plugin 'bling/vim-airline'
 Plugin 'embear/vim-localvimrc'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
+Plugin 'Raimondi/delimitMate'
 
 " Languages
 Plugin 'othree/xml.vim'
