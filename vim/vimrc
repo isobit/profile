@@ -108,6 +108,9 @@ colors darcula
 highlight OverLength ctermbg=darkyellow
 match OverLength /\%81v.\+/
 
+" Change split separator to whitespace
+set fillchars+=vert:\ 
+
 " ================ Search Settings  =================
 
 set incsearch        "Find the next match as we type the search
@@ -228,4 +231,5 @@ map! <// </<C-X><C-O>
 
 " ===================== Plugin Config ==================
 
-:let g:notes_directories = ['~/Documents/vim-notes']
+" enable powerline fonts
+let g:airline_powerline_fonts = 1

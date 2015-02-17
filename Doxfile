@@ -35,6 +35,7 @@ task :zsh => :git do
 	end
 	ln_s "~/profile/zsh/zshrc", "~/.zshrc", :force => true
 	ln_s '~/profile/zsh/nominaltech.zsh-theme', '~/.oh-my-zsh/themes/nominaltech.zsh-theme', :force => true
+	ln_s '~/profile/zsh/nominaltech2.zsh-theme', '~/.oh-my-zsh/themes/nominaltech2.zsh-theme', :force => true
 	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually.", 1
 end
 
