@@ -86,7 +86,10 @@ extract () {
 }
 
 # Package tar function
-tarz () {
+targz () {
+    tar -cvzf $1.tar.gz $1
+}
+tarball () {
     tar -cvzf $1.tar.gz $1
 }
 
