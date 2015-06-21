@@ -24,9 +24,10 @@ Plugin 'embear/vim-localvimrc'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'Raimondi/delimitMate'
+Plugin 'sk1418/HowMuch'
 
 " Languages
-Plugin 'othree/xml.vim'
+"Plugin 'othree/xml.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
@@ -228,6 +229,9 @@ cmap w!! w !sudo tee % >/dev/null
 
 " HTML Tag Auto-Completion
 map! <// </<C-X><C-O>
+
+" :W is :w
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
 " ===================== Plugin Config ==================
 
