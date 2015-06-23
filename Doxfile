@@ -33,4 +33,4 @@ task :zsh => :git do
 	exec "chsh -s /bin/zsh" rescue warn "Could not chsh to zsh. Please do this manually.", 1
 end
 
-task :install => [:zsh, :vim]
+task :default => [:zsh, :vim]
