@@ -7,83 +7,28 @@ end
 
 task :vim => :git do
 	install 'vim'
-
-	ln_s "~/profile/vim/vimrc", "~/.vimrc", :force => true
-
-	mkdir "~/.vim/colors"
-	ln_s "~/profile/vim/colors/darcula.vim", "~/.vim/colors/darcula.vim", :force => true
-
-	mkdir "~/.vim/ftplugin"
-	ln_s "~/profile/vim/ftplugin/mkd.vim", "~/.vim/ftplugin/mkd.vim", :force => true
-	ln_s "~/profile/vim/ftplugin/lisp.vim", "~/.vim/ftplugin/lisp.vim", :force => true
-
-	mkdir "~/.vim/bundle"
+	ln_s "./vim/vimrc", "~/.vimrc", :force => true
+	ln_s "./vim/colors/*", "~/.vim/colors/", :force => true
+	ln_s "./profile/vim/ftplugin/*", "~/.vim/ftplugin/", :force => true
 	if !exists("~/.vim/bundle/Vundle.vim")
-		sh "git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
+		mkdir "~/.vim/bundle"
+		exec "git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
 	end
-	sh 'vim +PluginInstall +qall'
+	exec 'vim +PluginInstall +qall'
 end
 
 task :zsh => :git do
 	install 'zsh'
 	if !exists("~/.oh-my-zsh")
-		sh "git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh"
+		exec "git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh"
 	else
 		cd "~/.oh-my-zsh" do
-			sh "git pull"
+			exec "git pull"
 		end
 	end
-	ln_s "~/profile/zsh/zshrc", "~/.zshrc", :force => true
-	ln_s '~/profile/zsh/nominaltech.zsh-theme', '~/.oh-my-zsh/themes/nominaltech.zsh-theme', :force => true
-	ln_s '~/profile/zsh/nominaltech2.zsh-theme', '~/.oh-my-zsh/themes/nominaltech2.zsh-theme', :force => true
-	sh "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually.", 1
+	ln_s "./zsh/zshrc", "~/.zshrc", :force => true
+	ln_s './zsh/nominaltech*.zsh-theme', '~/.oh-my-zsh/themes/', :force => true
+	exec "chsh -s $(which zsh)" rescue warn "Could not chsh to zsh. Please do this manually.", 1
 end
 
-task :ranger do
-	install 'ranger'
-end
-
-task :install => [:zsh, :vim, :ranger]
-
-task :fluxbox do
-	warn 'It is not recommended to use Homebrew to install this.'
-	install 'amixer'
-	install 'gmrun'
-	install 'fluxbox'
-	ln_s "~/profile/fluxbox", "~/.fluxbox", :force => true
-end
-
-task :linuxbrew => :git do
-	%w[build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev].each do |dep|
-		install dep
-	end
-	def ensure_file_contains_line(filename, line)
-		path = filename.exp_path
-		line = "#{line}\n" unless line.end_with? '\n'
-		info "Ensuring '#{path}' contains '#{line.strip}'", 1
-		FileUtils.touch path
-		unless File.readlines(path).grep(
-			Regexp.new(Regexp.escape(line))).size > 0
-
-			File.open(path, 'a') do |f|
-				f << line
-			end
-		end
-	end
-
-	sh 'git clone https://github.com/joshglendenning/linuxbrew.git ~/.linuxbrew'
-	rclines = %q{
-# Until LinuxBrew is fixed, the following is required.
-# See: https://github.com/Homebrew/linuxbrew/issues/47
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH
-## Setup linux brew
-export LINUXBREWHOME=$HOME/.linuxbrew
-export PATH=$LINUXBREWHOME/bin:$PATH
-export MANPATH=$LINUXBREWHOME/man:$MANPATH
-export PKG_CONFIG_PATH=$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH
-export LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH
-	}
-	ensure_file_contains_line('~/.localrc', rclines)
-	ensure_file_contains_line('~/.bashrc', rclines)
-	sh 'brew update'
-end
+task :install => [:zsh, :vim]
