@@ -9,7 +9,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[black]%}]"
 SEGMENT_SEPARATOR=''
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-	PROMPT="%{$fg[yellow]}@%m%{$reset_color}"
+	PROMPT="%{$fg[yellow]%}@%m%{$reset_color%} "
 else
 	PROMPT=""
 fi
