@@ -3,8 +3,7 @@ profile
 
 ## Installation
 
-Install `ruby` (and maybe `rubygems`) on your system.
-Install `shaddox` (`gem install shaddox`)
+Install `ruby` (and maybe `rubygems`), and then install `shaddox` (`gem install shaddox`).
 
 Run `shaddox` in the repo directory. Everything is installed relative to `~`.
 
