@@ -1,6 +1,13 @@
 profile
 =======
 
+## Installation
+
+Install `ruby` (and maybe `rubygems`) on your system.
+Install `shaddox` (`gem install shaddox`)
+
+Run `shaddox` in the repo directory. Everything is installed relative to `~`.
+
 ## Mapping Caps Lock to Escape
 
 ### Windows
