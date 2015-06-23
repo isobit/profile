@@ -13,4 +13,4 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
 else
 	PROMPT=""
 fi
-PROMPT="$PROMPT%{$fg[blue]%}%c %{$fg_bold[grey]%}$(git_prompt_info)%{$fg_bold[grey]%}  %{$reset_color%}"
+PROMPT="$PROMPT"'%{$fg[blue]%}%c %{$fg_bold[grey]%}$(git_prompt_info)%{$fg_bold[grey]%}  %{$reset_color%}'
