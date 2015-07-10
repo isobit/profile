@@ -13,16 +13,16 @@ Make sure to install and use one of the Powerline-enabled fonts included in the 
 
 Put any machine-specific `zshrc` commands in `~/.localrc`. It will be sourced automatically by `~/.zshrc`.
 
-## Mapping Caps Lock to Escape
+### Mapping Caps Lock to Escape
 
-### Windows
+#### Windows
 
 Get [AutoHotkey](http://www.autohotkey.com/) and use the script `Capslock::Esc`.
 
-### Antergos
+#### Antergos
 
 Look in the keyboard settings.
 
-### Mac
+#### Mac
 
 [stackoverflow post](http://stackoverflow.com/questions/127591/using-caps-lock-as-esc-in-mac-os-x)
