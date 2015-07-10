@@ -35,6 +35,7 @@ Plugin 'derekwyatt/vim-scala'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'dart-lang/dart-vim-plugin'
+Plugin 'solarnz/thrift.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
