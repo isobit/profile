@@ -1,0 +1,23 @@
+{
+  "name": "{{name}}",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "test": "babel-node src/{{name}}.js",
+    "link": "npm run build; npm link"
+  },
+  "author": "{{author}}",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^5.5.8",
+    "commander": "^2.8.1",
+    "exec-sh": "^0.2.0",
+    "fs-extra": "^0.19.0",
+    "simple-spinner": "0.0.3",
+    "untildify": "^2.1.0"
+  },
+  "bin": {
+    "{{name}}": "dist/{{name}}.js"
+  }
+}

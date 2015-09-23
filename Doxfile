@@ -1,4 +1,3 @@
-# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 task :git do
@@ -32,6 +31,12 @@ task :zsh => :git do
 	ln_s './zsh/minttyrc', '~/.minttyrc', :force => true
 	ln_s './zsh/nominaltech*.zsh-theme', '~/.oh-my-zsh/themes/', :force => true
 	exec "chsh -s /bin/zsh" rescue warn "Could not chsh to zsh. Please do this manually.", 1
+end
+
+task :projectr do
+	install 'ruby'
+	exec 'sudo gem install projectr' rescue warn "Could not install gem 'projectr'. Please do this manually.", 1
+	ln_s './projectr', '~/.projectr', :force => true
 end
 
 task :default => [:zsh, :vim]

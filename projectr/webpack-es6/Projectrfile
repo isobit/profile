@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'mustache'
+
+# Config
+templates = ['package.json', 'www/index.html']
+template_vars = [:project_name, :author]
+npmDeps = ['vue']
+npmDevDeps = [
+	'webpack', 'webpack-dev-server',
+	'babel-core', 'babel-loader', 'babel-runtime',
+	'style-loader', 'css-loader', 'autoprefixer-loader',
+	'node-libs-browser'
+]
+
+# Templates
+defs = template_vars.reduce({}) { |o, k| 
+	print "#{k}? "
+	o[k] = gets.strip
+	o 
+}
+puts "Parsing templates..."
+templates.each { |f| 
+	File.write(f, Mustache.render(File.read(f), defs))
+}
+
+# NPM
+puts "Installing NPM deps..."
+`npm install --save-dev #{npmDevDeps.join(' ')}`
+`npm install --save #{npmDeps.join(' ')}`
+puts "Running intial npm build..."
+`npm run build`
+
+puts "Done!"
