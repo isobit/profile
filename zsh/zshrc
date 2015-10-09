@@ -73,11 +73,11 @@ extract () {
 }
 
 # Package tar function
-targz () {
-    tar -cvzf $1.tar.gz $1
-}
 tarball () {
-    tar -cvzf $1.tar.gz $1
+    tar -cvzf $1.tar.gz ${@:2} $1
+}
+git-tarball () {
+    git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
 #--------------------------------------------------
