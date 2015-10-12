@@ -35,7 +35,7 @@ end
 
 task :projectr do
 	install 'ruby'
-	exec 'sudo gem install projectr' rescue warn "Could not install gem 'projectr'. Please do this manually.", 1
+	exec 'gem install projectr' rescue warn "Could not install gem 'projectr'. Please do this manually.", 1
 	ln_s './projectr', '~/.projectr', :force => true
 end
 
