@@ -18,6 +18,7 @@
     "babel-preset-stage-0": "*"
   },
   "dependencies": {
+	"babel-runtime": "*",
     "commander": "*"
   }
 }
