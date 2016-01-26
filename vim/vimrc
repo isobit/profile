@@ -27,7 +27,6 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'sk1418/HowMuch'
 
 " Languages
-"Plugin 'othree/xml.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
@@ -36,6 +35,9 @@ Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'dart-lang/dart-vim-plugin'
 Plugin 'solarnz/thrift.vim'
+Plugin 'sudar/vim-arduino-syntax'
+Plugin 'elzr/vim-json'
+Plugin 'vim-jp/vim-cpp'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
