@@ -24,11 +24,6 @@ source $ZSH/oh-my-zsh.sh
 
 # End oh-my-zsh config
 
-# Load localrc for local-only shell config
-if [ -e ~/.localrc ]; then
-	source ~/.localrc
-fi
-
 # ------------------------------------------------
 # Silly fixes                                    |
 # ------------------------------------------------
@@ -90,5 +85,8 @@ export EDITOR=vim
 export VISUAL=vim
 export GIT_EDITOR=vim
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-eval $(thefuck --alias)
+# Load localrc for local-only shell config
+if [ -e ~/.localrc ]; then
+	source ~/.localrc
+fi
+
