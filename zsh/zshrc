@@ -50,31 +50,6 @@ elif installed xclip; then
 	alias clip='xclip -selection c'
 fi
 
-function fileio {
-	if installed curl; then
-		if [ -f $1 ]; then
-			if installed jq; then
-				link=$(curl -F "file=@$1" https://file.io/?expires=1d | jq '.link' -j)
-				filename=$(basename "$1")
-				result="curl '$link' > $filename"
-				if installed clip; then
-					printf $result | clip
-				else
-					echo "WARNING: could not copy to clipbord"
-				fi
-				echo $result
-			else
-				echo "WARNING: could not parse response, please install jq"
-				curl -F "file=@$1" https://file.io/?expires=1d
-			fi
-		else
-		fi
-	else
-		echo "ERROR: curl must be installed"
-		return 1
-	fi
-}
-
 # Compile .java, then run its .class
 runjava () {
   javac -g $1.java;
@@ -109,6 +84,43 @@ tarball () {
 git-tarball () {
     git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
+
+function fileio {
+	if installed curl; then
+		if [ -d $1 ]; then
+			filename="/tmp/$1.tar.gz"
+			tar -cvzf $filename $1
+			shold_rm=true
+		elif [ -f $1 ]; then
+			filename=$1
+		else
+			echo "ERROR: $1 is not a file or directory"
+			return 1
+		fi
+		if installed jq; then
+			link=$(curl -F "file=@$filename" https://file.io/?expires=1d | jq '.link' -j)
+			#filename=$(basename "$1")
+			#result="curl '$link' > $filename"
+			result=$link
+			if installed clip; then
+				printf $result | clip
+			else
+				echo "WARNING: could not copy to clipbord"
+			fi
+			echo $result
+		else
+			echo "WARNING: could not parse response, please install jq"
+			curl -F "file=@$filename" https://file.io/?expires=1d
+		fi
+		if $should_rm; then
+			rm -rf $filename
+		fi
+	else
+		echo "ERROR: curl must be installed"
+		return 1
+	fi
+}
+
 
 alias gac="ga -A; gc -m '~'"
 alias gacp="ga -A; gc -m '~'; git push"
