@@ -38,6 +38,7 @@ Plugin 'solarnz/thrift.vim'
 Plugin 'sudar/vim-arduino-syntax'
 Plugin 'elzr/vim-json'
 Plugin 'vim-jp/vim-cpp'
+Plugin 'evanmiller/nginx-vim-syntax'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
