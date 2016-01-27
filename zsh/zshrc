@@ -98,7 +98,7 @@ function fileio {
 			return 1
 		fi
 		if installed jq; then
-			link=$(curl -F "file=@$filename" https://file.io/?expires=1d | jq '.link' -j)
+			link=$(curl -F "file=@$filename" 'https://file.io/?expires=1d' | jq '.link' -j)
 			#filename=$(basename "$1")
 			#result="curl '$link' > $filename"
 			result=$link
@@ -110,7 +110,7 @@ function fileio {
 			echo $result
 		else
 			echo "WARNING: could not parse response, please install jq"
-			curl -F "file=@$filename" https://file.io/?expires=1d
+			curl -F "file=@$filename" 'https://file.io/?expires=1d'
 		fi
 		if $should_rm; then
 			rm -rf $filename
