@@ -87,10 +87,11 @@ git-tarball () {
 
 function fileio {
 	if installed curl; then
+		should_rm=false
 		if [ -d $1 ]; then
 			filename="/tmp/$1.tar.gz"
 			tar -cvzf $filename $1
-			shold_rm=true
+			should_rm=true
 		elif [ -f $1 ]; then
 			filename=$1
 		else
