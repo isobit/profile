@@ -3,12 +3,9 @@ require 'mustache'
 defs = [:name, :author].reduce({}) { |o, k| 
 	print "#{k}? "
 	o[k] = gets.strip
-	puts
 	o 
 }
 ['package.json'].each { |f| 
 	File.write(f, Mustache.render(File.read(f), defs))
 }
-`touch src/#{defs[:name]}.js`
-`touch bin/#{defs[:name]}.js`
-`npm install --save babel commander`
+`npm install -d`
