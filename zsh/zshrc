@@ -1,28 +1,23 @@
-# Begin oh-my-zsh config
+# ------------------------------------------------
+# oh-my-zsh                                      |
+# ------------------------------------------------
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="nominaltech"
-#ZSH_THEME="nominaltech2"
 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
+# Uncomment the following line to display red dots whilst waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(git history-substring-search gitignore)
 
 source $ZSH/oh-my-zsh.sh
-
-# End oh-my-zsh config
 
 # ------------------------------------------------
 # Silly fixes                                    |
@@ -37,13 +32,15 @@ alias rm="rm -R -i"
 export HISTCONTROL=ignoredups
 
 # ------------------------------------------------
-# Custom functions                               |
+# Custom Commands                                |
 # ------------------------------------------------
-#
+
+# determine if command is available
 function installed {
 	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
 }
 
+# clip alias, should point to clipboard
 if installed pbcopy; then
 	alias clip=pbcopy
 elif installed xclip; then
@@ -51,13 +48,13 @@ elif installed xclip; then
 fi
 
 # Compile .java, then run its .class
-runjava () {
+function runjava {
   javac -g $1.java;
   java $1;
 }
 
 # Extract function, courtesy of Itai Ferber
-extract () {
+function extract {
     if [ -f $1 ]; then
         case $1 in
             *.tar.bz2)  tar -jxvf $1        ;;
@@ -78,10 +75,10 @@ extract () {
 }
 
 # Package tar function
-tarball () {
+function tarball {
     tar -cvzf $1.tar.gz ${@:2} $1
 }
-git-tarball () {
+function git-tarball {
     git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
@@ -129,11 +126,15 @@ alias gacp="ga -A; gc -m '~'; git push"
 #--------------------------------------------------
 # Environment Variables                           |
 #--------------------------------------------------
+
 export EDITOR=vim
 export VISUAL=vim
 export GIT_EDITOR=vim
 
-# Load localrc for local-only shell config
+#--------------------------------------------------
+# Local Config                                    |
+#--------------------------------------------------
+
 if [ -e ~/.localrc ]; then
 	source ~/.localrc
 fi
