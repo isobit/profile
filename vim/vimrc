@@ -25,6 +25,8 @@ Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'Raimondi/delimitMate'
 Plugin 'sk1418/HowMuch'
+Plugin 'joshglendenning/ViTeX'
+Plugin 'ciaranm/detectindent'
 
 " Languages
 Plugin 'groenewege/vim-less'
@@ -37,8 +39,11 @@ Plugin 'dart-lang/dart-vim-plugin'
 Plugin 'solarnz/thrift.vim'
 Plugin 'sudar/vim-arduino-syntax'
 Plugin 'elzr/vim-json'
+Plugin 'gutenye/json5.vim'
 Plugin 'vim-jp/vim-cpp'
 Plugin 'evanmiller/nginx-vim-syntax'
+Plugin 'vim-scripts/jade.vim'
+Plugin 'vim-scripts/MatlabFilesEdition'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -109,7 +114,7 @@ syntax on
 "set background=dark
 colors darcula
 
-" Highlights characters past column 80 with a red tint
+" Highlights characters past column 80
 highlight OverLength ctermbg=darkyellow
 match OverLength /\%81v.\+/
 
