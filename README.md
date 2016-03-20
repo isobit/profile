@@ -3,9 +3,7 @@ profile
 
 ## Installation
 
-Install `ruby` (and maybe `rubygems`), and then install `shaddox` (`gem install shaddox`).
-
-Run `shaddox` in the repo directory. Everything is installed relative to `~`.
+Run `./install` in the repo directory. Everything is installed relative to `~`.
 
 Make sure to install and use one of the Powerline-enabled fonts included in the `fonts` directory to avoid seeing missing characters with `zsh`.
 

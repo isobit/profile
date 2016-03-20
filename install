@@ -1,0 +1,62 @@
+#!/bin/bash
+#set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")"
+source ./shaddox.sh
+
+function task_vim {
+	log_util 'TASK' 'vim'
+	install git
+	install vim
+	ensure_ln_s ./vim/vimrc ~/.vimrc
+	ensure_mkdir ~/.vim/colors
+	ensure_ln_s ./vim/colors/* ~/.vim/colors/
+	ensure_mkdir ~/.vim/ftplugin
+	ensure_ln_s ./profile/vim/ftplugin/* ~/.vim/ftplugin/
+	if [[ -e ~/.vim/bundle/Vundle.vim ]]; then
+		log_info "updating Vundle"
+		cd ~/.vim/bundle/Vundle.vim
+		git pull
+		cd "$(dirname "${BASH_SOURCE[0]}")"
+	else
+		log_info "installing Vundle"
+		cd ~/.vim/bundle/Vundle.vim
+		ensure_mkdir ~/.vim/bundle
+		git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+	fi
+	vim +PluginInstall +qall
+}
+
+function task_zsh {
+	log_util 'TASK' 'zsh'
+	install git
+	install zsh
+	if [[ -e ~/.oh-my-zsh ]]; then
+		log_info "updating oh-my-zsh"
+		cd ~/.oh-my-zsh
+		git pull
+		cd "$(dirname "${BASH_SOURCE[0]}")"
+	else
+		log_info "installing oh-my-zsh"
+		git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+	fi
+	ensure_ln_s ./zsh/zshrc ~/.zshrc
+	ensure_ln_s ./zsh/minttyrc ~/.minttyrc
+	ensure_ln_s ./zsh/nominaltech*.zsh-theme ~/.oh-my-zsh/themes/
+	chsh -s /bin/zsh || log_warn "could not chsh to zsh, please do this manually"
+}
+
+case "$1" in
+	vim)
+		task_vim
+		;;
+	zsh)
+		task_zsh
+		;;
+	'')
+		task_vim
+		task_zsh
+		;;
+	*)
+		log_error "unknown task '$1'"
+		;;
+esac
