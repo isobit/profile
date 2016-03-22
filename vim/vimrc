@@ -242,7 +242,14 @@ map! <// </<C-X><C-O>
 " :W is :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
+" \l to toggle list mode
+noremap <silent> <Leader>l :set list!<CR>
+
 " ===================== Plugin Config ==================
 
 " enable powerline fonts
 let g:airline_powerline_fonts = 1
+
+" ===================== Project Settings ===============
+set exrc
+set secure
