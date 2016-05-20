@@ -155,9 +155,10 @@ function resolve_path {
 }
 
 function ensure_ln_s {
-	log_info "ensuring symlink '$1' -> '$2'"
-	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$(resolve_path "$1")" ]]; then
-		ln -s $1 $2
+	target="$(resolve_path $1)"
+	log_info "ensuring symlink '$target' -> '$2'"
+	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
+		ln -s $target $2
 	fi
 }
 

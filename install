@@ -1,5 +1,6 @@
 #!/bin/bash
-cd "$(dirname "${BASH_SOURCE[0]}")"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd $DIR
 source ./shaddox.sh
 
 function task_vim {
@@ -15,10 +16,9 @@ function task_vim {
 		log_info "updating Vundle"
 		cd ~/.vim/bundle/Vundle.vim
 		git pull
-		cd "$(dirname "${BASH_SOURCE[0]}")"
+		cd $DIR
 	else
 		log_info "installing Vundle"
-		cd ~/.vim/bundle/Vundle.vim
 		ensure_mkdir ~/.vim/bundle
 		git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	fi
@@ -33,14 +33,15 @@ function task_zsh {
 		log_info "updating oh-my-zsh"
 		cd ~/.oh-my-zsh
 		git pull
-		cd "$(dirname "${BASH_SOURCE[0]}")"
+		cd $DIR
 	else
 		log_info "installing oh-my-zsh"
 		git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 	fi
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/minttyrc ~/.minttyrc
-	ensure_ln_s ./zsh/nominaltech*.zsh-theme ~/.oh-my-zsh/themes/
+	ensure_ln_s ./zsh/nominaltech.zsh-theme ~/.oh-my-zsh/themes/nominaltech.zsh-theme
+	ensure_ln_s ./zsh/nominaltech2.zsh-theme ~/.oh-my-zsh/themes/nominaltech2.zsh-theme
 	chsh -s /bin/zsh || log_warn "could not chsh to zsh, please do this manually"
 }
 
