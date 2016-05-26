@@ -124,6 +124,12 @@ alias gac="ga -A; gc -m '~'"
 alias gacp="ga -A; gc -m '~'; git push"
 alias gsp="git stash; git pull; git stash pop"
 
+function sshs {
+	ssh $@ -t 'screen -dRR'
+}
+
+alias date-suffix="date +'_%y-%m-%d'"
+
 #--------------------------------------------------
 # Environment Variables                           |
 #--------------------------------------------------
