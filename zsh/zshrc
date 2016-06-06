@@ -23,8 +23,6 @@ source $ZSH/oh-my-zsh.sh
 # Silly fixes                                    |
 # ------------------------------------------------
 
-alias dus="du -h -d 1 | sort -h"
-
 # Make these commands ask before clobbering a file. Use -f to override.
 alias rm="rm -R -i"
 
@@ -34,6 +32,8 @@ export HISTCONTROL=ignoredups
 # ------------------------------------------------
 # Custom Commands                                |
 # ------------------------------------------------
+
+alias dus="du -h -d 1 | sort -h"
 
 # determine if command is available
 function installed {
@@ -145,4 +145,3 @@ export GIT_EDITOR=vim
 if [ -e ~/.localrc ]; then
 	source ~/.localrc
 fi
-
