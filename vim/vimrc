@@ -1,36 +1,32 @@
-set nocompatible              " be iMproved, required
+set nocompatible " required for vim
 
 " ===================== Vundle ============================
 
-filetype off                  " required
+filetype off " required for Vundle
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
 " User defined Plugins
-Plugin 'nicoraffo/conque'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-surround'
-Plugin 'bling/vim-airline'
 Plugin 'embear/vim-localvimrc'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'Raimondi/delimitMate'
 Plugin 'sk1418/HowMuch'
-Plugin 'joshglendenning/ViTeX'
 Plugin 'ciaranm/detectindent'
 
 " Languages
 Plugin 'groenewege/vim-less'
 Plugin 'pangloss/vim-javascript'
+Plugin 'leafgarland/typescript-vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'ekalinin/Dockerfile.vim'
@@ -45,37 +41,9 @@ Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'vim-scripts/jade.vim'
 Plugin 'vim-scripts/MatlabFilesEdition'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
-
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " ================ General Config ====================
 
@@ -99,7 +67,7 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " upon hitting escape to change modes,
 " send successive move-left and move-right
 " commands to immediately redraw the cursor
-"inoremap <special> <Esc> <Esc>hl
+inoremap <special> <Esc> <Esc>hl
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
@@ -109,9 +77,7 @@ set hidden
 "turn on syntax highlighting
 syntax on
 
-"set default colorscheme
-"let solarized_termtrans = 1
-"set background=dark
+" theme
 colors darcula
 
 " Highlights characters past column 80
@@ -167,16 +133,18 @@ endfunction
 map <Leader>w mz:execute WrapToggle()<CR>`z
 
 " Display tabs and trailing spaces visually with middle dot char
-"set list listchars=tab:\ \ ,trail:·
+set list listchars=tab:\ \ ,trail:·
 
-"set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
+"Wrap lines at convenient points
+set linebreak
 
 " ================ Folds ============================
 
-set foldmethod=manual   "fold manually, set to indent for indent
-"set foldnestmax=3       "deepest fold is 3 levels
-"set nofoldenable        "dont fold by default
+"fold manually, set to indent for indent
+set foldmethod=manual
+
+"dont fold by default
+set nofoldenable
 
 " ================ Completion =======================
 
@@ -195,7 +163,9 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Scrolling ========================
 
-set scrolloff=3         "Start scrolling when we're this many lines away from margins
+"Start scrolling when we're this many lines away from margins
+set scrolloff=3
+
 set sidescrolloff=15
 set sidescroll=1
 
@@ -224,9 +194,6 @@ inoremap <A-CR> <Esc>
 
 " ================ Mappings ==========================
 
-" \T for ConqueTerm zsh
-noremap <Leader>T :ConqueTermSplit zsh<CR>
-
 " \s to save
 noremap <Leader>s :update<CR>
 
@@ -250,11 +217,6 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 
 " \l to toggle list mode
 noremap <silent> <Leader>l :set list!<CR>
-
-" ===================== Plugin Config ==================
-
-" enable powerline fonts
-let g:airline_powerline_fonts = 1
 
 " ===================== Project Settings ===============
 set exrc
