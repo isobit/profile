@@ -199,6 +199,12 @@ set scrolloff=3         "Start scrolling when we're this many lines away from ma
 set sidescrolloff=15
 set sidescroll=1
 
+" ================ Fixes ============================
+
+" color fix for gnome-terminal scrolling
+if &term =~ '256color'
+	set t_ut=
+endif
 
 " ================ Window Moving Shortcuts ==========
 
