@@ -170,6 +170,13 @@ set scrolloff=3
 set sidescrolloff=15
 set sidescroll=1
 
+" ================ Fixes ============================
+
+" color fix for gnome-terminal scrolling
+if &term =~ '256color'
+	set t_ut=
+endif
+
 " ================ Window Moving Shortcuts ==========
 
 nmap <silent> gk :wincmd k<CR>
