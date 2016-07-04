@@ -12,16 +12,17 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " User defined Plugins
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
-Plugin 'tpope/vim-surround'
 Plugin 'embear/vim-localvimrc'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-surround'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
-Plugin 'Raimondi/delimitMate'
-Plugin 'sk1418/HowMuch'
 Plugin 'ciaranm/detectindent'
+Plugin 'terryma/vim-expand-region'
 
 " Languages
 Plugin 'groenewege/vim-less'
@@ -40,6 +41,8 @@ Plugin 'vim-jp/vim-cpp'
 Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'vim-scripts/jade.vim'
 Plugin 'vim-scripts/MatlabFilesEdition'
+Plugin 'rust-lang/rust.vim'
+Plugin 'cespare/vim-toml'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -56,7 +59,6 @@ set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
 set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
-set showmode                    "Displays current mode all the time
 set mouse=a                     "Enables the mouse
 set laststatus=2				"Enables status line even in single buffer
 
@@ -74,15 +76,15 @@ inoremap <special> <Esc> <Esc>hl
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
-"turn on syntax highlighting
+" turn on syntax highlighting
 syntax on
 
 " theme
 colors darcula
 
 " Highlights characters past column 80
-highlight OverLength ctermbg=darkyellow
-match OverLength /\%81v.\+/
+" highlight OverLength ctermbg=darkgray
+" match OverLength /\%81v.\+/
 
 " Change split separator to whitespace
 set fillchars+=vert:\ 
@@ -90,7 +92,6 @@ set fillchars+=vert:\
 " ================ Search Settings  =================
 
 set incsearch        "Find the next match as we type the search
-"set hlsearch         "Highlight searches by default
 set viminfo='100,f1  "Save up to 100 marks, enable capital marks
 set ignorecase
 set smartcase
@@ -184,15 +185,6 @@ nmap <silent> gj :wincmd j<CR>
 nmap <silent> gh :wincmd h<CR>
 nmap <silent> gl :wincmd l<CR>
 
-" ================ Custom Keystrokes  ===============
-
-nnoremap <Space> i<Space>
-nnoremap <Del>   i<Del>
-
-"Allow (shift or alt)+return to escape insert mode
-inoremap <S-CR> <Esc>
-inoremap <A-CR> <Esc>
-
 " ================ Mappings ==========================
 
 " \s to save
@@ -218,6 +210,23 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 
 " \l to toggle list mode
 noremap <silent> <Leader>l :set list!<CR>
+
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+	let @" = s:restore_reg
+	return ''
+endfunction
+function! s:Repl()
+	let s:restore_reg = @"
+	return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
+" J to join line
+vnoremap J :left<CR>gv:join!<CR>gv:s/,/, /ge<CR>gv=gv:s/\s\+$//e<CR>
+
+" K to split line
+vnoremap K <ESC>o<ESC>mkgv:s/\([({\[,]\)/\1\r/ge<CR>`<v`k:s/\([)}\]]\)/\r\1/ge<CR>`<v`k=`kddk
 
 " ===================== Project Settings ===============
 set exrc
