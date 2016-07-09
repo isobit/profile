@@ -16,8 +16,8 @@ Plugin 'embear/vim-localvimrc'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'jiangmiao/auto-pairs'
+" Plugin 'jiangmiao/auto-pairs'
+Plugin 'cohama/lexima.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
@@ -191,10 +191,7 @@ nmap <silent> gl :wincmd l<CR>
 noremap <Leader>s :update<CR>
 
 " \c to comment out
-noremap <silent> <Leader>c :call NERDComment("n","Toggle")<CR>
-
-" \C for sexy commenting
-noremap <silent> <Leader>C :call NERDComment("n","Sexy")<CR>
+noremap <silent> <Leader>c gc<CR>
 
 " \t to toggle NERDTree
 noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
