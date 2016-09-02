@@ -16,13 +16,12 @@ Plugin 'embear/vim-localvimrc'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tomtom/tcomment_vim'
-" Plugin 'jiangmiao/auto-pairs'
 Plugin 'cohama/lexima.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
-Plugin 'ciaranm/detectindent'
 Plugin 'terryma/vim-expand-region'
+Plugin 'tpope/vim-sleuth'
 
 " Languages
 Plugin 'groenewege/vim-less'
@@ -75,6 +74,9 @@ inoremap <special> <Esc> <Esc>hl
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
+
+let &t_AB="\e[48;5;%dm"
+let &t_AF="\e[38;5;%dm"
 
 " turn on syntax highlighting
 syntax on
