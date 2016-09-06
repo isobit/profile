@@ -49,38 +49,42 @@ fi
 
 # Compile .java, then run its .class
 function runjava {
-  javac -g $1.java;
-  java $1;
+	javac -g $1.java;
+	java $1;
 }
 
 # Extract function, courtesy of Itai Ferber
 function extract {
-    if [ -f $1 ]; then
-        case $1 in
-            *.tar.bz2)  tar -jxvf $1        ;;
-            *.tar.gz)   tar -zxvf $1        ;;
-            *.tar.xz)   tar -xvf $1        ;;
-            *.bz2)      bunzip2 $1          ;;
-            *.dmg)      hdiutul mount $1    ;;
-            *.gz)       gunzip $1           ;;
-            *.tar)      tar -xvf $1         ;;
-            *.tbz2)     tar -jxvf $1        ;;
-            *.tgz)      tar -zxvf $1        ;;
-            *.zip)      unzip $1            ;;
-            *.Z)        uncompress $1       ;;
-            *)          echo "'$1' cannot be extracted/mounted via extract()." ;;
-        esac
-    else
-        echo "'$1' is not a valid file."
-    fi
+	if [ -f $1 ]; then
+		case $1 in
+			*.tar.bz2)  tar -jxvf $1        ;;
+			*.tar.gz)   tar -zxvf $1        ;;
+			*.tar.xz)   tar -xvf $1        ;;
+			*.bz2)      bunzip2 $1          ;;
+			*.dmg)      hdiutul mount $1    ;;
+			*.gz)       gunzip $1           ;;
+			*.tar)      tar -xvf $1         ;;
+			*.tbz2)     tar -jxvf $1        ;;
+			*.tgz)      tar -zxvf $1        ;;
+			*.zip)      unzip $1            ;;
+			*.Z)        uncompress $1       ;;
+			*)          echo "'$1' cannot be extracted/mounted via extract()." ;;
+		esac
+	else
+		echo "'$1' is not a valid file."
+	fi
+}
+
+function backup {
+	tar -cvzf "~/backups/${1}_$(date +'%Y-%m-%dT%H,%M,%S').tar.gz" ${@:2} $1
 }
 
 # Package tar function
 function tarball {
-    tar -cvzf $1.tar.gz ${@:2} $1
+	tar -cvzf $1.tar.gz ${@:2} $1
 }
 function git-tarball {
-    git archive --format=tar.gz HEAD $1 > $1.tar.gz
+	git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
 function fileio {
@@ -128,8 +132,6 @@ alias gsp="git stash; git pull; git stash pop"
 function sshs {
 	ssh $@ -t 'screen -dRR'
 }
-
-alias date-suffix="date +'_%y-%m-%d'"
 
 #--------------------------------------------------
 # Environment Variables                           |
