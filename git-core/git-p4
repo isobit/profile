@@ -1286,6 +1286,8 @@ class P4Submit(Command, P4UserMap):
                 optparse.make_option("--export-labels", dest="exportLabels", action="store_true"),
                 optparse.make_option("--dry-run", "-n", dest="dry_run", action="store_true"),
                 optparse.make_option("--prepare-p4-only", dest="prepare_p4_only", action="store_true"),
+                optparse.make_option("--change", dest="change", action="store_true"),
+                optparse.make_option("--amend", dest="amend", action="store_true"),
                 optparse.make_option("--conflict", dest="conflict_behavior",
                                      choices=self.conflict_behavior_choices),
                 optparse.make_option("--branch", dest="branch"),
@@ -1297,6 +1299,8 @@ class P4Submit(Command, P4UserMap):
         self.preserveUser = gitConfigBool("git-p4.preserveUser")
         self.dry_run = False
         self.prepare_p4_only = False
+        self.change = False
+        self.amend = False
         self.conflict_behavior = None
         self.isWindows = (platform.system() == "Windows")
         self.exportLabels = False
@@ -1430,6 +1434,25 @@ class P4Submit(Command, P4UserMap):
                 return r['change']
         die("Could not get changelist number for last submit - cannot patch up user details")
 
+    def lastPendingP4Changelist(self):
+        # Get back the last changelist number submitted in this client spec. This
+        # then gets used to patch up the username in the change. If the same
+        # client spec is being used by multiple processes then this might go
+        # wrong.
+        results = p4CmdList("client -o")        # find the current client
+        client = None
+        for r in results:
+            if r.has_key('Client'):
+                client = r['Client']
+                break
+        if not client:
+            die("could not get client spec")
+        results = p4CmdList(["changes", "-c", client, "-m", "1", "-s", "pending"])
+        for r in results:
+            if r.has_key('change'):
+                return r['change']
+        die("Could not get changelist number for last submit - cannot patch up user details")
+
     def modifyChangelistUser(self, changelist, newUser):
         # fixup the user field of a changelist after it has been submitted.
         changes = p4CmdList("change -o %s" % changelist)
@@ -1474,11 +1497,19 @@ class P4Submit(Command, P4UserMap):
 
         [upstream, settings] = findUpstreamBranchPoint()
 
+        if self.amend:
+            pending_changelist = self.lastPendingP4Changelist()
+
         template = ""
         inFilesSection = False
         for line in p4_read_pipe_lines(['change', '-o']):
             if line.endswith("\r\n"):
                 line = line[:-2] + "\n"
+            if self.amend:
+                if line.startswith("Change:"):
+                    line = "Change:\t" + pending_changelist
+                if line.startswith("Status:"):
+                    line = "Status:\tpending"
             if inFilesSection:
                 if line.startswith("\t"):
                     # path starts and ends with a tab
@@ -1776,9 +1807,41 @@ class P4Submit(Command, P4UserMap):
         #
         submitted = False
 
-        if self.mode == 'submit':
+        if self.change:
             try:
+                print 'NOTE: change mode is active, change with NOT be submitted'
                 if self.edit_template(fileName):
+                    # read the edited message and submit
+                    tmpFile = open(fileName, "rb")
+                    message = tmpFile.read()
+                    tmpFile.close()
+                    if self.isWindows:
+                        message = message.replace("\r\n", "\n")
+                    changeTemplate = message[:message.index(separatorLine)]
+
+                    p4_write_pipe(['change', '-i'], changeTemplate)
+
+                    changed = True
+
+            finally:
+                # skip this patch
+                if not changed:
+                    print "Changelist cancelled, undoing p4 changes."
+                    for f in editedFiles:
+                        p4_revert(f)
+                    for f in filesToAdd:
+                        p4_revert(f)
+                        os.remove(f)
+                    for f in filesToDelete:
+                        p4_revert(f)
+
+            os.remove(fileName)
+            return changed
+
+        else:
+            try:
+                response = raw_input("You are about to SUBMIT a changelist to the perforce server. Continue? [y]es, [n]o ")
+                if response == 'y' & self.edit_template(fileName):
                     # read the edited message and submit
                     tmpFile = open(fileName, "rb")
                     message = tmpFile.read()
@@ -1817,36 +1880,6 @@ class P4Submit(Command, P4UserMap):
             os.remove(fileName)
             return submitted
 
-        if self.mode == 'change':
-            try:
-                print 'NOTE: change mode is active, change with NOT be submitted'
-                if self.edit_template(fileName):
-                    # read the edited message and submit
-                    tmpFile = open(fileName, "rb")
-                    message = tmpFile.read()
-                    tmpFile.close()
-                    if self.isWindows:
-                        message = message.replace("\r\n", "\n")
-                    changeTemplate = message[:message.index(separatorLine)]
-
-                    p4_write_pipe(['change', '-i'], changeTemplate)
-
-                    changed = True
-
-            finally:
-                # skip this patch
-                if not changed:
-                    print "Changelist cancelled, undoing p4 changes."
-                    for f in editedFiles:
-                        p4_revert(f)
-                    for f in filesToAdd:
-                        p4_revert(f)
-                        os.remove(f)
-                    for f in filesToDelete:
-                        p4_revert(f)
-
-            os.remove(fileName)
-            return changed
 
     # Export git tags as p4 labels. Create a p4 label and then tag
     # with that.
@@ -1919,12 +1952,7 @@ class P4Submit(Command, P4UserMap):
                 if verbose:
                     print "created p4 label for tag %s" % name
 
-    def run(self, args, cmdName):
-        if cmdName == 'submit':
-            self.mode = 'submit'
-        else:
-            self.mode = 'change'
-
+    def run(self, args):
         if len(args) == 0:
             self.master = currentGitBranch()
         elif len(args) == 1:
@@ -2002,6 +2030,7 @@ class P4Submit(Command, P4UserMap):
                 p4_sync("...", "-f")
             else:
                 p4_sync("...")
+
         self.check()
 
         commits = []
@@ -3734,7 +3763,7 @@ def main():
 
         os.environ["GIT_DIR"] = cmd.gitdir
 
-    if not cmd.run(args, cmdName):
+    if not cmd.run(args):
         parser.print_help()
         sys.exit(2)
 
