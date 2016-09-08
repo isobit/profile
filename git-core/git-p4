@@ -1311,7 +1311,7 @@ class P4Submit(Command, P4UserMap):
             die("Large file system not supported for git-p4 submit command. Please remove it from config.")
 
     def check(self):
-        if len(p4CmdList("opened ...")) > 0:
+        if len(p4CmdList("opened ...")) > 0 and not self.amend:
             die("You have files opened with perforce! Close them before starting the sync.")
 
     def separate_jobs_from_description(self, message):
@@ -1434,7 +1434,7 @@ class P4Submit(Command, P4UserMap):
                 return r['change']
         die("Could not get changelist number for last submit - cannot patch up user details")
 
-    def lastPendingP4Changelist(self):
+    def selectPendingP4ChangelistForAmend(self):
         # Get back the last changelist number submitted in this client spec. This
         # then gets used to patch up the username in the change. If the same
         # client spec is being used by multiple processes then this might go
@@ -1447,10 +1447,28 @@ class P4Submit(Command, P4UserMap):
                 break
         if not client:
             die("could not get client spec")
-        results = p4CmdList(["changes", "-c", client, "-m", "1", "-s", "pending"])
-        for r in results:
-            if r.has_key('change'):
-                return r['change']
+
+        results = p4CmdList(['changes', '-L', '-c', client, '-s', 'pending'])
+
+        if len(results) == 1 and results[0].has_key('change'):
+            return results[0]['change']
+
+        print("There are multiple pending changelists:")
+
+        for i, r in enumerate(results):
+            print("[{}] {}\n\t{}".format(i, r['change'], r['desc'].replace('\n', '\n\t')))
+
+        while True:
+            response = raw_input("Which would you like to amend? ")
+            try:
+                idx = int(response)
+                if idx in range(0, len(results)):
+                    return results[idx]['change']
+                else:
+                    raise Exception
+            except:
+                print("Input must be an int in the range [{}, {})".format(0, len(results)))
+
         die("Could not get changelist number for last submit - cannot patch up user details")
 
     def modifyChangelistUser(self, changelist, newUser):
@@ -1487,7 +1505,7 @@ class P4Submit(Command, P4UserMap):
                     return 1
         return 0
 
-    def prepareSubmitTemplate(self):
+    def prepareSubmitTemplate(self, changelist=None):
         """Run "p4 change -o" to grab a change specification template.
            This does not use "p4 -G", as it is nice to keep the submission
            template in original order, since a human might edit it.
@@ -1497,17 +1515,14 @@ class P4Submit(Command, P4UserMap):
 
         [upstream, settings] = findUpstreamBranchPoint()
 
-        if self.amend:
-            pending_changelist = self.lastPendingP4Changelist()
-
         template = ""
         inFilesSection = False
         for line in p4_read_pipe_lines(['change', '-o']):
             if line.endswith("\r\n"):
                 line = line[:-2] + "\n"
-            if self.amend:
+            if changelist != None:
                 if line.startswith("Change:"):
-                    line = "Change:\t" + pending_changelist
+                    line = "Change:\t" + changelist
                 if line.startswith("Status:"):
                     line = "Status:\tpending"
             if inFilesSection:
@@ -1599,6 +1614,14 @@ class P4Submit(Command, P4UserMap):
 
         (p4User, gitEmail) = self.p4UserForCommit(id)
 
+        if self.amend:
+            changelist = self.selectPendingP4ChangelistForAmend()
+            print("Reverting changelist {} before applying patches".format(changelist))
+            p4CmdList(['reconcile'])
+            p4CmdList(['revert', '-w', '-c', changelist, '//...'])
+        else:
+            changelist = None
+
         diff = read_pipe_lines("git diff-tree -r %s \"%s^\" \"%s\"" % (self.diffOpts, id, id))
         filesToAdd = set()
         filesToChangeType = set()
@@ -1673,6 +1696,7 @@ class P4Submit(Command, P4UserMap):
         applyPatchCmd = patchcmd + "--check --apply -"
         patch_succeeded = True
 
+        print("Applying patches")
         if os.system(tryPatchCmd) != 0:
             fixed_rcs_keywords = False
             patch_succeeded = False
@@ -1744,7 +1768,7 @@ class P4Submit(Command, P4UserMap):
         logMessage = logMessage.strip()
         (logMessage, jobs) = self.separate_jobs_from_description(logMessage)
 
-        template = self.prepareSubmitTemplate()
+        template = self.prepareSubmitTemplate(changelist)
         submitTemplate = self.prepareLogMessage(template, logMessage, jobs)
 
         if self.preserveUser:
@@ -1805,6 +1829,7 @@ class P4Submit(Command, P4UserMap):
         #
         # Let the user edit the change description, then submit it.
         #
+        changed = False
         submitted = False
 
         if self.change:
@@ -1867,8 +1892,8 @@ class P4Submit(Command, P4UserMap):
 
             finally:
                 # skip this patch
-                if not changed:
-                    print "Changelist cancelled, undoing p4 changes."
+                if not submitted:
+                    print "Submit cancelled, undoing p4 changes."
                     for f in editedFiles:
                         p4_revert(f)
                     for f in filesToAdd:
