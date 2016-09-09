@@ -1306,6 +1306,7 @@ class P4Submit(Command, P4UserMap):
         self.exportLabels = False
         self.p4HasMoveCommand = p4_has_move_command()
         self.branch = None
+        self.needsGit = True
 
         if gitConfig('git-p4.largeFileSystem'):
             die("Large file system not supported for git-p4 submit command. Please remove it from config.")
@@ -1848,6 +1849,11 @@ class P4Submit(Command, P4UserMap):
 
                     changed = True
 
+                    hookpath = self.gitdir + '/hooks/post-p4-change'
+                    hookenv = dict(os.environ, P4_CHANGELIST=changelist)
+                    if os.path.isfile(hookpath) and os.access(hookpath, os.X_OK):
+                        subprocess.call(hookpath, env=hookenv)
+
             finally:
                 # skip this patch
                 if not changed:
@@ -1889,6 +1895,10 @@ class P4Submit(Command, P4UserMap):
                     for f in pureRenameCopy:
                         p4_sync(f, "-f")
                     submitted = True
+
+                    hookpath = self.gitdir + '/hooks/post-p4-submit'
+                    if os.path.isfile(hookpath) and os.access(hookpath, os.X_OK):
+                        subprocess.call(hookpath)
 
             finally:
                 # skip this patch
