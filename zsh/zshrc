@@ -128,7 +128,7 @@ function sshs {
 	ssh $@ -t 'screen -dRR'
 }
 
-alias date-suffix="date +'_%y-%m-%d'"
+alias date-suffix="date +'_%Y-%m-%d'"
 
 #--------------------------------------------------
 # Environment Variables                           |
