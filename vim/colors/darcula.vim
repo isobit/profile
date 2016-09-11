@@ -8,9 +8,9 @@ if version > 580
 	endif
 endif
 
-set t_Co=256
 let g:colors_name = "darcula"
 
+" if has("gui_running") || &t_Co == 256
 hi IncSearch guifg=#ffffff guibg=#425f44 guisp=#425f44 gui=NONE ctermfg=15 ctermbg=65 cterm=NONE
 hi WildMenu guifg=#eee8d5 guibg=#073642 guisp=#073642 gui=NONE ctermfg=230 ctermbg=23 cterm=NONE
 hi SignColumn guifg=#839496 guibg=#bebebe guisp=#bebebe gui=NONE ctermfg=66 ctermbg=7 cterm=NONE
@@ -89,7 +89,7 @@ hi PMenuThumb guifg=#c7c7c7 guibg=#7a7a7a guisp=#7a7a7a gui=NONE ctermfg=251 cte
 hi MatchParen guifg=#dc322f guibg=#586e75 guisp=#586e75 gui=bold ctermfg=160 ctermbg=66 cterm=bold
 hi LocalVariable guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
 hi Repeat guifg=#719e07 guibg=NONE guisp=NONE gui=NONE ctermfg=106 ctermbg=NONE cterm=NONE
-hi SpellBad guifg=#e2e4e5 guibg=#472828 guisp=#472828 gui=underline ctermfg=254 ctermbg=238 cterm=underline
+hi SpellBad guifg=#000000 guibg=#ffcc00 guisp=#472828 gui=bold ctermfg=0 ctermbg=220 cterm=bold
 hi CTagsClass guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
 hi Directory guifg=#268bd2 guibg=NONE guisp=NONE gui=NONE ctermfg=32 ctermbg=NONE cterm=NONE
 hi Structure guifg=#b58900 guibg=NONE guisp=NONE gui=NONE ctermfg=136 ctermbg=NONE cterm=NONE
@@ -104,4 +104,37 @@ hi javascriptstrings guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ct
 hi htmlstring guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
 hi cursorim guifg=#192224 guibg=#536991 guisp=#536991 gui=NONE ctermfg=235 ctermbg=60 cterm=NONE
 hi phpstringsingle guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
-"hi clear -- no settings --
+" else
+" 	hi Normal ctermfg=7 ctermbg=0 cterm=NONE
+"
+" 	hi IncSearch ctermfg=7 ctermbg=0 cterm=NONE
+" 	hi WildMenu ctermfg=7 ctermbg=0 cterm=NONE
+" 	hi SignColumn ctermfg=7 ctermbg=0 cterm=bold
+" 	hi SpecialComment ctermfg=1 ctermbg=NONE cterm=NONE
+" 	hi Folded ctermfg=7 ctermbg=238 cterm=bold
+" 	hi StatusLineNC ctermfg=7 ctermbg=0 cterm=NONE
+" 	hi CTagsGlobalConstant ctermfg=254 ctermbg=NONE cterm=NONE
+" 	hi ErrorMsg ctermfg=1 ctermbg=7 cterm=NONE
+" 	hi Ignore ctermfg=NONE ctermbg=NONE cterm=NONE
+" 	hi Debug ctermfg=1 ctermbg=NONE cterm=NONE
+" 	hi Todo ctermfg=5 ctermbg=232 cterm=bold
+" 	hi LineNr ctermfg=102 ctermbg=236 cterm=NONE
+" 	hi StatusLine ctermfg=252 ctermbg=238 cterm=bold
+" 	hi Search ctermfg=7 ctermbg=0 cterm=bold
+" 	hi CursorLine ctermfg=0 ctermbg=7 cterm=underline
+" 	hi Visual ctermfg=0 ctermbg=7 cterm=NONE
+"
+" 	hi Comment ctermfg=0 ctermbg=NONE cterm=bold
+"
+" 	hi Number ctermfg=6 ctermbg=NONE cterm=NONE
+" 	hi Float ctermfg=6 ctermbg=NONE cterm=NONE
+" 	hi Boolean ctermfg=6 ctermbg=NONE cterm=NONE
+" 	hi String ctermfg=2 ctermbg=NONE cterm=NONE
+"
+" 	hi Type ctermfg=4 ctermbg=NONE cterm=bold
+"
+" 	hi Statement ctermfg=55 ctermbg=NONE cterm=NONE
+" 	hi PreProc ctermfg=3 ctermbg=NONE cterm=bold
+" 	hi Conditional ctermfg=2 ctermbg=NONE cterm=bold
+" 	hi Conditional ctermfg=2 ctermbg=NONE cterm=bold
+" endif
