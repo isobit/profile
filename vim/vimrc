@@ -57,7 +57,7 @@ set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
 set visualbell                  "No sounds
-set autoread                    "Reload files changed outside vim
+au CursorHold * checktime       "Reload files chnaged outside vim, but prompt if changed locally
 set mouse=a                     "Enables the mouse
 set laststatus=2				"Enables status line even in single buffer
 
@@ -121,6 +121,8 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
+set cino=(s,m1
+
 filetype on
 filetype plugin on
 filetype indent on
@@ -179,6 +181,10 @@ set sidescroll=1
 if &term =~ '256color'
 	set t_ut=
 endif
+
+" front-matter syntax highlighting for md and html
+autocmd Filetype html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
+autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
 
 " ================ Window Moving Shortcuts ==========
 
