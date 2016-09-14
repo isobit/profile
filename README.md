@@ -5,8 +5,6 @@ profile
 
 Run `./install` in the repo directory. Everything is installed relative to `~`.
 
-Make sure to install and use one of the Powerline-enabled fonts included in the `fonts` directory to avoid seeing missing characters with `zsh`.
-
 ### Mapping Caps Lock to Escape
 
 #### Windows
