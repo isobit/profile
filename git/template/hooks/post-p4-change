@@ -1,0 +1,53 @@
+#!/bin/bash
+exec < /dev/tty
+while true; do
+	read -p "Submit changelist $P4_CHANGELIST to post-review? [y/n] " choice
+	case "$choice" in
+		y|Y)
+			# post-review
+			(cd /mnt/d/perforce/build/tools/unversioned/windows && wcmd post-review.exe $P4_CHANGELIST)
+			break
+			;;
+		n|N)
+			break
+			;;
+		*)
+			;;
+	esac
+done
+
+# update commit message with new description for bud tag
+git_desc="$(git log --format=%B -n 1 $GIT_COMMIT)"
+p4_desc="$(
+python << EOS
+import sys
+import subprocess
+import marshal
+p = subprocess.Popen('p4 -G change -o $P4_CHANGELIST', stdout=subprocess.PIPE, shell=True)
+r = marshal.load(p.stdout)
+sys.stdout.write(r['Description'])
+EOS
+)"
+if [[ "$git_desc" != "$p4_desc" ]]; then
+	while true; do
+		read -p "Amend commit with new description? [y/n] " choice
+		case "$choice" in
+			y|Y)
+				if [[ "$GIT_COMMIT" == "$(git rev-parse HEAD)" ]]; then
+					git commit --amend -m "$p4_desc"
+				else
+					echo "Latest commit is not GIT_COMMIT, I don't know how to ammend!"
+					echo "Here is the perforce description, please update yourself:"
+					echo $p4_desc
+				fi
+				break
+				;;
+			n|N)
+				exit
+				;;
+			*)
+				echo $p4_desc
+				;;
+		esac
+	done
+fi

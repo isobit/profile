@@ -45,6 +45,14 @@ function task_zsh {
 	chsh -s /bin/zsh || log_warn "could not chsh to zsh, please do this manually"
 }
 
+function task_git {
+	log_util 'TASK' 'git'
+	install git
+	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
+	log_info "setting global git templatedir"
+	git config --global init.templatedir '~/profile/git/template'
+}
+
 case "$1" in
 	vim)
 		task_vim
@@ -52,9 +60,13 @@ case "$1" in
 	zsh)
 		task_zsh
 		;;
+	git)
+		task_git
+		;;
 	'')
 		task_vim
 		task_zsh
+		task_git
 		;;
 	*)
 		log_error "unknown task '$1'"
