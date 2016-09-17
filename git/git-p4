@@ -129,14 +129,17 @@ def write_pipe(c, stdin):
         sys.stderr.write('Writing pipe: %s\n' % str(c))
 
     expand = isinstance(c,basestring)
-    p = subprocess.Popen(c, stdin=subprocess.PIPE, shell=expand)
-    pipe = p.stdin
-    val = pipe.write(stdin)
-    pipe.close()
+    p = subprocess.Popen(c, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=expand)
+
+    p.stdin.write(stdin)
+    p.stdin.close()
+
+    out = p.stdout.read()
+
     if p.wait():
         die('Command failed: %s' % str(c))
 
-    return val
+    return out
 
 def p4_write_pipe(c, stdin):
     real_cmd = p4_build_cmd(c)
@@ -1845,12 +1848,15 @@ class P4Submit(Command, P4UserMap):
                         message = message.replace("\r\n", "\n")
                     changeTemplate = message[:message.index(separatorLine)]
 
-                    p4_write_pipe(['change', '-i'], changeTemplate)
+                    result = p4_write_pipe(['change', '-i'], changeTemplate)
+                    if changelist is None:
+                        match = re.search('Change (\d+)*', result)
+                        changelist = match.group(1)
 
                     changed = True
 
                     hookpath = self.gitdir + '/hooks/post-p4-change'
-                    hookenv = dict(os.environ, P4_CHANGELIST=changelist)
+                    hookenv = dict(os.environ, P4_CHANGELIST=str(changelist))
                     if os.path.isfile(hookpath) and os.access(hookpath, os.X_OK):
                         subprocess.call(hookpath, env=hookenv)
 
