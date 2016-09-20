@@ -23,7 +23,6 @@ hi Include guifg=#cb4b16 guibg=NONE guisp=NONE gui=NONE ctermfg=166 ctermbg=NONE
 hi Float guifg=#2aa198 guibg=NONE guisp=NONE gui=NONE ctermfg=37 ctermbg=NONE cterm=NONE
 hi StatusLineNC guifg=#dddddd guibg=#444444 guisp=#444444 gui=NONE ctermfg=253 ctermbg=238 cterm=NONE
 hi CTagsMember guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
-hi NonText guifg=#858585 guibg=NONE guisp=NONE gui=bold ctermfg=102 ctermbg=NONE cterm=bold
 hi CTagsGlobalConstant guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
 hi DiffText guifg=#2aa198 guibg=NONE guisp=NONE gui=NONE ctermfg=37 ctermbg=NONE cterm=NONE
 hi ErrorMsg guifg=#dc322f guibg=#0000c0 guisp=#0000c0 gui=NONE ctermfg=160 ctermbg=4 cterm=NONE
@@ -39,6 +38,7 @@ hi Special guifg=#dc322f guibg=NONE guisp=NONE gui=NONE ctermfg=160 ctermbg=NONE
 hi LineNr guifg=#858585 guibg=#333333 guisp=#333333 gui=NONE ctermfg=102 ctermbg=236 cterm=NONE
 hi StatusLine guifg=#d1d1d1 guibg=#444444 guisp=#444444 gui=bold ctermfg=252 ctermbg=238 cterm=bold
 hi Normal guifg=#ffffff guibg=#111111 guisp=#111111 gui=NONE ctermfg=15 ctermbg=233 cterm=NONE
+hi NonText guifg=#111111 guibg=NONE guisp=NONE gui=NONE ctermfg=233 ctermbg=NONE cterm=NONE
 hi Label guifg=#719e07 guibg=NONE guisp=NONE gui=NONE ctermfg=106 ctermbg=NONE cterm=NONE
 hi CTagsImport guifg=#e2e4e5 guibg=NONE guisp=NONE gui=NONE ctermfg=254 ctermbg=NONE cterm=NONE
 hi PMenuSel guifg=#1a1a1a guibg=#c7c7c7 guisp=#c7c7c7 gui=NONE ctermfg=234 ctermbg=251 cterm=NONE

@@ -42,6 +42,7 @@ Plugin 'vim-scripts/jade.vim'
 Plugin 'vim-scripts/MatlabFilesEdition'
 Plugin 'rust-lang/rust.vim'
 Plugin 'cespare/vim-toml'
+Plugin 'joshglendenning/vim-caddyfile'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
