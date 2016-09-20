@@ -57,9 +57,9 @@ set history=1000                "Store lots of :cmdline history
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
 set visualbell                  "No sounds
-au CursorHold * checktime       "Reload files chnaged outside vim, but prompt if changed locally
 set mouse=a                     "Enables the mouse
 set laststatus=2				"Enables status line even in single buffer
+au CursorHold,CursorHoldI * silent! checktime "Reload files chnaged outside vim, but prompt if changed locally
 
 " Set up vertical line cursor for insert mode in iTerm2
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -232,6 +232,15 @@ vnoremap J :left<CR>gv:join!<CR>gv:s/,/, /ge<CR>gv=gv:s/\s\+$//e<CR>
 
 " K to split line
 vnoremap K <ESC>o<ESC>mkgv:s/\([({\[,]\)/\1\r/ge<CR>`<v`k:s/\([)}\]]\)/\r\1/ge<CR>`<v`k=`kddk
+
+" n goes to next quickfix location when active
+nnoremap <expr> n ((len(getqflist()) > 0)?':cn<CR>':'n')
+
+" N goes to prev quickfix location when active
+nnoremap <expr> N ((len(getqflist()) > 0)?':cp<CR>':'N')
+
+" \c clears the quickfix list
+noremap <Leader>c :call setqflist([])<CR>
 
 " ===================== Project Settings ===============
 set exrc
