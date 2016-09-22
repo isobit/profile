@@ -22,6 +22,7 @@ Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'terryma/vim-expand-region'
 Plugin 'tpope/vim-sleuth'
+Plugin 'gerw/vim-HiLinkTrace'
 
 " Languages
 Plugin 'groenewege/vim-less'
@@ -43,6 +44,9 @@ Plugin 'vim-scripts/MatlabFilesEdition'
 Plugin 'rust-lang/rust.vim'
 Plugin 'cespare/vim-toml'
 Plugin 'joshglendenning/vim-caddyfile'
+
+" Colors
+Plugin 'joshglendenning/vim-darcula-colors'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
