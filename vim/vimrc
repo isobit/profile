@@ -25,24 +25,12 @@ Plugin 'tpope/vim-sleuth'
 Plugin 'gerw/vim-HiLinkTrace'
 
 " Languages
-Plugin 'groenewege/vim-less'
-Plugin 'pangloss/vim-javascript'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'derekwyatt/vim-scala'
+let g:polyglot_disabled = ['c++11']
+Plugin 'sheerun/vim-polyglot'
 Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'dart-lang/dart-vim-plugin'
-Plugin 'solarnz/thrift.vim'
-Plugin 'sudar/vim-arduino-syntax'
-Plugin 'elzr/vim-json'
 Plugin 'gutenye/json5.vim'
-Plugin 'vim-jp/vim-cpp'
-Plugin 'evanmiller/nginx-vim-syntax'
 Plugin 'vim-scripts/jade.vim'
 Plugin 'vim-scripts/MatlabFilesEdition'
-Plugin 'rust-lang/rust.vim'
-Plugin 'cespare/vim-toml'
 Plugin 'joshglendenning/vim-caddyfile'
 
 " Colors
