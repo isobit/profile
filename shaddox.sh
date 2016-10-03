@@ -1,33 +1,33 @@
-true=0
-false=1
+#!/bin/bash
 
 SHADDOX_VERBOSE=true
 function log_info {
 	if ! $SHADDOX_VERBOSE; then
 		return 0
 	fi
-    echo -e "\033[36m=>\033[0m $1" >&2
+	echo -e "\033[36m=>\033[0m $1" >&2
 }
 function log_util {
 	if ! $SHADDOX_VERBOSE; then
 		return 0
 	fi
-    echo -e "[\033[34m$1\033[0m] $2" >&2
+	echo -e "[\033[34m$1\033[0m] $2" >&2
 }
 function log_warn {
-    echo -e "[\033[33mWARNING\033[0m] $1" >&2
+	echo -e "[\033[33mWARNING\033[0m] $1" >&2
 }
 function log_error {
-    echo -e "[\033[31mERROR\033[0m] $1" >&2
+	echo -e "[\033[31mERROR\033[0m] $1" >&2
 }
 
 function prompt_yn {
-	printf "\033[32m$1 [Y/n]:\033[0m " >&2
+	printf "$1 \033[32m[Y/n]:\033[0m " >&2
 	read -n 1 COND
+	echo
 	if [[ "$COND" =~ ^(y|Y)$ ]]; then
-		return true
+		return 0
 	else
-		return false
+		return 1
 	fi
 }
 
@@ -158,8 +158,29 @@ function ensure_ln_s {
 	target="$(resolve_path $1)"
 	log_info "ensuring symlink '$target' -> '$2'"
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
+		if [[ -e "$2" ]]; then
+			log_warn "file '$2' already exists"
+			if prompt_yn "Would you like to overwrite '$2'?"; then
+
+				log_info "removing '$2'"
+
+				rm "$2"
+				if [ $? -ne 0 ]; then
+					log_error "failed to remove existing file '$2'"
+					return 1
+				fi
+
+			else
+				return 1
+			fi
+		fi
+
 		log_info "linking '$target' -> '$2'"
 		ln -s $target $2
+		if [ $? -ne 0 ]; then
+			log_error "could not create symlink '$target' -> '$2'"
+			return 1
+		fi
 	fi
 }
 
@@ -168,33 +189,43 @@ function ensure_mkdir {
 	if [[ ! -d "$1" ]]; then
 		log_info "making directory '$1'"
 		mkdir -p $1
+		if [ $? -ne 0 ]; then
+			log_error "could not make directory '$1'"
+			return 1
+		fi
 	fi
 }
 
 function extract {
-    if [[ -f $1 ]]; then
-        case $1 in
-            *.tar.bz2)  tar -jxvf $1        ;;
-            *.tar.gz)   tar -zxvf $1        ;;
-            *.bz2)      bunzip2 $1          ;;
-            *.dmg)      hdiutul mount $1    ;;
-            *.gz)       gunzip $1           ;;
-            *.tar)      tar -xvf $1         ;;
-            *.tbz2)     tar -jxvf $1        ;;
-            *.tgz)      tar -zxvf $1        ;;
-            *.zip)      unzip $1            ;;
-            *.Z)        uncompress $1       ;;
-            *)
-				echo "'$1' cannot be extracted/mounted via extract()."
+	if [[ -f $1 ]]; then
+		case $1 in
+			*.tar.bz2) tar -jxvf $1
+				;;
+			*.tar.gz) tar -zxvf $1
+				;;
+			*.bz2) bunzip2 $1
+				;;
+			*.dmg) hdiutul mount $1
+				;;
+			*.gz) gunzip $1
+				;;
+			*.tar) tar -xvf $1
+				;;
+			*.tbz2) tar -jxvf $1
+				;;
+			*.tgz) tar -zxvf $1
+				;;
+			*.zip) unzip $1
+				;;
+			*.Z) uncompress $1
+				;;
+			*)
+				log_error "'$1' cannot be extracted/mounted via extract()."
 				return 1
 				;;
-        esac
-    else
-        echo "'$1' is not a valid file."
+		esac
+	else
+		log_error "'$1' is not a valid file."
 		return 1
-    fi
-}
-
-function tarball {
-    tar -cvzf $1.tar.gz ${@:2} $1
+	fi
 }
