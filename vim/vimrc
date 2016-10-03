@@ -123,11 +123,11 @@ filetype indent on
 
 " Allow toggling between wrapping and not wrapping
 function WrapToggle()
-   if &wrap
-      set nowrap
-   else
-      set wrap
-   endif
+	if &wrap
+		set nowrap
+	else
+		set wrap
+	endif
 endfunction
 " Mapped to \w
 map <Leader>w mz:execute WrapToggle()<CR>`z
