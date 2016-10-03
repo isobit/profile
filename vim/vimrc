@@ -22,6 +22,7 @@ Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'terryma/vim-expand-region'
 Plugin 'tpope/vim-sleuth'
+Plugin 'tpope/vim-abolish'
 Plugin 'gerw/vim-HiLinkTrace'
 
 " Languages

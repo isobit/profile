@@ -133,6 +133,10 @@ function sshs {
 	ssh $@ -t 'screen -dRR'
 }
 
+function rsyncd-auto {
+	watch -n 1 "rsync -rtv --exclude .git/ --del '$1' '$2'"
+}
+
 #--------------------------------------------------
 # Environment Variables                           |
 #--------------------------------------------------
