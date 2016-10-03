@@ -174,6 +174,7 @@ set sidescroll=1
 " color fix for gnome-terminal scrolling
 if &term =~ '256color'
 	set t_ut=
+	set t_Co=256
 endif
 
 " front-matter syntax highlighting for md and html
