@@ -49,6 +49,12 @@ function task_git {
 	git config --global init.templatedir '~/profile/git/template'
 }
 
+function task_tmux {
+	log_util 'TASK' 'tmux'
+	install tmux
+	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
+}
+
 case "$1" in
 	vim)
 		task_vim
@@ -58,6 +64,9 @@ case "$1" in
 		;;
 	git)
 		task_git
+		;;
+	tmux)
+		task_tmux
 		;;
 	'')
 		task_vim
