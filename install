@@ -8,8 +8,6 @@ function task_vim {
 	install git
 	install vim
 	ensure_ln_s ./vim/vimrc ~/.vimrc
-	ensure_mkdir ~/.vim/ftplugin
-	ensure_ln_s ./profile/vim/ftplugin/* ~/.vim/ftplugin/
 	if [[ -e ~/.vim/bundle/Vundle.vim ]]; then
 		log_info "updating Vundle"
 		cd ~/.vim/bundle/Vundle.vim
