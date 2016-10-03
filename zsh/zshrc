@@ -76,7 +76,7 @@ function extract {
 }
 
 function backup {
-	tar -cvzf "~/backups/${1}_$(date +'%Y-%m-%dT%H,%M,%S').tar.gz" ${@:2} $1
+	tar -cvzf "~/backups/${1}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
 }
 
 # Package tar function
