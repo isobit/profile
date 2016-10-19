@@ -12,18 +12,19 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " User defined Plugins
-Plugin 'embear/vim-localvimrc'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'cohama/lexima.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'ervandew/supertab'
-Plugin 'godlygeek/tabular'
-Plugin 'terryma/vim-expand-region'
-Plugin 'tpope/vim-sleuth'
-Plugin 'tpope/vim-abolish'
-Plugin 'gerw/vim-HiLinkTrace'
+Plugin 'scrooloose/nerdtree'       " \t for filesystem tree
+Plugin 'jistr/vim-nerdtree-tabs'   " makes NERDTree work with tabs
+Plugin 'tomtom/tcomment_vim'       " gc to comment
+Plugin 'cohama/lexima.vim'         " autoclose quotes and other delimiters
+Plugin 'tpope/vim-surround'        " cs to change surrounding delimiters
+Plugin 'ervandew/supertab'         " tab completion
+Plugin 'godlygeek/tabular'         " :Tab to align giving format
+Plugin 'terryma/vim-expand-region' " + to expand region, - to go back
+Plugin 'tpope/vim-sleuth'          " autodetect tabbing
+Plugin 'tpope/vim-abolish'         " :S to do smart substitute (understands capitalization)
+Plugin 'gerw/vim-HiLinkTrace'      " :HLT! to show highlighting trace
+Plugin 'scrooloose/syntastic'      " syntax checking
+Plugin 'yggdroot/indentline'       " indent lines
 
 " Languages
 let g:polyglot_disabled = ['c++11']
@@ -236,6 +237,10 @@ nnoremap <expr> N ((len(getqflist()) > 0)?':cp<CR>':'N')
 
 " \c clears the quickfix list
 noremap <Leader>c :call setqflist([])<CR>
+
+" ===================== Plugin Settings ================
+
+let g:indentLine_char = '|'
 
 " ===================== Project Settings ===============
 set exrc
