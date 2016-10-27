@@ -54,7 +54,10 @@ set showmode                    "Show current mode down the bottom
 set visualbell                  "No sounds
 set mouse=a                     "Enables the mouse
 set laststatus=2				"Enables status line even in single buffer
-au CursorHold,CursorHoldI * silent! checktime "Reload files chnaged outside vim, but prompt if changed locally
+
+"Reload files changed outside vim, but prompt if changed locally
+set autoread
+au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 
 " Set up vertical line cursor for insert mode in iTerm2
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -241,6 +244,8 @@ noremap <Leader>c :call setqflist([])<CR>
 " ===================== Plugin Settings ================
 
 let g:indentLine_char = '|'
+
+let g:syntastic_python_checkers = ['python']
 
 " ===================== Project Settings ===============
 set exrc

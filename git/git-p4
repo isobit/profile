@@ -3723,6 +3723,105 @@ class P4Branches(Command):
             print "%s <= %s (%s)" % (branch, ",".join(settings["depot-paths"]), settings["change"])
         return True
 
+class P4Unshelve(Command):
+    delete_actions = ( "delete", "move/delete", "purge" )
+
+    def __init__(self):
+        Command.__init__(self)
+        self.options = [
+        ]
+        self.description = """Dump files from a Perforce shelveset into this current branch.\n"""
+
+    def getDepotPaths(self):
+        depotPaths = []
+        refPrefix = "refs/remotes/"
+        lines = read_pipe_lines("git rev-parse --symbolic --remotes")
+        for line in lines:
+            if (line.startswith("p4/") and line != "p4/HEAD\n"):
+                line = line.strip()
+                ref = refPrefix + line
+                log = extractLogMessageFromGitCommit(ref)
+                settings = extractSettingsGitLog(log)
+                depotPaths.extend(settings['depot-paths'])
+        return depotPaths
+
+    def stripRepoPath(self, path, prefixes):
+        """When streaming files, this is called to map a p4 depot path
+           to where it should go in git.  The prefixes are either
+           self.depotPaths, or self.branchPrefixes in the case of
+           branch detection."""
+
+        for p in prefixes:
+            if p4PathStartsWith(path, p):
+                path = path[len(p):]
+                break
+
+        path = wildcard_decode(path)
+        return path
+
+    def extractFilesFromDescription(self, desc):
+        files = []
+        fnum = 0
+        while desc.has_key("depotFile%s" % fnum):
+            path =  desc["depotFile%s" % fnum]
+
+            file = {}
+            file["path"] = path
+            file["relPath"] = self.stripRepoPath(path, self.depotPaths)
+            file["rev"] = desc["rev%s" % fnum]
+            file["action"] = desc["action%s" % fnum]
+            file["type"] = desc["type%s" % fnum]
+            files.append(file)
+            fnum = fnum + 1
+        return files
+
+    def streamP4Files(self, files):
+        filesForCommit = []
+        filesToRead = []
+        filesToDelete = []
+
+        for f in files:
+            filesForCommit.append(f)
+            if f['action'] in self.delete_actions:
+                filesToDelete.append(f)
+            else:
+                filesToRead.append(f)
+
+        for f in filesToDelete:
+            sys.stderr.write('Deleting file %s\n' % os.path.realpath(file.name))
+            os.remove(f['relPath'])
+
+        for f in filesToRead:
+            arg = '%s@=%s' % (f['path'], self.changelist)
+            result = p4CmdList(['print', arg])
+
+            file = open(f['relPath'], 'w')
+            file.truncate()
+            sys.stderr.write('Writing to file %s\n' % os.path.realpath(file.name))
+            for o in result:
+                if o['code'] == "text":
+                    file.write(o['data'])
+            file.close()
+
+    def run(self, args):
+        if os.system("git update-index --refresh") != 0:
+            die("Some files in your working directory are modified and different than what is in your index. You can use git update-index <filename> to bring the index up-to-date or stash away all your changes with git stash.");
+        if len(read_pipe("git diff-index HEAD --")) > 0:
+            die("You have uncommitted changes. Please commit them before rebasing or stash them away with git stash.");
+
+        self.changelist = args[0]
+        self.depotPaths = self.getDepotPaths()
+
+        sys.stderr.write('Unshelving changelist %s\n' % self.changelist)
+
+        desc = p4_describe(self.changelist)
+
+        files = self.extractFilesFromDescription(desc)
+
+        self.streamP4Files(files)
+
+        return True
+
 class HelpFormatter(optparse.IndentedHelpFormatter):
     def __init__(self):
         optparse.IndentedHelpFormatter.__init__(self)
@@ -3750,7 +3849,8 @@ commands = {
     "rebase" : P4Rebase,
     "clone" : P4Clone,
     "rollback" : P4RollBack,
-    "branches" : P4Branches
+    "branches" : P4Branches,
+    "unshelve" : P4Unshelve
 }
 
 
