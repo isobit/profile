@@ -17,7 +17,7 @@ Look in the keyboard settings.
 
 #### Mac
 
-[stackoverflow post](http://stackoverflow.com/questions/127591/using-caps-lock-as-esc-in-mac-os-x)
+Use [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements).
 
 ## Usage
 
