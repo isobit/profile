@@ -81,7 +81,7 @@ function backup {
 
 # Package tar function
 function tarball {
-	tar -cvzf $1.tar.gz ${@:2} $1
+	tar -czf $1.tar.gz ${@:2} $1
 }
 function git-tarball {
 	git archive --format=tar.gz HEAD $1 > $1.tar.gz

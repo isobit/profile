@@ -185,6 +185,12 @@ endif
 autocmd Filetype html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
 autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
 
+" properly indent c++11 lambdas
+autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
+
+" use cpp filetype for arduino syntax
+autocmd FileType arduino setlocal filetype=cpp syntax=arduino
+
 " ================ Window Moving Shortcuts ==========
 
 nmap <silent> gk :wincmd k<CR>
