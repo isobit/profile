@@ -1621,7 +1621,7 @@ class P4Submit(Command, P4UserMap):
         if self.amend:
             changelist = self.selectPendingP4ChangelistForAmend()
             print("Reverting changelist {} before applying patches".format(changelist))
-            p4CmdList(['reconcile'])
+            # p4CmdList(['reconcile'])
             p4CmdList(['revert', '-w', '-c', changelist, '//...'])
         else:
             changelist = None
@@ -1856,7 +1856,7 @@ class P4Submit(Command, P4UserMap):
                     changed = True
 
                     hookpath = self.gitdir + '/hooks/post-p4-change'
-                    hookenv = dict(os.environ, P4_CHANGELIST=str(changelist))
+                    hookenv = dict(os.environ, P4_CHANGELIST=str(changelist), GIT_COMMIT=str(id))
                     if os.path.isfile(hookpath) and os.access(hookpath, os.X_OK):
                         subprocess.call(hookpath, env=hookenv)
 
