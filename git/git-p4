@@ -3620,7 +3620,7 @@ class P4Clone(P4Sync):
     def __init__(self):
         P4Sync.__init__(self)
         self.description = "Creates a new git repository and imports from Perforce into it"
-        self.usage = "usage: %prog [options] //depot/path[@revRange]"
+        self.usage = "usage: %prog [options] //depot/path[@revRange] [destination]"
         self.options += [
             optparse.make_option("--destination", dest="cloneDestination",
                                  action='store', default=None,
@@ -3633,6 +3633,8 @@ class P4Clone(P4Sync):
         self.cloneBare = False
 
     def defaultDestination(self, args):
+        if len(args) > 1:
+            return args[1]
         ## TODO: use common prefix of args?
         depotPath = args[0]
         depotDir = re.sub("(@[^@]*)$", "", depotPath)
