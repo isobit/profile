@@ -1289,7 +1289,7 @@ class P4Submit(Command, P4UserMap):
                 optparse.make_option("--export-labels", dest="exportLabels", action="store_true"),
                 optparse.make_option("--dry-run", "-n", dest="dry_run", action="store_true"),
                 optparse.make_option("--prepare-p4-only", dest="prepare_p4_only", action="store_true"),
-                optparse.make_option("--change", dest="change", action="store_true"),
+                optparse.make_option("--changelist-only", dest="changelist_only", action="store_true"),
                 optparse.make_option("--amend", dest="amend", action="store_true"),
                 optparse.make_option("--conflict", dest="conflict_behavior",
                                      choices=self.conflict_behavior_choices),
@@ -1302,7 +1302,7 @@ class P4Submit(Command, P4UserMap):
         self.preserveUser = gitConfigBool("git-p4.preserveUser")
         self.dry_run = False
         self.prepare_p4_only = False
-        self.change = False
+        self.create_changelist_only = False
         self.amend = False
         self.conflict_behavior = None
         self.isWindows = (platform.system() == "Windows")
@@ -1836,7 +1836,7 @@ class P4Submit(Command, P4UserMap):
         changed = False
         submitted = False
 
-        if self.change:
+        if self.create_changelist_only:
             try:
                 print 'NOTE: change mode is active, change with NOT be submitted'
                 if self.edit_template(fileName):
@@ -1878,7 +1878,7 @@ class P4Submit(Command, P4UserMap):
         else:
             try:
                 response = raw_input("You are about to SUBMIT a changelist to the perforce server. Continue? [y]es, [n]o ")
-                if response == 'y' & self.edit_template(fileName):
+                if response == 'y' and self.edit_template(fileName):
                     # read the edited message and submit
                     tmpFile = open(fileName, "rb")
                     message = tmpFile.read()
@@ -2002,6 +2002,13 @@ class P4Submit(Command, P4UserMap):
                 die("Branch %s does not exist" % self.master)
         else:
             return False
+
+        cmdName = sys.argv[1]
+        if cmdName == 'stage':
+            self.create_changelist_only = True
+
+        if cmdName == 'prepare':
+            self.prepare_p4_only = True
 
         if self.master:
             allowSubmit = gitConfig("git-p4.allowSubmit")
@@ -3845,7 +3852,8 @@ def printUsage(commands):
 commands = {
     "debug" : P4Debug,
     "submit" : P4Submit,
-    "change" : P4Submit,
+    "stage" : P4Submit,
+    "prepare" : P4Submit,
     "commit" : P4Submit,
     "sync" : P4Sync,
     "rebase" : P4Rebase,
