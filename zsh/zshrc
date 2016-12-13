@@ -59,7 +59,7 @@ function extract {
 		case $1 in
 			*.tar.bz2)  tar -jxvf $1        ;;
 			*.tar.gz)   tar -zxvf $1        ;;
-			*.tar.xz)   tar -xvf $1        ;;
+			*.tar.xz)   tar -xvf $1         ;;
 			*.bz2)      bunzip2 $1          ;;
 			*.dmg)      hdiutul mount $1    ;;
 			*.gz)       gunzip $1           ;;
@@ -75,13 +75,14 @@ function extract {
 	fi
 }
 
+export BACKUP_DIR="$HOME/backup/"
 function backup {
-	tar -cvzf "~/backups/${1}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
+	tar cvzf "$BACKUP_DIR/${1}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
 }
 
 # Package tar function
 function tarball {
-	tar -czf $1.tar.gz ${@:2} $1
+	tar cvzf $1.tar.gz ${@:2} $1
 }
 function git-tarball {
 	git archive --format=tar.gz HEAD $1 > $1.tar.gz
