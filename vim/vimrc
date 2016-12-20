@@ -4,36 +4,35 @@ set nocompatible " required for vim
 
 filetype off " required for Vundle
 
-" set the runtime path to include Vundle and initialize
+" Set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage Vundle, required
+" Let Vundle manage Vundle (required)
 Plugin 'gmarik/Vundle.vim'
 
 " User defined Plugins
 Plugin 'scrooloose/nerdtree'       " \t for filesystem tree
-Plugin 'jistr/vim-nerdtree-tabs'   " makes NERDTree work with tabs
+Plugin 'jistr/vim-nerdtree-tabs'   " Makes NERDTree work with tabs
 Plugin 'tomtom/tcomment_vim'       " gc to comment
-Plugin 'cohama/lexima.vim'         " autoclose quotes and other delimiters
+" Plugin 'cohama/lexima.vim'         " Autoclose quotes and other delimiters
+Plugin 'jiangmiao/auto-pairs'      " Autoclose quotes and other delimiters
 Plugin 'tpope/vim-surround'        " cs to change surrounding delimiters
-Plugin 'ervandew/supertab'         " tab completion
-Plugin 'godlygeek/tabular'         " :Tab to align giving format
+Plugin 'ervandew/supertab'         " Tab completion
+Plugin 'godlygeek/tabular'         " :Tab to align given format
 Plugin 'terryma/vim-expand-region' " + to expand region, - to go back
-Plugin 'tpope/vim-sleuth'          " autodetect tabbing
+Plugin 'tpope/vim-sleuth'          " Autodetect tabbing
 Plugin 'tpope/vim-abolish'         " :S to do smart substitute (understands capitalization)
 Plugin 'gerw/vim-HiLinkTrace'      " :HLT! to show highlighting trace
-Plugin 'scrooloose/syntastic'      " syntax checking
-Plugin 'yggdroot/indentline'       " indent lines
+Plugin 'scrooloose/syntastic'      " Syntax checking
+Plugin 'yggdroot/indentline'       " Indentation guide lines
+Plugin 'matchit.zip'			   " Improved % matching
+Plugin 'sickill/vim-pasta'         " Adjust pasting to destination context
 
 " Languages
-let g:polyglot_disabled = ['c++11']
 Plugin 'sheerun/vim-polyglot'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'gutenye/json5.vim'
-Plugin 'vim-scripts/jade.vim'
-Plugin 'vim-scripts/MatlabFilesEdition'
 Plugin 'joshglendenning/vim-caddyfile'
+Plugin 'posva/vim-vue'
 
 " Colors
 Plugin 'joshglendenning/vim-darcula-colors'
@@ -42,88 +41,91 @@ Plugin 'joshglendenning/vim-darcula-colors'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" ================ Plugin Settings ===================
+
+let g:polyglot_disabled = ['arduino']
+let g:indentLine_char = '|'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_python_checkers = ['python']
+
 " ================ General Config ====================
 
-set number                      "Line numbers are good
-set numberwidth=4
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-set backspace=indent,eol,start  "Allow backspace in insert mode
-set history=1000                "Store lots of :cmdline history
-set showcmd                     "Show incomplete cmds down the bottom
-set showmode                    "Show current mode down the bottom
-set visualbell                  "No sounds
-set mouse=a                     "Enables the mouse
-set laststatus=2				"Enables status line even in single buffer
+set number                      " Line numbers are good
+set numberwidth=4				" Use up to four digits
+set history=1000                " Store lots of :cmdline history
+set showcmd                     " Show incomplete cmds down the bottom
+set showmode                    " Show current mode down the bottom
+set visualbell                  " No sounds
+set mouse=a                     " Enables the mouse
+set laststatus=2				" Enables status line even in single buffer
+set modelines=5					" Enables modelines
 
 "Reload files changed outside vim, but prompt if changed locally
 set autoread
 au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
-
-" Set up vertical line cursor for insert mode in iTerm2
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-" upon hitting escape to change modes,
-" send successive move-left and move-right
-" commands to immediately redraw the cursor
-inoremap <special> <Esc> <Esc>hl
 
 " This makes vim act like all other editors, buffers can
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
-let &t_AB="\e[48;5;%dm"
-let &t_AF="\e[38;5;%dm"
-
-" turn on syntax highlighting
+" Turn on syntax highlighting
 syntax on
 
-" theme
+" Turn on filetype plugins (and indent)
+filetype on
+filetype plugin on
+filetype indent on
+
+" Theme
 colors darcula
 
 " Highlights characters past column 80
 " highlight OverLength ctermbg=darkgray
 " match OverLength /\%81v.\+/
 
-" Change split separator to whitespace
-set fillchars+=vert:\ 
+" Display tabs and trailing spaces visually with middle dot char
+set list listchars=tab:\ \ ,trail:·
 
-" ================ Search Settings  =================
+" Turn off swap files
+set noswapfile
+set nobackup
+set nowb
+
+" Keep undo history across sessions, by storing in file.
+silent !mkdir ~/.vim/backups > /dev/null 2>&1
+set undodir=~/.vim/backups
+set undofile
+
+" Scrolling
+set sidescroll=1
+
+" Start scrolling when we're this many lines away from margins
+set scrolloff=3
+set sidescrolloff=15
+
+" ================ Search  ==========================
 
 set incsearch        "Find the next match as we type the search
 set viminfo='100,f1  "Save up to 100 marks, enable capital marks
 set ignorecase
 set smartcase
 
-" ================ Turn Off Swap Files ==============
-
-set noswapfile
-set nobackup
-set nowb
-
-" ================ Persistent Undo ==================
-" Keep undo history across sessions, by storing in file.
-" Only works all the time.
-
-silent !mkdir ~/.vim/backups > /dev/null 2>&1
-set undodir=~/.vim/backups
-set undofile
-
 " ================ Indentation ======================
 
 set autoindent
 set smartindent
 set smarttab
+
+" Use \t with a width of 4 by default
+set noexpandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-set cino=(s,m1
+set cinoptions=(0,Ws,m1,J1,j1
 
-filetype on
-filetype plugin on
-filetype indent on
+" ================= Line Wrapping ===================
 
 " Allow toggling between wrapping and not wrapping
 function WrapToggle()
@@ -135,9 +137,6 @@ function WrapToggle()
 endfunction
 " Mapped to \w
 map <Leader>w mz:execute WrapToggle()<CR>`z
-
-" Display tabs and trailing spaces visually with middle dot char
-set list listchars=tab:\ \ ,trail:·
 
 "Wrap lines at convenient points
 set linebreak
@@ -165,61 +164,25 @@ set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
-" ================ Scrolling ========================
-
-"Start scrolling when we're this many lines away from margins
-set scrolloff=3
-
-set sidescrolloff=15
-set sidescroll=1
-
 " ================ Fixes ============================
 
-" color fix for gnome-terminal scrolling
+" Set up vertical line cursor for insert mode in iTerm2
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" TODO Figure out what this fixes
+let &t_AB="\e[48;5;%dm"
+let &t_AF="\e[38;5;%dm"
+
+" Send successive move-left/right commands to redraw the cursor when hitting
+" escape.
+inoremap <special> <Esc> <Esc>hl
+
+" Color fix for gnome-terminal scrolling
 if &term =~ '256color'
 	set t_ut=
 	set t_Co=256
 endif
-
-" front-matter syntax highlighting for md and html
-autocmd Filetype html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
-autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
-
-" properly indent c++11 lambdas
-autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
-
-" use cpp filetype for arduino syntax
-autocmd FileType arduino setlocal filetype=cpp syntax=arduino
-
-" ================ Window Moving Shortcuts ==========
-
-nmap <silent> gk :wincmd k<CR>
-nmap <silent> gj :wincmd j<CR>
-nmap <silent> gh :wincmd h<CR>
-nmap <silent> gl :wincmd l<CR>
-
-" ================ Mappings ==========================
-
-" \s to save
-noremap <Leader>s :update<CR>
-
-" \c to comment out
-noremap <silent> <Leader>c gc<CR>
-
-" \t to toggle NERDTree
-noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
-
-" :w!! to sudo write
-cmap w!! w !sudo tee % >/dev/null
-
-" HTML Tag Auto-Completion
-map! <// </<C-X><C-O>
-
-" :W is :w
-cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-
-" \l to toggle list mode
-noremap <silent> <Leader>l :set list!<CR>
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
@@ -231,6 +194,30 @@ function! s:Repl()
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" Front-matter syntax highlighting for md and html
+autocmd Filetype html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
+autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
+
+" Properly indent c++11 lambdas
+" autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
+
+" ================ Mappings ==========================
+
+" Window moving shortcuts
+nmap <silent> gk :wincmd k<CR>
+nmap <silent> gj :wincmd j<CR>
+nmap <silent> gh :wincmd h<CR>
+nmap <silent> gl :wincmd l<CR>
+
+" \t to toggle NERDTree
+noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
+
+" :w!! to sudo write
+cmap w!! w !sudo tee % >/dev/null
+
+" :W is :w
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
 " J to join line
 vnoremap J :left<CR>gv:join!<CR>gv:s/,/, /ge<CR>gv=gv:s/\s\+$//e<CR>
@@ -246,12 +233,6 @@ nnoremap <expr> N ((len(getqflist()) > 0)?':cp<CR>':'N')
 
 " \c clears the quickfix list
 noremap <Leader>c :call setqflist([])<CR>
-
-" ===================== Plugin Settings ================
-
-let g:indentLine_char = '|'
-
-let g:syntastic_python_checkers = ['python']
 
 " ===================== Project Settings ===============
 set exrc
