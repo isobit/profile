@@ -3797,12 +3797,20 @@ class P4Unshelve(Command):
                 filesToRead.append(f)
 
         for f in filesToDelete:
-            sys.stderr.write('Deleting file %s\n' % os.path.realpath(file.name))
+            sys.stderr.write('Deleting file %s\n' % os.path.realpath(f['relPath']))
             os.remove(f['relPath'])
 
         for f in filesToRead:
             arg = '%s@=%s' % (f['path'], self.changelist)
             result = p4CmdList(['print', arg])
+
+            fileDirname = os.path.dirname(f['relPath'])
+            if not os.path.exists(fileDirname):
+                try:
+                    os.makedirs(fileDirname)
+                except OSError as exc:
+                    if exc.errno != errno.EEXIST:
+                        raise
 
             file = open(f['relPath'], 'w')
             file.truncate()
