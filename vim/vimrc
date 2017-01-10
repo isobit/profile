@@ -44,6 +44,7 @@ filetype plugin indent on    " required
 " ================ Plugin Settings ===================
 
 let g:indentLine_char = '|'
+let g:nerdtree_tabs_focus_on_files = 1
 let g:polyglot_disabled = ['arduino']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
@@ -68,6 +69,9 @@ au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 " exist in the background without being in a window.
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
+
+" Switch to existing tab if buffer is open, creating new one if not
+set switchbuf=usetab,newtab
 
 " Turn on syntax highlighting
 syntax on
@@ -242,6 +246,9 @@ nmap <silent> gl :wincmd l<CR>
 
 " \t to toggle NERDTree
 noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
+
+" \f to find file in NERDTree
+noremap <silent> <Leader>f :NERDTreeTabsFind<CR>
 
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
