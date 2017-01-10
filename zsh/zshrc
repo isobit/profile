@@ -15,7 +15,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git history-substring-search gitignore)
+plugins=(git history-substring-search gitignore last-working-dir)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -136,6 +136,19 @@ function sshs {
 
 function rsyncd-auto {
 	watch -n 1 "rsync -rtv --exclude .git/ --del '$1' '$2'"
+}
+
+function srp {
+	echo "s/$1/$2/gc"
+	for f in $(grep -rl "$1" .); do
+		vim $f -u NONE -c "%s/$1/$2/gc" -c "wq"
+	done
+}
+function vimgrep {
+	echo "s/$1/$2/gc"
+	for f in $(grep -rl "$1" .); do
+		vim $f -c "execute \"normal /$1\\<CR>\""
+	done
 }
 
 #--------------------------------------------------
