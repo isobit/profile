@@ -44,9 +44,8 @@ function task_zsh {
 function task_git {
 	log_util 'TASK' 'git'
 	install git
+	ensure_ln_s ./git/gitconfig ~/.gitconfig
 	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
-	log_info "setting global git templatedir"
-	git config --global init.templatedir '~/profile/git/template'
 }
 
 function task_tmux {

@@ -1,0 +1,34 @@
+[alias]
+	a = add
+	ai = add -i
+	ap = add -p
+	ac = !git a -A && git c
+	br = branch
+	c = commit -v
+	co  = checkout
+	cp = cherry-pick
+	fork = checkout -b
+	lg = log --graph --date=relative
+	st = status
+	unfuck = !git fsck && git remote prune origin && git gc
+[core]
+	autocrlf = input
+	ignorecase = false
+	editor = vim
+[diff]
+	mnemonicprefix = true
+[git-p4]
+	detectRenames = true
+[grep]
+	lineNumber = true
+[init]
+	templatedir = ~/profile/git/template
+[merge]
+	ff = false
+[pull]
+	ff = only
+[push]
+	default = simple
+[user]
+	name = Josh Glendenning
+	email = joshglendenning@gmail.com
