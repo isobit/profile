@@ -17,17 +17,8 @@ while true; do
 done
 
 # update commit message with new description for bud tag
-git_desc="$(git log --format=%B -n 1 $GIT_COMMIT)"
-p4_desc="$(
-python << EOS
-import sys
-import subprocess
-import marshal
-p = subprocess.Popen('p4 -G change -o $P4_CHANGELIST', stdout=subprocess.PIPE, shell=True)
-r = marshal.load(p.stdout)
-sys.stdout.write(r['Description'])
-EOS
-)"
+git_desc="$(git log --format=%B -n 1 "$GIT_COMMIT")"
+p4_desc="$(p4 -Ztag -F %Description% change -o "$P4_CHANGELIST")"
 if [[ "$git_desc" != "$p4_desc" ]]; then
 	while true; do
 		read -p "Amend commit with new description? [y/n] " choice
