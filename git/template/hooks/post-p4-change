@@ -5,7 +5,7 @@ while true; do
 	case "$choice" in
 		y|Y)
 			# post-review
-			(cd /mnt/d/perforce/build/tools/unversioned/windows && wcmd post-review.exe $P4_CHANGELIST)
+			(cd /mnt/d/perforce/build/tools/unversioned/windows && wcmd post-review.exe "$P4_CHANGELIST")
 			break
 			;;
 		n|N)
@@ -36,9 +36,9 @@ if [[ "$git_desc" != "$p4_desc" ]]; then
 				if [[ "$GIT_COMMIT" == "$(git rev-parse HEAD)" ]]; then
 					git commit --amend -m "$p4_desc"
 				else
-					echo "Latest commit is not GIT_COMMIT, I don't know how to ammend!"
+					echo "Latest commit is not GIT_COMMIT, I don't know how to amend!"
 					echo "Here is the perforce description, please update yourself:"
-					echo $p4_desc
+					echo "$p4_desc"
 				fi
 				break
 				;;
@@ -46,7 +46,7 @@ if [[ "$git_desc" != "$p4_desc" ]]; then
 				exit
 				;;
 			*)
-				echo $p4_desc
+				echo "$p4_desc"
 				;;
 		esac
 	done
