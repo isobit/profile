@@ -42,3 +42,18 @@ if [[ "$git_desc" != "$p4_desc" ]]; then
 		esac
 	done
 fi
+
+while true; do
+	read -p "Shelve files in changelist $P4_CHANGELIST? [y/n] " choice
+	case "$choice" in
+		y|Y)
+			p4 shelve -f -c "$P4_CHANGELIST"
+			break
+			;;
+		n|N)
+			break
+			;;
+		*)
+			;;
+	esac
+done
