@@ -43,8 +43,8 @@ filetype plugin indent on    " required
 
 " ================ Plugin Settings ===================
 
-let g:polyglot_disabled = ['arduino']
 let g:indentLine_char = '|'
+let g:polyglot_disabled = ['arduino']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
 
@@ -115,13 +115,23 @@ set smartcase
 
 set autoindent
 set smartindent
-set smarttab
 
 " Use \t with a width of 4 by default
 set noexpandtab
 set shiftwidth=4
-set softtabstop=4
 set tabstop=4
+
+function SetTab(...)
+	if a:0 == 0
+		set noexpandtab
+		set shiftwidth=4
+		set tabstop=4
+	else
+		set expandtab
+		let &expandtab=a:1
+		let &shiftwidth=a:1
+	endif
+endfunction
 
 set cinoptions=(0,Ws,m1,J1,j1
 
@@ -138,15 +148,15 @@ endfunction
 " Mapped to \w
 map <Leader>w mz:execute WrapToggle()<CR>`z
 
-"Wrap lines at convenient points
+" Wrap lines at convenient points
 set linebreak
 
 " ================ Folds ============================
 
-"fold manually, set to indent for indent
+" Fold manually, set to indent for indent
 set foldmethod=manual
 
-"dont fold by default
+" Don't fold by default
 set nofoldenable
 
 " ================ Completion =======================
@@ -166,17 +176,37 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Fixes ============================
 
-" Set up vertical line cursor for insert mode in iTerm2
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set timeoutlen=1000 ttimeoutlen=100
 
-" TODO Figure out what this fixes
-let &t_AB="\e[48;5;%dm"
-let &t_AF="\e[38;5;%dm"
+" Set up vertical line cursor for insert mode in iTerm2
+if &term =~ "screen."
+	let &t_ti.="\eP\e[1 q\e\\"
+	let &t_SI.="\eP\e[5 q\e\\"
+	let &t_EI.="\eP\e[1 q\e\\"
+	let &t_te.="\eP\e[0 q\e\\"
+elseif $TERM_PROGRAM =~ "iTerm"
+	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+else
+	let &t_ti.="\<Esc>[1 q"
+	let &t_SI.="\<Esc>[5 q"
+	let &t_EI.="\<Esc>[1 q"
+	let &t_te.="\<Esc>[0 q"
+endif
 
 " Send successive move-left/right commands to redraw the cursor when hitting
 " escape.
-inoremap <special> <Esc> <Esc>hl
+if has('gui_running')
+	inoremap <special> <esc> <esc>hl
+else
+	augroup no_highlight
+		autocmd TermResponse * inoremap <special> <esc> <esc>hl
+	augroup END
+endif
+
+" Fix bad background/foreground colors on some terminals
+let &t_AB="\e[48;5;%dm"
+let &t_AF="\e[38;5;%dm"
 
 " Color fix for gnome-terminal scrolling
 if &term =~ '256color'
