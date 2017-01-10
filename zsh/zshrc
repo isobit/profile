@@ -149,6 +149,7 @@ function srp {
 		vim $f -u NONE -c "%s/$1/$2/gc" -c "wq"
 	done
 }
+
 function vimgrep {
 	echo "s/$1/$2/gc"
 	for f in $(grep -rl "$1" .); do
