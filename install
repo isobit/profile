@@ -25,6 +25,7 @@ function task_zsh {
 	log_util 'TASK' 'zsh'
 	install git
 	install zsh
+	install safe-rm
 	if [[ -e ~/.oh-my-zsh ]]; then
 		log_info "updating oh-my-zsh"
 		cd ~/.oh-my-zsh

@@ -23,9 +23,6 @@ source $ZSH/oh-my-zsh.sh
 # Silly fixes                                    |
 # ------------------------------------------------
 
-# Make these commands ask before clobbering a file. Use -f to override.
-alias rm="rm -R -i"
-
 # Ignore duplicate commands in history
 export HISTCONTROL=ignoredups
 
@@ -39,6 +36,14 @@ alias dus="du -h -d 1 | sort -h"
 function installed {
 	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
 }
+
+# Use safe-rm if possible, otherwise make rm ask before clobbering a file. Use -f to override.
+if installed safe-rm; then
+	alias rm="safe-rm -Ri"
+else
+	alias rm="rm -Ri"
+fi
+
 
 # clip alias, should point to clipboard
 if installed pbcopy; then
