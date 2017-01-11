@@ -39,9 +39,9 @@ function installed {
 
 # Use safe-rm if possible, otherwise make rm ask before clobbering a file. Use -f to override.
 if installed safe-rm; then
-	alias rm="safe-rm -Ri"
+	alias rm="safe-rm -ri"
 else
-	alias rm="rm -Ri"
+	alias rm="rm -ri"
 fi
 
 

@@ -1,8 +1,10 @@
 [alias]
 	a = add
+	aa = add -A
+	aap = add -A -p
 	ai = add -i
 	ap = add -p
-	ac = !git a -A && git c
+	ac = !git add -A && git commit -v
 	br = branch
 	c = commit -v
 	co  = checkout
@@ -17,6 +19,8 @@
 	editor = vim
 [diff]
 	mnemonicprefix = true
+	renamelimit = 0
+	renames = copies
 [git-p4]
 	detectRenames = true
 [grep]
