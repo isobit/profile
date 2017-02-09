@@ -1582,7 +1582,7 @@ class P4Submit(Command, P4UserMap):
             return True
 
         while True:
-            response = raw_input("Submit template unchanged. Submit anyway? [y]es, [n]o (skip this patch) ")
+            response = raw_input("Submit template unchanged. Use anyway? [y]es, [n]o (skip this patch) ")
             if response == 'y':
                 return True
             if response == 'n':

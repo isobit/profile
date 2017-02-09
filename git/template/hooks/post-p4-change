@@ -1,7 +1,7 @@
 #!/bin/bash
 exec < /dev/tty
 while true; do
-	read -p "Submit changelist $P4_CHANGELIST to post-review? [y/n] " choice
+	read -p "Post changelist $P4_CHANGELIST to review board? [y/n] " choice
 	case "$choice" in
 		y|Y)
 			# post-review
