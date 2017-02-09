@@ -53,7 +53,7 @@ function task_zsh {
 	ensure_ln_s ./zsh/minttyrc ~/.minttyrc
 	ensure_ln_s ./zsh/nominaltech.zsh-theme ~/.oh-my-zsh/themes/nominaltech.zsh-theme
 	ensure_ln_s ./zsh/nominaltech2.zsh-theme ~/.oh-my-zsh/themes/nominaltech2.zsh-theme
-	chsh -s /bin/zsh || log_warn "could not chsh to zsh, please do this manually"
+	chsh -s $(which zsh) || log_warn "could not chsh to zsh, please do this manually"
 }
 
 function task_git {
