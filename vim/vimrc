@@ -1,45 +1,38 @@
 set nocompatible " required for vim
 
-" ===================== Vundle ============================
+" ===================== Plugins ============================
 
-filetype off " required for Vundle
+call plug#begin()
 
-" Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'tpope/vim-sensible' " Sensible default options
 
-" Let Vundle manage Vundle (required)
-Plugin 'gmarik/Vundle.vim'
+" Interface
+Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
+Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
+Plug 'scrooloose/nerdtree'     " Project directory tree
+Plug 'yggdroot/indentline'     " Indentation guide lines
 
-" User defined Plugins
-Plugin 'scrooloose/nerdtree'       " \t for filesystem tree
-Plugin 'jistr/vim-nerdtree-tabs'   " Makes NERDTree work with tabs
-Plugin 'tomtom/tcomment_vim'       " gc to comment
-" Plugin 'cohama/lexima.vim'         " Autoclose quotes and other delimiters
-Plugin 'jiangmiao/auto-pairs'      " Autoclose quotes and other delimiters
-Plugin 'tpope/vim-surround'        " cs to change surrounding delimiters
-Plugin 'ervandew/supertab'         " Tab completion
-Plugin 'godlygeek/tabular'         " :Tab to align given format
-Plugin 'terryma/vim-expand-region' " + to expand region, - to go back
-Plugin 'tpope/vim-sleuth'          " Autodetect tabbing
-Plugin 'tpope/vim-abolish'         " :S to do smart substitute (understands capitalization)
-Plugin 'gerw/vim-HiLinkTrace'      " :HLT! to show highlighting trace
-Plugin 'scrooloose/syntastic'      " Syntax checking
-Plugin 'yggdroot/indentline'       " Indentation guide lines
-Plugin 'matchit.zip'			   " Improved % matching
-Plugin 'sickill/vim-pasta'         " Adjust pasting to destination context
+" Editing
+Plug 'ervandew/supertab'    " Tab completion
+Plug 'godlygeek/tabular'    " :Tab to align given format
+Plug 'jiangmiao/auto-pairs' " Autoclose quotes and other delimiters
+Plug 'scrooloose/syntastic' " Syntax checking
+Plug 'sickill/vim-pasta'    " Adjust pasting to destination context
+Plug 'tomtom/tcomment_vim'  " gc to comment
+Plug 'tpope/vim-abolish'    " :S to do smart substitute (understands capitalization)
+Plug 'tpope/vim-sleuth'     " Autodetect tabbing
+Plug 'tpope/vim-surround'   " cs to change surrounding delimiters
 
 " Languages
-Plugin 'sheerun/vim-polyglot'
-Plugin 'joshglendenning/vim-caddyfile'
-Plugin 'posva/vim-vue'
+Plug 'sheerun/vim-polyglot'
+Plug 'joshglendenning/vim-caddyfile'
+Plug 'posva/vim-vue'
+Plug 'gutenye/json5.vim'
 
 " Colors
-Plugin 'joshglendenning/vim-darcula-colors'
+Plug 'joshglendenning/vim-darcula-colors'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
 
 " ================ Plugin Settings ===================
 
@@ -53,16 +46,13 @@ let g:syntastic_python_checkers = ['python']
 
 set number                      " Line numbers are good
 set numberwidth=4				" Use up to four digits
-set history=1000                " Store lots of :cmdline history
 set showcmd                     " Show incomplete cmds down the bottom
 set showmode                    " Show current mode down the bottom
 set visualbell                  " No sounds
 set mouse=a                     " Enables the mouse
-set laststatus=2				" Enables status line even in single buffer
 set modelines=5					" Enables modelines
 
 "Reload files changed outside vim, but prompt if changed locally
-set autoread
 au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 
 " This makes vim act like all other editors, buffers can
@@ -82,7 +72,9 @@ filetype plugin on
 filetype indent on
 
 " Theme
-colors darcula
+silent! colors darcula
+
+set fillchars+=vert:\ 
 
 " Highlights characters past column 80
 " highlight OverLength ctermbg=darkgray
@@ -110,14 +102,12 @@ set sidescrolloff=15
 
 " ================ Search  ==========================
 
-set incsearch        "Find the next match as we type the search
 set viminfo='100,f1  "Save up to 100 marks, enable capital marks
 set ignorecase
 set smartcase
 
 " ================ Indentation ======================
 
-set autoindent
 set smartindent
 
 " Use \t with a width of 4 by default
@@ -163,10 +153,9 @@ set foldmethod=manual
 " Don't fold by default
 set nofoldenable
 
-" ================ Completion =======================
+" ================ Command Completion =======================
 
 set wildmode=list:longest
-set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
 set wildignore+=*sass-cache*
@@ -239,12 +228,18 @@ autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
 " ================ Mappings ==========================
 
 " Window moving shortcuts
-nmap <silent> gk :wincmd k<CR>
-nmap <silent> gj :wincmd j<CR>
-nmap <silent> gh :wincmd h<CR>
-nmap <silent> gl :wincmd l<CR>
+nnoremap <silent> gk :wincmd k<CR>
+nnoremap <silent> gj :wincmd j<CR>
+nnoremap <silent> gh :wincmd h<CR>
+nnoremap <silent> gl :wincmd l<CR>
 
-" \t to toggle NERDTree
+" \g to go to buf
+noremap <silent> <Leader>g :ls<CR>:b 
+
+" \r to replace
+noremap <silent> <Leader>s :%s///g<Left><Left>
+
+" \e to toggle NERDTree
 noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
 
 " \f to find file in NERDTree
