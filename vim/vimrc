@@ -7,10 +7,10 @@ call plug#begin()
 Plug 'tpope/vim-sensible' " Sensible default options
 
 " Interface
-Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
-Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 Plug 'scrooloose/nerdtree'     " Project directory tree
+Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 Plug 'yggdroot/indentline'     " Indentation guide lines
+Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
 
 " Editing
 Plug 'ervandew/supertab'    " Tab completion
@@ -38,6 +38,7 @@ call plug#end()
 
 let g:indentLine_char = '|'
 let g:nerdtree_tabs_focus_on_files = 1
+let g:nerdtree_tabs_synchronize_view = 0
 let g:polyglot_disabled = ['arduino']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
@@ -61,7 +62,7 @@ au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 set hidden
 
 " Switch to existing tab if buffer is open, creating new one if not
-set switchbuf=usetab,newtab
+" set switchbuf=usetab,newtab
 
 " Turn on syntax highlighting
 syntax on
@@ -74,7 +75,7 @@ filetype indent on
 " Theme
 silent! colors darcula
 
-set fillchars+=vert:\ 
+set fillchars=""
 
 " Highlights characters past column 80
 " highlight OverLength ctermbg=darkgray
@@ -228,10 +229,10 @@ autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
 " ================ Mappings ==========================
 
 " Window moving shortcuts
-nnoremap <silent> gk :wincmd k<CR>
-nnoremap <silent> gj :wincmd j<CR>
-nnoremap <silent> gh :wincmd h<CR>
-nnoremap <silent> gl :wincmd l<CR>
+nmap <silent> gk :wincmd k<CR>
+nmap <silent> gj :wincmd j<CR>
+nmap <silent> gh :wincmd h<CR>
+nmap <silent> gl :wincmd l<CR>
 
 " \g to go to buf
 noremap <silent> <Leader>g :ls<CR>:b 
