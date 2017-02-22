@@ -17,20 +17,6 @@ function task_vim {
 	vim +PlugUpdate +qall
 }
 
-function task_nvim {
-	log_util 'TASK' 'nvim'
-	install git
-	install nvim
-	ensure_ln_s ./vim/nvimrc ~/.config/nvim/init.vim
-	if [[ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]]; then
-		log_info "installing vim-plug"
-		curl -fLs -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	fi
-	log_info "running PlugUpdate"
-	nvim +PlugUpdate +qall
-}
-
 function task_zsh {
 	log_util 'TASK' 'zsh'
 	install git
@@ -68,9 +54,6 @@ function task_tmux {
 case "$1" in
 	vim)
 		task_vim
-		;;
-	nvim)
-		task_nvim
 		;;
 	zsh)
 		task_zsh
