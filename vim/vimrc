@@ -5,12 +5,15 @@ set nocompatible " required for vim
 call plug#begin()
 
 Plug 'tpope/vim-sensible' " Sensible default options
+Plug 'xolox/vim-misc'
+Plug 'mattn/webapi-vim'
 
 " Interface
 Plug 'scrooloose/nerdtree'     " Project directory tree
 Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 Plug 'yggdroot/indentline'     " Indentation guide lines
 Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
+Plug 'mattn/gist-vim'          " :Gist to post to GitHub Gist
 
 " Editing
 Plug 'ervandew/supertab'    " Tab completion
@@ -22,6 +25,7 @@ Plug 'tomtom/tcomment_vim'  " gc to comment
 Plug 'tpope/vim-abolish'    " :S to do smart substitute (understands capitalization)
 Plug 'tpope/vim-sleuth'     " Autodetect tabbing
 Plug 'tpope/vim-surround'   " cs to change surrounding delimiters
+Plug 'xolox/vim-session' 	" Better sessions, :SaveSession and :OpenSession
 
 " Languages
 Plug 'sheerun/vim-polyglot'
@@ -37,9 +41,11 @@ call plug#end()
 " ================ Plugin Settings ===================
 
 let g:indentLine_char = '|'
+let g:nerdtree_tabs_autofind = 1
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_synchronize_view = 0
 let g:polyglot_disabled = ['arduino']
+let g:session_autosave = 'no'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
 
