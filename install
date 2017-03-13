@@ -20,21 +20,11 @@ function task_vim {
 function task_zsh {
 	log_util 'TASK' 'zsh'
 	install git
-	install zsh
 	install safe-rm
-	if [[ -d ~/.oh-my-zsh ]]; then
-		log_info "updating oh-my-zsh"
-		cd ~/.oh-my-zsh
-		git pull
-		cd $DIR
-	else
-		log_info "installing oh-my-zsh"
-		git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-	fi
+	install zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
+	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
 	ensure_ln_s ./zsh/minttyrc ~/.minttyrc
-	ensure_ln_s ./zsh/nominaltech.zsh-theme ~/.oh-my-zsh/themes/nominaltech.zsh-theme
-	ensure_ln_s ./zsh/nominaltech2.zsh-theme ~/.oh-my-zsh/themes/nominaltech2.zsh-theme
 	chsh -s $(which zsh) || log_warn "could not chsh to zsh, please do this manually"
 }
 
