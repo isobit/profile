@@ -88,8 +88,9 @@ silent! colors darcula
 set fillchars=""
 
 " Highlights characters past column 80
-" highlight OverLength ctermbg=darkgray
-" match OverLength /\%81v.\+/
+augroup vimrc_autocmds
+	autocmd BufEnter * match OverLength /\%81v.\+/
+augroup END
 
 " Display tabs and trailing spaces visually with middle dot char
 set list listchars=tab:\ \ ,trail:·
