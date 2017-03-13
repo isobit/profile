@@ -234,9 +234,12 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-" Front-matter syntax highlighting for md and html
-autocmd Filetype html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
-autocmd Filetype html,markdown,liquid syntax match Comment /\_.\{-}---$/
+" Front-matter syntax highlighting for markdown and html
+autocmd FileType html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
+autocmd FileType html,markdown,liquid syntax match Comment /\_.\{-}---$/
+
+" Turn on spell checking in git commits
+autocmd FileType gitcommit setlocal spell
 
 " Properly indent c++11 lambdas
 " autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
