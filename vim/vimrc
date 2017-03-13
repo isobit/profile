@@ -112,6 +112,10 @@ set sidescroll=1
 set scrolloff=3
 set sidescrolloff=15
 
+" Disable bell
+set noeb vb t_vb=
+au GUIEnter * set vb t_vb=
+
 " ================ Search  ==========================
 
 set viminfo='100,f1  "Save up to 100 marks, enable capital marks
