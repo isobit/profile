@@ -21,14 +21,23 @@ function log_error {
 }
 
 function prompt_yn {
-	printf "$1 \033[32m[Y/n]:\033[0m " >&2
-	read -n 1 COND
-	echo
-	if [[ "$COND" =~ ^(y|Y)$ ]]; then
-		return 0
-	else
-		return 1
-	fi
+	local prompt="$1 \033[32m[Y/n]:\033[0m "
+	while true; do
+		printf "$prompt" >&2
+		local choice=$(bash -c 'read -n 1 c; echo $c')
+		echo
+		case "$choice" in
+			y|Y)
+				return 0
+				;;
+			n|N)
+				return 1
+				;;
+			*)
+				echo "'$choice' is not a valid option"
+				;;
+		esac
+	done
 }
 
 function installed {
@@ -56,12 +65,12 @@ fi
 
 function install {
 	log_info "ensuring installation of '$1'"
-	dryrun=false
-	confirm=false
-	force=false
-	cmd="$PKG_MANAGER"
-	cmd_args=""
-	cmd_opts=""
+	local dryrun=false
+	local confirm=false
+	local force=false
+	local cmd="$PKG_MANAGER"
+	local cmd_args=""
+	local cmd_opts=""
 
 	while :
 	do
@@ -155,7 +164,7 @@ function resolve_path {
 }
 
 function ensure_ln_s {
-	target="$(resolve_path $1)"
+	local target="$(resolve_path $1)"
 	log_info "ensuring symlink '$target' -> '$2'"
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
 		if [[ -e "$2" ]]; then
