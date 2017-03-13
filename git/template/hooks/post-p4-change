@@ -5,7 +5,7 @@ while true; do
 	case "$choice" in
 		y|Y)
 			# post-review
-			(cd /mnt/d/perforce/build/tools/unversioned/windows && wcmd post-review.exe "$P4_CHANGELIST")
+			post-review --repository-type perforce "$P4_CHANGELIST"
 			break
 			;;
 		n|N)
@@ -16,7 +16,7 @@ while true; do
 	esac
 done
 
-# update commit message with new description for bud tag
+# Update commit message with new description for bud tag
 git_desc="$(git log --format=%B -n 1 "$GIT_COMMIT")"
 p4_desc="$(p4 -Ztag -F %Description% change -o "$P4_CHANGELIST")"
 if [[ "$git_desc" != "$p4_desc" ]]; then
