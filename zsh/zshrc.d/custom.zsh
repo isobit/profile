@@ -1,6 +1,6 @@
 alias ls="ls --color"
 
-alias dus="du -h -d 1 | sort -h"
+alias dus="du -sh * | sort -h"
 
 # Determine if command is available
 function installed {
