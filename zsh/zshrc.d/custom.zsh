@@ -60,10 +60,12 @@ function tarball {
 	tar cvzf $1.tar.gz ${@:2} $1
 }
 function git-tarball {
+	# Create a tarball
 	git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
 function sshs {
+	# SSH with automatic screen session resume
 	ssh $@ -t 'screen -dRR'
 }
 
