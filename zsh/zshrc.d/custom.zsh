@@ -63,43 +63,6 @@ function git-tarball {
 	git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
-function fileio {
-	if installed curl; then
-		should_rm=false
-		if [ -d $1 ]; then
-			filename="/tmp/$1.tar.gz"
-			tar -cvzf $filename $1
-			should_rm=true
-		elif [ -f $1 ]; then
-			filename=$1
-		else
-			echo "ERROR: $1 is not a file or directory"
-			return 1
-		fi
-		if installed jq; then
-			link=$(curl -F "file=@$filename" 'https://file.io/?expires=1d' | jq '.link' -j)
-			#filename=$(basename "$1")
-			#result="curl '$link' > $filename"
-			result=$link
-			if installed clip; then
-				printf $result | clip
-			else
-				echo "WARNING: could not copy to clipbord"
-			fi
-			echo $result
-		else
-			echo "WARNING: could not parse response, please install jq"
-			curl -F "file=@$filename" 'https://file.io/?expires=1d'
-		fi
-		if $should_rm; then
-			rm -rf $filename
-		fi
-	else
-		echo "ERROR: curl must be installed"
-		return 1
-	fi
-}
-
 function sshs {
 	ssh $@ -t 'screen -dRR'
 }
@@ -120,4 +83,45 @@ function vimgrep {
 	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
 		vim $f -c "execute \"normal /$1\\<CR>\""
 	done
+}
+
+function upload {
+	if ! installed curl; then
+		echo "ERROR: curl must be installed"
+		return 1
+	fi
+
+	local file="$1"
+	local should_rm=false
+	if [ -d "$file" ]; then
+		local file="/tmp/$1.tar.gz"
+		tar -cvzf $file $1
+		should_rm=true
+	elif [ ! -f $file ]; then
+		echo "ERROR: $file is not a file or directory"
+		return 1
+	fi
+
+	local filename="$2"
+	if [ ! -n "$filename" ]; then
+		local filename="$(basename "$file")"
+	fi
+
+	local upload_url="https://fm.isobit.io/webdav/$filename"
+	local download_url="https://f.isobit.io/$filename"
+
+	curl -T "$file" -u "admin" "$upload_url"
+	echo
+
+	echo "$download_url"
+
+	if installed clip; then
+		printf "$download_url" | clip
+	else
+		echo "WARNING: could not copy to clipbord"
+	fi
+
+	if $should_rm; then
+		rm -rf "$file"
+	fi
 }
