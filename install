@@ -7,6 +7,7 @@ function task_vim {
 	log_util 'TASK' 'vim'
 	install git
 	install vim
+	install curl
 	ensure_ln_s ./vim/vimrc ~/.vimrc
 	if [ ! -f ~/.vim/autoload/plug.vim ]; then
 		log_info "installing vim-plug"
