@@ -1,4 +1,4 @@
-set nocompatible " required for vim
+set nocompatible
 
 " ===================== Plugins ============================
 
@@ -63,7 +63,7 @@ set visualbell                  " No sounds
 set mouse=a                     " Enables the mouse
 set modelines=5					" Enables modelines
 
-"Reload files changed outside vim, but prompt if changed locally
+" Reload files changed outside vim, but prompt if changed locally
 au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 
 " This makes vim act like all other editors, buffers can
@@ -85,6 +85,7 @@ filetype indent on
 " Theme
 silent! colors darcula
 
+" Vertical split character
 set fillchars=""
 
 " Highlights characters past column 80
@@ -156,7 +157,7 @@ function WrapToggle()
 	endif
 endfunction
 " Mapped to \w
-map <Leader>w mz:execute WrapToggle()<CR>`z
+map <leader>w mz:execute WrapToggle()<cr>`z
 
 " Wrap lines at convenient points
 set linebreak
@@ -186,6 +187,12 @@ set wildignore+=*.png,*.jpg,*.gif
 " ================ Fixes ============================
 
 set timeoutlen=1000 ttimeoutlen=100
+
+" Fix arrow keys writing A,B,C,D
+imap <esc>oA <up>
+imap <esc>oB <down>
+imap <esc>oC <right>
+imap <esc>oD <left>
 
 " Set up vertical line cursor for insert mode in iTerm2
 if &term =~ "screen."
@@ -247,25 +254,25 @@ autocmd FileType gitcommit setlocal spell
 " ================ Mappings ==========================
 
 " Window moving shortcuts
-nmap <silent> gk :wincmd k<CR>
-nmap <silent> gj :wincmd j<CR>
-nmap <silent> gh :wincmd h<CR>
-nmap <silent> gl :wincmd l<CR>
+nmap <silent> gk :wincmd k<cr>
+nmap <silent> gj :wincmd j<cr>
+nmap <silent> gh :wincmd h<cr>
+nmap <silent> gl :wincmd l<cr>
 
 " \g to go to buf
-noremap <silent> <Leader>g :ls<CR>:b 
+noremap <silent> <leader>g :ls<cr>:b 
 
 " \r to replace
-noremap <silent> <Leader>s :%s///g<Left><Left>
+noremap <silent> <leader>s :%s///g<left><left>
 
 " \t to toggle NERDTree
-noremap <silent> <Leader>t :NERDTreeTabsToggle<CR>
+noremap <silent> <leader>t :NERDTreeTabsToggle<cr>
 
 " \f to find file in NERDTree
-noremap <silent> <Leader>f :NERDTreeTabsFind<CR>
+noremap <silent> <leader>f :NERDTreeTabsFind<cr>
 
 " \d to open NERDTree and find file
-noremap <silent> <Leader>d :NERDTreeTabsOpen<CR><c-w><c-p>:NERDTreeTabsFind<CR><c-w><c-p>
+noremap <silent> <leader>d :NERDTreeTabsOpen<CR><c-w><c-p>:NERDTreeTabsFind<cr><c-w><c-p>
 
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
@@ -274,19 +281,19 @@ cmap w!! w !sudo tee % >/dev/null
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
 " J to join line
-vnoremap J :left<CR>gv:join!<CR>gv:s/,/, /ge<CR>gv=gv:s/\s\+$//e<CR>
+vnoremap J :left<cr>gv:join!<cr>gv:s/,/, /ge<cr>gv=gv:s/\s\+$//e<cr>
 
 " K to split line
-vnoremap K <ESC>o<ESC>mkgv:s/\([({\[,]\)/\1\r/ge<CR>`<v`k:s/\([)}\]]\)/\r\1/ge<CR>`<v`k=`kddk
+vnoremap K <esc>o<esc>mkgv:s/\([({\[,]\)/\1\r/ge<cr>`<v`k:s/\([)}\]]\)/\r\1/ge<cr>`<v`k=`kddk
 
 " n goes to next quickfix location when active
-nnoremap <expr> n ((len(getqflist()) > 0)?':cn<CR>':'n')
+nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
 
 " N goes to prev quickfix location when active
-nnoremap <expr> N ((len(getqflist()) > 0)?':cp<CR>':'N')
+nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
 
 " \c clears the quickfix list
-noremap <Leader>c :call setqflist([])<CR>
+noremap <leader>c :call setqflist([])<cr>
 
 " ===================== Project Settings ===============
 set exrc
