@@ -29,12 +29,12 @@ Plug 'xolox/vim-session' 	" Better sessions, :SaveSession and :OpenSession
 
 " Languages
 Plug 'sheerun/vim-polyglot'
-Plug 'joshglendenning/vim-caddyfile'
+Plug 'isobit/vim-caddyfile'
 Plug 'posva/vim-vue'
 Plug 'gutenye/json5.vim'
 
 " Colors
-Plug 'joshglendenning/vim-darcula-colors'
+Plug 'isobit/vim-darcula-colors'
 
 call plug#end()
 
