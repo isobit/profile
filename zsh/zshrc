@@ -1,12 +1,12 @@
-# General
-# ------------------------------------------------
-
 setopt extended_glob
+
+# Enable colors
 autoload -U colors && colors
 
-# ZSH conf.d
-# --------------------------------------------------
+# Enable ls colors
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
+# ZSH conf.d
 if [ -d $HOME/.zshrc.d ]; then
 	for plugin in $HOME/.zshrc.d/*.zsh; do
 		source $plugin
@@ -14,8 +14,6 @@ if [ -d $HOME/.zshrc.d ]; then
 fi
 
 # Local Config
-#--------------------------------------------------
-
 if [ -e $HOME/.localrc ]; then
 	source $HOME/.localrc
 fi
