@@ -55,13 +55,13 @@ let g:vim_markdown_toml_frontmatter = 1
 
 " ================ General Config ====================
 
-set number                      " Line numbers are good
-set numberwidth=4				" Use up to four digits
-set showcmd                     " Show incomplete cmds down the bottom
-set showmode                    " Show current mode down the bottom
-set visualbell                  " No sounds
-set mouse=a                     " Enables the mouse
-set modelines=5					" Enables modelines
+set number        " Enable line numbers
+set numberwidth=4 " Use up to four digits
+set showcmd       " Show incomplete cmds down the bottom
+set showmode      " Show current mode down the bottom
+set visualbell    " No sounds
+set mouse=a       " Enables the mouse
+set modelines=5   " Enables modelines
 
 " Reload files changed outside vim, but prompt if changed locally
 au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
@@ -93,15 +93,18 @@ augroup vimrc_autocmds
 	autocmd BufEnter * match OverLength /\%81v.\+/
 augroup END
 
-" Display tabs and trailing spaces visually with middle dot char
-set list listchars=tab:\ \ ,trail:·
+" Highlight trailing spaces
+match OverLength /\s\+$/
 
-" Turn off swap files
+" Custom listchars
+set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<,space:·
+
+" Turn off swap files.
 set noswapfile
 set nobackup
 set nowb
 
-" Keep undo history across sessions, by storing in file.
+" Keep undo history across sessions
 silent !mkdir ~/.vim/backups > /dev/null 2>&1
 set undodir=~/.vim/backups
 set undofile
@@ -109,7 +112,7 @@ set undofile
 " Scrolling
 set sidescroll=1
 
-" Start scrolling when we're this many lines away from margins
+" Start scrolling when we're this many lines away from margins.
 set scrolloff=3
 set sidescrolloff=15
 
@@ -139,10 +142,11 @@ function SetTab(...)
 		set tabstop=4
 	else
 		set expandtab
-		let &expandtab=a:1
 		let &shiftwidth=a:1
+		let &tabstop=a:1
 	endif
 endfunction
+command -nargs=? SetTab :call SetTab(<f-args>)
 
 set cinoptions=(0,Ws,m1,J1,j1
 
@@ -237,6 +241,7 @@ function! RestoreRegister()
 endfunction
 function! s:Repl()
 	let s:restore_reg = @"
+highlight EndOfBuffer ctermfg=fg ctermbg=bg
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
@@ -251,6 +256,9 @@ autocmd FileType gitcommit setlocal spell
 " Properly indent c++11 lambdas
 " autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
 
+" Hide ~ for empty lines
+highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+
 " ================ Mappings ==========================
 
 " Window moving shortcuts
@@ -260,7 +268,7 @@ nmap <silent> gh :wincmd h<cr>
 nmap <silent> gl :wincmd l<cr>
 
 " \g to go to buf
-noremap <silent> <leader>g :ls<cr>:b 
+noremap <silent> <leader>g :ls<cr>:b
 
 " \r to replace
 noremap <silent> <leader>s :%s///g<left><left>
@@ -272,7 +280,7 @@ noremap <silent> <leader>t :NERDTreeTabsToggle<cr>
 noremap <silent> <leader>f :NERDTreeTabsFind<cr>
 
 " \d to open NERDTree and find file
-noremap <silent> <leader>d :NERDTreeTabsOpen<CR><c-w><c-p>:NERDTreeTabsFind<cr><c-w><c-p>
+noremap <silent> <leader>d :NERDTreeTabsOpen<cr><c-w><c-p>:NERDTreeTabsFind<cr><c-w><c-p>
 
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
