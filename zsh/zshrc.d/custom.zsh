@@ -3,6 +3,12 @@ alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
 
+# Resolve a relative path
+function path {
+	cd $(dirname $1)
+	echo $PWD/$(basename $1)
+}
+
 # Determine if command is available
 function installed {
 	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
