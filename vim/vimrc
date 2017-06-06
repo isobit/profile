@@ -150,7 +150,9 @@ function SetTab(...)
 endfunction
 command -nargs=? SetTab :call SetTab(<f-args>)
 
-set cinoptions=(0,Ws,m1,J1,j1
+" Indentation style
+set cinoptions=*200
+" set cinoptions=(0,m1,J1,j1,*200
 
 " ================= Line Wrapping ===================
 
