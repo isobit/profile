@@ -303,6 +303,8 @@ nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
 " \c clears the quickfix list
 noremap <leader>c :call setqflist([])<cr>
 
-" ===================== Project Settings ===============
-set exrc
+" ===================== Local config ==========================
 set secure
+if filereadable(glob('~/.vimrc.local'))
+	source ~/.vimrc.local
+endif
