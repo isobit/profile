@@ -1,4 +1,5 @@
 setopt extended_glob
+setopt no_beep
 
 # Enable colors
 autoload -U colors && colors
