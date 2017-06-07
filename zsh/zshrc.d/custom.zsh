@@ -1,4 +1,3 @@
-alias ls="ls --color"
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
