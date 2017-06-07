@@ -81,7 +81,7 @@ function rsyncd-auto {
 
 function srp {
 	echo "s/$1/$2/gc"
-	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
+	for f in $(grep -rl --exclude-dir=".git" --exclude-dir="node_modules" "$1" .); do
 		vim $f -u NONE -c "%s/$1/$2/gc" -c "wq"
 	done
 }
