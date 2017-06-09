@@ -20,7 +20,6 @@ else
 	alias rm="rm -ri"
 fi
 
-
 # clip alias, should point to clipboard
 if installed pbcopy; then
 	alias clip=pbcopy
