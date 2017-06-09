@@ -78,6 +78,10 @@ def p4_build_cmd(cmd):
     if len(client) > 0:
         real_cmd += ["-c", client]
 
+    dir = gitConfig("git-p4.dir")
+    if len(dir) > 0:
+        real_cmd += ["-d", dir]
+
 
     if isinstance(cmd,basestring):
         real_cmd = ' '.join(real_cmd) + ' ' + cmd
