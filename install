@@ -44,6 +44,13 @@ function task_tmux {
 	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
 }
 
+function task_gnupg {
+	log_util 'TASK' 'gnupg'
+	install gpg
+	ensure_mkdir ~/.gnupg
+	ensure_ln_s ./gnupg/gpg.conf ~/.gnupg/gpg.conf
+}
+
 case "$1" in
 	vim)
 		task_vim
@@ -57,10 +64,14 @@ case "$1" in
 	tmux)
 		task_tmux
 		;;
+	gnupg | gpg)
+		task_gnupg
+		;;
 	'')
 		task_vim
 		task_zsh
 		task_git
+		task_gnupg
 		;;
 	*)
 		log_error "unknown task '$1'"
