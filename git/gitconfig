@@ -28,10 +28,6 @@
 	lineNumber = true
 [init]
 	templatedir = ~/profile/git/template
-[merge]
-	ff = false
-[pull]
-	ff = only
 [push]
 	default = simple
 [user]
