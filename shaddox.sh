@@ -169,13 +169,11 @@ function ensure_ln_s {
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
 		if [[ -e "$2" ]]; then
 			log_warn "file '$2' already exists"
-			if prompt_yn "Would you like to overwrite '$2'?"; then
-
-				log_info "removing '$2'"
-
-				rm "$2"
+			if prompt_yn "Would you like to replace '$2'?"; then
+				log_info "moving '$2' to '$2.orig'"
+				mv "$2" "$2.orig"
 				if [ $? -ne 0 ]; then
-					log_error "failed to remove existing file '$2'"
+					log_error "failed to move existing file '$2'"
 					return 1
 				fi
 
