@@ -40,6 +40,7 @@ function task_git {
 function task_tmux {
 	log_util 'TASK' 'tmux'
 	install tmux
+	ensure_mkdir ~/.tmux
 	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
 }
 
