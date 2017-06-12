@@ -57,12 +57,13 @@ function extract {
 
 export BACKUP_DIR="$HOME/backup/"
 function backup {
-	tar cvzf "$BACKUP_DIR/${1}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
+	local file="$(path $1)"
+	tar -czf "$BACKUP_DIR/${file//\//%}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
 }
 
 # Package tar function
 function tarball {
-	tar cvzf $1.tar.gz ${@:2} $1
+	tar -czf $1.tar.gz ${@:2} $1
 }
 function git-tarball {
 	# Create a tarball
