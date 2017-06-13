@@ -276,9 +276,6 @@ nmap <silent> gl :wincmd l<cr>
 " \g to go to buf
 noremap <silent> <leader>g :ls<cr>:b
 
-" \r to replace
-noremap <silent> <leader>s :%s///g<left><left>
-
 " \t to toggle NERDTree
 noremap <silent> <leader>t :NERDTreeTabsToggle<cr>
 
@@ -293,6 +290,12 @@ cmap w!! w !sudo tee % >/dev/null
 
 " :W is :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+
+" \s to substitute selected text with confirmation
+vnoremap <leader>s "sy:%s/<c-r>s//gc<left><left><left>
+
+" \S to substitute selected text
+vnoremap <leader>S "sy:%s/<c-r>s//g<left><left>
 
 " J to join line
 vnoremap J :left<cr>gv:join!<cr>gv:s/,/, /ge<cr>gv=gv:s/\s\+$//e<cr>
