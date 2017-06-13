@@ -64,6 +64,8 @@ set visualbell    " No sounds
 set mouse=a       " Enables the mouse
 set modelines=5   " Enables modelines
 set spell         " Enable spell checking
+set splitright    " V-splits open to the right
+set splitbelow    " H-Splits open downwards
 
 " Reload files changed outside vim, but prompt if changed locally
 au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
