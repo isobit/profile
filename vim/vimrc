@@ -285,11 +285,14 @@ noremap <silent> <leader>f :NERDTreeTabsFind<cr>
 " \d to open NERDTree and find file
 noremap <silent> <leader>d :NERDTreeTabsOpen<cr><c-w><c-p>:NERDTreeTabsFind<cr><c-w><c-p>
 
-" :w!! to sudo write
-cmap w!! w !sudo tee % >/dev/null
+" \c clears the quickfix list
+noremap <leader>c :call setqflist([])<cr>
 
-" :W is :w
-cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+" n goes to next quickfix location when active
+nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
+
+" N goes to prev quickfix location when active
+nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
 
 " \s to substitute selected text with confirmation
 vnoremap <leader>s "sy:%s/<c-r>s//gc<left><left><left>
@@ -303,14 +306,12 @@ vnoremap J :left<cr>gv:join!<cr>gv:s/,/, /ge<cr>gv=gv:s/\s\+$//e<cr>
 " K to split line
 vnoremap K <esc>o<esc>mkgv:s/\([({\[,]\)/\1\r/ge<cr>`<v`k:s/\([)}\]]\)/\r\1/ge<cr>`<v`k=`kddk
 
-" n goes to next quickfix location when active
-nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
+" :w!! to sudo write
+cmap w!! w !sudo tee % >/dev/null
 
-" N goes to prev quickfix location when active
-nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
+" :W is :w
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
-" \c clears the quickfix list
-noremap <leader>c :call setqflist([])<cr>
 
 " ===================== Local config ==========================
 set secure
