@@ -1,6 +1,8 @@
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
+alias timestamp="date +'%Y-%m-%dT%H-%M-%S'"
+alias datestamp="date +'%Y-%m-%d'"
 
 # Resolve a relative path
 function path {
