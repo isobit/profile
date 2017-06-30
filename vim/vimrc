@@ -93,13 +93,12 @@ silent! colors darcula
 " Vertical split character
 set fillchars=""
 
-" Highlights characters past column 80
-augroup vimrc_autocmds
-	autocmd BufEnter * match OverLength /\%81v.\+/
+" Highlight trailing whitespace when not in insert mode
+augroup vimrc_trailingwhitespace_syntax
+	autocmd!
+	autocmd InsertEnter * syntax clear TrailingWhitespace
+	autocmd FileType,InsertLeave * syntax match TrailingWhitespace /\s\+$/ containedin=ALL
 augroup END
-
-" Highlight trailing spaces
-match OverLength /\s\+$/
 
 " Custom listchars
 set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<,space:·
@@ -172,6 +171,12 @@ map <leader>w mz:execute WrapToggle()<cr>`z
 
 " Wrap lines at convenient points
 set linebreak
+
+" Highlights characters past the textwidth
+augroup vimrc_match_overlength
+	autocmd!
+	autocmd FileType * execute 'syntax match OverLength /\%'.(&textwidth + 1).'v.\+/ containedin=ALL'
+augroup END
 
 " ================ Folds ============================
 
@@ -253,15 +258,16 @@ highlight EndOfBuffer ctermfg=fg ctermbg=bg
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-" Front-matter syntax highlighting for markdown and html
-autocmd FileType html,markdown,liquid syntax match Comment /\%^---\_.\{-}---$/
-autocmd FileType html,markdown,liquid syntax match Comment /\_.\{-}---$/
-
 " Turn on spell checking in git commits
-autocmd FileType gitcommit setlocal spell
+augroup vimrc_gitcommit_spell
+	autocmd!
+	autocmd FileType gitcommit setlocal spell
+augroup END
 
 " Properly indent c++11 lambdas
-" autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
+" augroup vimrc_cpp11_lambda_cino
+" 	autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
+" augroup END
 
 " Hide ~ for empty lines
 highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
