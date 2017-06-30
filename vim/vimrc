@@ -76,9 +76,6 @@ au CursorHold,CursorHoldI,FileChangedShell * silent! checktime
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
-" Switch to existing tab if buffer is open, creating new one if not
-" set switchbuf=usetab,newtab
-
 " Turn on syntax highlighting
 syntax on
 
