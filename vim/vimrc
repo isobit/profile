@@ -202,7 +202,8 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Fixes ============================
 
-set timeoutlen=1000 ttimeoutlen=100
+" Recognize ESC sequences in 10ms to make leaving insert mode quicker
+set timeoutlen=10
 
 " Fix arrow keys writing A,B,C,D
 imap <esc>oA <up>
@@ -224,16 +225,6 @@ else
 	let &t_SI.="\<Esc>[5 q"
 	let &t_EI.="\<Esc>[1 q"
 	let &t_te.="\<Esc>[0 q"
-endif
-
-" Send successive move-left/right commands to redraw the cursor when hitting
-" escape.
-if has('gui_running')
-	inoremap <special> <esc> <esc>hl
-else
-	augroup no_highlight
-		autocmd TermResponse * inoremap <special> <esc> <esc>hl
-	augroup END
 endif
 
 " Fix bad background/foreground colors on some terminals
