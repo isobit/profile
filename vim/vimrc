@@ -155,6 +155,9 @@ set cinoptions=*200
 
 " ================= Line Wrapping ===================
 
+set textwidth=79 " Use 80 as the max line length
+set nowrap       " Don't wrap lines by default
+
 " Allow toggling between wrapping and not wrapping
 function WrapToggle()
 	if &wrap
