@@ -238,7 +238,6 @@ function! RestoreRegister()
 endfunction
 function! s:Repl()
 	let s:restore_reg = @"
-highlight EndOfBuffer ctermfg=fg ctermbg=bg
 	return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
@@ -303,7 +302,6 @@ cmap w!! w !sudo tee % >/dev/null
 
 " :W is :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-
 
 " ===================== Local config ==========================
 set secure
