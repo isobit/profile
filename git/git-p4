@@ -1444,7 +1444,7 @@ class P4Submit(Command, P4UserMap):
                 return r['change']
         die("Could not get changelist number for last submit - cannot patch up user details")
 
-    def selectPendingP4ChangelistForAmend(self):
+    def selectPendingP4ChangelistForAmend(self, id):
         # Get back the last changelist number submitted in this client spec. This
         # then gets used to patch up the username in the change. If the same
         # client spec is being used by multiple processes then this might go
@@ -1463,10 +1463,21 @@ class P4Submit(Command, P4UserMap):
         if len(results) == 1 and results[0].has_key('change'):
             return results[0]['change']
 
+        def strcmp(s1, s2):
+            for i in range(0, min(len(s1), len(s2))):
+                if s1[i] != s2[i]:
+                    return i
+            return i + 1
+        gitCommitMsg = extractLogMessageFromGitCommit(id).strip()
+        for i, r in enumerate(results):
+            r['similarity'] = float(strcmp(r['desc'], gitCommitMsg)) / len(gitCommitMsg)
+        results.sort(key=lambda r: r['similarity'], reverse=True)
+
         print("There are multiple pending changelists:")
 
         for i, r in enumerate(results):
-            print("[{}] {}\n\t{}".format(i, r['change'], r['desc'].replace('\n', '\n\t')))
+            percent_similar = round(r['similarity'] * 100)
+            print("[{}] {} ({}%)\n\t{}".format(i, r['change'], percent_similar, r['desc'].replace('\n', '\n\t')))
 
         while True:
             response = raw_input("Which would you like to amend? ")
@@ -1625,7 +1636,7 @@ class P4Submit(Command, P4UserMap):
         (p4User, gitEmail) = self.p4UserForCommit(id)
 
         if self.amend:
-            changelist = self.selectPendingP4ChangelistForAmend()
+            changelist = self.selectPendingP4ChangelistForAmend(id)
             print("Reverting changelist {} before applying patches".format(changelist))
             # p4CmdList(['reconcile'])
             p4CmdList(['revert', '-w', '-c', changelist, '//...'])
