@@ -203,13 +203,7 @@ set wildignore+=*.png,*.jpg,*.gif
 " ================ Fixes ============================
 
 " Recognize ESC sequences in 10ms to make leaving insert mode quicker
-set timeoutlen=10
-
-" Fix arrow keys writing A,B,C,D
-imap <esc>oA <up>
-imap <esc>oB <down>
-imap <esc>oC <right>
-imap <esc>oD <left>
+set timeoutlen=1000 ttimeoutlen=10
 
 " Set up vertical line cursor for insert mode in iTerm2
 if &term =~ "screen."
