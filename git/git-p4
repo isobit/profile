@@ -1287,8 +1287,8 @@ class P4Submit(Command, P4UserMap):
         P4UserMap.__init__(self)
         self.options = [
                 optparse.make_option("--origin", dest="origin"),
-                optparse.make_option("-M", dest="detectRenames", action="store_true"),
-                optparse.make_option("--Mthresh", dest="detectRenamesThresh", action="store", type="string"),
+                optparse.make_option("-M", dest="gitRenameThresh", action="store", type="string"),
+                optparse.make_option("-C", dest="gitCopyThresh", action="store", type="string"),
                 # preserve the user, requires relevant p4 permissions
                 optparse.make_option("--preserve-user", dest="preserveUser", action="store_true"),
                 optparse.make_option("--export-labels", dest="exportLabels", action="store_true"),
@@ -1303,8 +1303,8 @@ class P4Submit(Command, P4UserMap):
         self.description = "Submit changes from git to the perforce depot."
         self.usage += " [name of git branch to submit into perforce depot]"
         self.origin = ""
-        self.detectRenames = False
-        self.detectRenamesThresh = None
+        self.gitRenameThresh = None
+        self.gitCopyThresh = None
         self.preserveUser = gitConfigBool("git-p4.preserveUser")
         self.dry_run = False
         self.prepare_p4_only = False
@@ -2119,39 +2119,46 @@ class P4Submit(Command, P4UserMap):
         #
         # Build up a set of options to be passed to diff when
         # submitting each commit to p4.
+        diffOpts = []
+        if self.gitRenameThresh is not None:
+            diffOpts.append("-M%s" % self.gitRenameThresh)
+        if self.gitCopyThresh is not None:
+            diffOpts.append("-C%s" % self.gitCopyThresh)
+        self.diffOpts = str.join(' ', diffOpts)
+        print self.diffOpts
+
+        # if self.detectRenames:
+        #     # command-line -M arg
+        #     if (self.detectRenamesThresh):
+        #         self.diffOpts = "-M%s" % self.detectRenamesThresh
+        #     else:
+        #         self.diffOpts = "-M"
+        # else:
+        #     # If not explicitly set check the config variable
+        #     detectRenames = gitConfig("git-p4.detectRenames")
         #
-        if self.detectRenames:
-            # command-line -M arg
-            if (self.detectRenamesThresh):
-                self.diffOpts = "-M%s" % self.detectRenamesThresh
-            else:
-                self.diffOpts = "-M"
-        else:
-            # If not explicitly set check the config variable
-            detectRenames = gitConfig("git-p4.detectRenames")
-
-            if detectRenames.lower() == "false" or detectRenames == "":
-                self.diffOpts = ""
-            elif detectRenames.lower() == "true":
-                if (self.detectRenamesThresh):
-                    self.diffOpts = "-M%s" % self.detectRenamesThresh
-                else:
-                    self.diffOpts = "-M"
-            else:
-                self.diffOpts = "-M%s" % detectRenames
-
-        # no command-line arg for -C or --find-copies-harder, just
-        # config variables
-        detectCopies = gitConfig("git-p4.detectCopies")
-        if detectCopies.lower() == "false" or detectCopies == "":
-            pass
-        elif detectCopies.lower() == "true":
-            self.diffOpts += " -C"
-        else:
-            self.diffOpts += " -C%s" % detectCopies
-
-        if gitConfigBool("git-p4.detectCopiesHarder"):
-            self.diffOpts += " --find-copies-harder"
+        #     if detectRenames.lower() == "false" or detectRenames == "":
+        #         self.diffOpts = ""
+        #     elif detectRenames.lower() == "true":
+        #         if (self.detectRenamesThresh):
+        #             self.diffOpts = "-M%s" % self.detectRenamesThresh
+        #         else:
+        #             self.diffOpts = "-M"
+        #     else:
+        #         self.diffOpts = "-M%s" % detectRenames
+        #
+        # # no command-line arg for -C or --find-copies-harder, just
+        # # config variables
+        # detectCopies = gitConfig("git-p4.detectCopies")
+        # if detectCopies.lower() == "false" or detectCopies == "":
+        #     pass
+        # elif detectCopies.lower() == "true":
+        #     self.diffOpts += " -C"
+        # else:
+        #     self.diffOpts += " -C%s" % detectCopies
+        #
+        # if gitConfigBool("git-p4.detectCopiesHarder"):
+        #     self.diffOpts += " --find-copies-harder"
 
         #
         # Apply the commits, one at a time.  On failure, ask if should
