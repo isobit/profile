@@ -3856,7 +3856,7 @@ class P4Unshelve(Command):
         if len(read_pipe("git diff-index HEAD --")) > 0:
             die("You have uncommitted changes. Please commit them before rebasing or stash them away with git stash.");
 
-        self.changelist = args[0]
+        self.changelist = int(args[0])
         self.depotPaths = self.getDepotPaths()
 
         sys.stderr.write('Unshelving changelist %s\n' % self.changelist)
