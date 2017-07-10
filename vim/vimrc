@@ -91,10 +91,10 @@ silent! colors darcula
 set fillchars=""
 
 " Highlight trailing whitespace when not in insert mode
-augroup vimrc_trailingwhitespace_syntax
+augroup vimrc_match_trailingwhitespace
 	autocmd!
-	autocmd InsertEnter * syntax clear TrailingWhitespace
-	autocmd FileType,InsertLeave * syntax match TrailingWhitespace /\s\+$/ containedin=ALL
+	autocmd InsertEnter * call matchdelete(s:tws_id)
+	autocmd BufNewFile,BufRead,InsertLeave * let s:tws_id=matchadd('TrailingWhitespace', '\s\+$')
 augroup END
 
 " Custom listchars
@@ -175,7 +175,7 @@ set linebreak
 " Highlights characters past the textwidth
 augroup vimrc_match_overlength
 	autocmd!
-	autocmd FileType * execute 'syntax match OverLength /\%'.(&textwidth + 1).'v.\+/ containedin=ALL'
+	autocmd FileType * execute 'match OverLength /\%'.(&textwidth + 1).'v.\+/'
 augroup END
 
 " ================ Folds ============================
