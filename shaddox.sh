@@ -142,7 +142,7 @@ function install {
 	esac
 
 
-	if [! $dryrun]; then
+	if [ ! $dryrun ]; then
 		log_info "DRY RUN! command: '$cmd $cmd_opts $cmd_args'"
 		return 1
 	else
