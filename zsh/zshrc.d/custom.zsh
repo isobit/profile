@@ -116,8 +116,9 @@ function upload {
 	if [ ! -n "$filename" ]; then
 		local filename="$(basename "$file")"
 	fi
+	local filename="${filename%%.*}_$(date +'%Y-%m-%dT%H-%M-%S').${filename#*.}"
 
-	local upload_url="https://fm.isobit.io/webdav/$filename"
+	local upload_url="https://fm.isobit.io/webdav/public/$filename"
 	local download_url="https://f.isobit.io/$filename"
 
 	curl -T "$file" -u "admin" "$upload_url"
