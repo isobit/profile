@@ -91,10 +91,19 @@ silent! colors darcula
 set fillchars=""
 
 " Highlight trailing whitespace when not in insert mode
+function! SetTrailingWhitespaceEnabled(enabled)
+	if a:enabled && !exists('w:tws_id')
+		let w:tws_id = matchadd('TrailingWhitespace', '\s\+$')
+	end
+	if !a:enabled && exists('w:tws_id')
+		call matchdelete(w:tws_id)
+		unlet w:tws_id
+	end
+endfunction
 augroup vimrc_match_trailingwhitespace
 	autocmd!
-	autocmd InsertEnter * call matchdelete(s:tws_id)
-	autocmd BufNewFile,BufRead,InsertLeave * let s:tws_id=matchadd('TrailingWhitespace', '\s\+$')
+	autocmd InsertEnter * call SetTrailingWhitespaceEnabled(0)
+	autocmd BufNewFile,BufRead,InsertLeave * call SetTrailingWhitespaceEnabled(1)
 augroup END
 
 " Custom listchars
