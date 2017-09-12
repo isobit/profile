@@ -134,6 +134,7 @@ function install {
 			cmd_args="-S "$1""
 			;;
 		yum)
+			cmd="sudo $cmd"
 			cmd_args="install "$1""
 			;;
 		*)
