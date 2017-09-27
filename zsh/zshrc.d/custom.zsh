@@ -76,6 +76,21 @@ function sshs {
 	ssh $@ -t 'screen -dRR'
 }
 
+function ssh-fix-permissions {
+	if [[ -d ~/.ssh ]]; then
+		chmod 700 ~/.ssh
+	fi
+	if [[ -f ~/.ssh/authorized_keys ]]; then
+		chmod 600 ~/.ssh/authorized_keys
+	fi
+	if [[ -f ~/.ssh/id_rsa ]]; then
+		chmod 600 ~/.ssh/id_rsa
+	fi
+	if [[ -f ~/.ssh/id_rsa.pub ]]; then
+		chmod 600 ~/.ssh/id_rsa.pub
+	fi
+}
+
 function rsyncd-auto {
 	watch -n 1 "rsync -rtv --exclude .git/ --del '$1' '$2'"
 }
