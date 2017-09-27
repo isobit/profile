@@ -26,8 +26,21 @@ function task_zsh {
 	install zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
-	ensure_ln_s ./zsh/minttyrc ~/.minttyrc
-	chsh -s $(which zsh) || log_warn "could not chsh to zsh, please do this manually"
+	# ensure_ln_s ./zsh/minttyrc ~/.minttyrc
+	if prompt_yn "Change shell to zsh?"; then
+		log_info "Changing shell to zsh"
+		chsh -s $(which zsh) || log_warn "'chsh -s $(which zsh)' failed, please do this manually"
+	else
+		log_info "Shell can be changed later by running 'chsh -s $(which zsh)'"
+	fi
+	if [ ! -f ~/.zsh-prompt-hide-host ]; then
+		if prompt_yn "Show hostname in ZSH prompt?"; then
+			log_info "Hostname can be hidden at any time by creating the file ~/.zsh-prompt-hide-host"
+		else
+			log_info "Creating file ~/.zsh-prompt-hide-host"
+			touch ~/.zsh-prompt-hide-host
+		fi
+	fi
 }
 
 function task_git {

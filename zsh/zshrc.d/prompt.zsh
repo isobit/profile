@@ -10,10 +10,14 @@ precmd_functions+=(vcs_info)
 
 # Prompt string
 setopt prompt_subst
-local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%}'
+local PROMPT_HOST=''
+if [[ ! -f ~/.zsh-prompt-hide-host ]]; then
+	local PROMPT_HOST='%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[magenta]%}%M%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} '
+fi
+local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%} '
 local PROMPT_GIT='${vcs_info_msg_0_}'
 local PROMPT_DELIM='%{$fg_bold[grey]%}>%{$reset_color%} '
-PROMPT="$PROMPT_PWD $PROMPT_GIT$PROMPT_DELIM"
+PROMPT="$PROMPT_HOST$PROMPT_PWD$PROMPT_GIT$PROMPT_DELIM"
 
 # Title
 function title {
