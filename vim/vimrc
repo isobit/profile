@@ -109,7 +109,11 @@ augroup vimrc_match_trailingwhitespace
 augroup END
 
 " Custom listchars
-set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<,space:·
+if has("patch-7.4.710")
+	set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<,space:·
+else
+	set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<
+endif
 
 " Turn off swap files.
 set noswapfile
