@@ -12,7 +12,7 @@ precmd_functions+=(vcs_info)
 setopt prompt_subst
 local PROMPT_HOST=''
 if [[ ! -f ~/.zsh-prompt-hide-host ]]; then
-	local PROMPT_HOST='%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[magenta]%}%M%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} '
+	local PROMPT_HOST='%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[magenta]%}%n@%M%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} '
 fi
 local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%} '
 local PROMPT_GIT='${vcs_info_msg_0_}'
