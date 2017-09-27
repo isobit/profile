@@ -77,6 +77,7 @@ function sshs {
 }
 
 function ssh-fix-permissions {
+	chmod g-w ~
 	if [[ -d ~/.ssh ]]; then
 		chmod 700 ~/.ssh
 	fi
