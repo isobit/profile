@@ -63,17 +63,16 @@ function backup {
 	tar -czf "$BACKUP_DIR/${file//\//%}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
 }
 
-# Package tar function
 function tarball {
 	tar -czf $1.tar.gz ${@:2} $1
 }
+
 function git-tarball {
-	# Create a tarball
 	git archive --format=tar.gz HEAD $1 > $1.tar.gz
 }
 
+# SSH with automatic screen session resume
 function sshs {
-	# SSH with automatic screen session resume
 	ssh $@ -t 'screen -dRR'
 }
 
