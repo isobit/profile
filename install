@@ -11,11 +11,11 @@ function task_vim {
 	ensure_mkdir ~/.vim
 	ensure_ln_s ./vim/vimrc ~/.vimrc
 	if [ ! -f ~/.vim/autoload/plug.vim ]; then
-		log_info "installing vim-plug"
+		log_info "Installing vim-plug"
 		curl -fLs -o ~/.vim/autoload/plug.vim --create-dirs \
 			    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	fi
-	log_info "running PlugUpdate"
+	log_info "Running PlugUpdate"
 	vim +PlugUpdate +qall
 }
 
@@ -75,6 +75,6 @@ case "$1" in
 		task_gnupg
 		;;
 	*)
-		log_error "unknown task '$1'"
+		log_error "Unknown task '$1'"
 		;;
 esac

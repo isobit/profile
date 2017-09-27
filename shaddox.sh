@@ -64,7 +64,7 @@ else
 fi
 
 function install {
-	log_info "ensuring installation of '$1'"
+	log_info "Ensuring installation of '$1'"
 	local dryrun=false
 	local confirm=false
 	local force=false
@@ -92,7 +92,7 @@ function install {
 				break
 				;;
 			-*)
-				log_error "unknown option: $1"
+				log_error "Unknown option: $1"
 				break
 				;;
 			*)  # No more options
@@ -147,7 +147,7 @@ function install {
 		log_info "DRY RUN! command: '$cmd $cmd_opts $cmd_args'"
 		return 1
 	else
-		log_info "running '$cmd $cmd_opts $cmd_args'"
+		log_info "Running '$cmd $cmd_opts $cmd_args'"
 		eval $cmd $cmd_opts $cmd_args
 	fi
 
@@ -166,15 +166,15 @@ function resolve_path {
 
 function ensure_ln_s {
 	local target="$(resolve_path $1)"
-	log_info "ensuring symlink '$target' -> '$2'"
+	log_info "Ensuring symlink '$target' -> '$2'"
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
 		if [[ -e "$2" ]]; then
-			log_warn "file '$2' already exists"
+			log_warn "File '$2' already exists"
 			if prompt_yn "Would you like to replace '$2'?"; then
-				log_info "moving '$2' to '$2.orig'"
+				log_info "Moving '$2' to '$2.orig'"
 				mv "$2" "$2.orig"
 				if [ $? -ne 0 ]; then
-					log_error "failed to move existing file '$2'"
+					log_error "Failed to move existing file '$2'"
 					return 1
 				fi
 
@@ -183,22 +183,22 @@ function ensure_ln_s {
 			fi
 		fi
 
-		log_info "linking '$target' -> '$2'"
+		log_info "Linking '$target' -> '$2'"
 		ln -s $target $2
 		if [ $? -ne 0 ]; then
-			log_error "could not create symlink '$target' -> '$2'"
+			log_error "Could not create symlink '$target' -> '$2'"
 			return 1
 		fi
 	fi
 }
 
 function ensure_mkdir {
-	log_info "ensuring directory '$1' exists"
+	log_info "Ensuring directory '$1' exists"
 	if [[ ! -d "$1" ]]; then
-		log_info "making directory '$1'"
+		log_info "Making directory '$1'"
 		mkdir -p $1
 		if [ $? -ne 0 ]; then
-			log_error "could not make directory '$1'"
+			log_error "Could not make directory '$1'"
 			return 1
 		fi
 	fi
