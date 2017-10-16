@@ -10,7 +10,7 @@ export LSCOLORS="Gxfxcxdxbxegedabagacad"
 # ZSH conf.d
 if [ -d $HOME/.zshrc.d ]; then
 	for plugin in $HOME/.zshrc.d/*.zsh; do
-		source $plugin
+		source "$plugin"
 	done
 fi
 

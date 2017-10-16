@@ -17,9 +17,9 @@ function installed {
 
 # Use safe-rm if possible, otherwise make rm ask before clobbering a file. Use -f to override.
 if installed safe-rm; then
-	alias rm="safe-rm -ri"
+	alias rm="safe-rm -I"
 else
-	alias rm="rm -ri"
+	alias rm="rm -I"
 fi
 
 # clip alias, should point to clipboard
