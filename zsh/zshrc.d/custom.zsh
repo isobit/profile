@@ -17,9 +17,9 @@ function installed {
 
 # Use safe-rm if possible, otherwise make rm ask before clobbering a file. Use -f to override.
 if installed safe-rm; then
-	alias rm="safe-rm -ri"
+	alias rm="safe-rm -I"
 else
-	alias rm="rm -ri"
+	alias rm="rm -I"
 fi
 
 # clip alias, should point to clipboard
@@ -39,17 +39,18 @@ function runjava {
 function extract {
 	if [ -f $1 ]; then
 		case $1 in
-			*.tar.bz2)  tar -jxf $1        ;;
-			*.tar.gz)   tar -zxf $1        ;;
-			*.tar.xz)   tar -xf $1         ;;
-			*.bz2)      bunzip2 $1          ;;
-			*.dmg)      hdiutul mount $1    ;;
-			*.gz)       gunzip $1           ;;
-			*.tar)      tar -xf $1         ;;
-			*.tbz2)     tar -jxf $1        ;;
-			*.tgz)      tar -zxf $1        ;;
-			*.zip)      unzip $1            ;;
-			*.Z)        uncompress $1       ;;
+			*.tar)      tar -xf $1       ;;
+			*.tar.gz)   tar -zxf $1      ;;
+			*.tgz)      tar -zxf $1      ;;
+			*.tar.xz)   tar -xf $1       ;;
+			*.txz)      tar -xf $1       ;;
+			*.tar.bz2)  tar -jxf $1      ;;
+			*.tbz2)     tar -jxf $1      ;;
+			*.bz2)      bunzip2 $1       ;;
+			*.dmg)      hdiutul mount $1 ;;
+			*.gz)       gunzip $1        ;;
+			*.zip)      unzip $1         ;;
+			*.Z)        uncompress $1    ;;
 			*)          echo "'$1' cannot be extracted/mounted via extract()." ;;
 		esac
 	else

@@ -26,7 +26,6 @@ function task_zsh {
 	install zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
-	# ensure_ln_s ./zsh/minttyrc ~/.minttyrc
 	if prompt_yn "Change shell to zsh?"; then
 		log_info "Changing shell to zsh"
 		chsh -s $(which zsh) || log_warn "'chsh -s $(which zsh)' failed, please do this manually"
