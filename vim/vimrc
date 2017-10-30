@@ -165,8 +165,8 @@ endfunction
 command -nargs=? SetTab :call SetTab(<f-args>)
 
 " Indentation style
-set cinoptions=*200
-" set cinoptions=(0,m1,J1,j1,*200
+" set cinoptions=*200
+set cinoptions=(0,m1,h0,l1,t0,J1,j1,*200
 
 " ================= Line Wrapping ===================
 
