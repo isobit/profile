@@ -5,14 +5,14 @@ alias timestamp="date +'%Y-%m-%dT%H-%M-%S'"
 alias datestamp="date +'%Y-%m-%d'"
 
 # Resolve a relative path
-function path {
-	cd $(dirname $1)
-	echo $PWD/$(basename $1)
+path() {
+	cd "$(dirname $1)"
+	echo "$PWD/$(basename $1)"
 }
 
 # Determine if command is available
-function installed {
-	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
+installed() {
+	hash "$1" 2>/dev/null || alias "$1" > /dev/null 2>&1
 }
 
 # Use safe-rm if possible, otherwise make rm ask before clobbering a file. Use -f to override.
@@ -26,58 +26,60 @@ fi
 if installed pbcopy; then
 	alias clip=pbcopy
 elif installed xclip; then
-	alias clip='xclip -selection c'
+	alias clip="xclip -selection c"
 fi
 
 # Compile .java, then run its .class
-function runjava {
-	javac -g $1.java;
-	java $1;
+runjava() {
+	javac -g "${1}.java"
+	java "$1"
 }
 
 # Extract function, courtesy of Itai Ferber
-function extract {
-	if [ -f $1 ]; then
-		case $1 in
-			*.tar)      tar -xf $1       ;;
-			*.tar.gz)   tar -zxf $1      ;;
-			*.tgz)      tar -zxf $1      ;;
-			*.tar.xz)   tar -xf $1       ;;
-			*.txz)      tar -xf $1       ;;
-			*.tar.bz2)  tar -jxf $1      ;;
-			*.tbz2)     tar -jxf $1      ;;
-			*.bz2)      bunzip2 $1       ;;
-			*.dmg)      hdiutul mount $1 ;;
-			*.gz)       gunzip $1        ;;
-			*.zip)      unzip $1         ;;
-			*.Z)        uncompress $1    ;;
-			*)          echo "'$1' cannot be extracted/mounted via extract()." ;;
+extract() {
+	local file="${@: -1}"
+	if [[ -f "$file" ]]; then
+		case "$file" in
+			*.tar)      tar -xf "$@"       ;;
+			*.tar.gz)   tar -zxf "$@"      ;;
+			*.tgz)      tar -zxf "$@"      ;;
+			*.tar.xz)   tar -xf "$@"       ;;
+			*.txz)      tar -xf "$@"       ;;
+			*.tar.bz2)  tar -jxf "$@"      ;;
+			*.tbz2)     tar -jxf "$@"      ;;
+			*.bz2)      bunzip2 "$@"       ;;
+			*.dmg)      hdiutul mount "$@" ;;
+			*.gz)       gunzip "$@"        ;;
+			*.zip)      unzip "$@"         ;;
+			*.Z)        uncompress "$@"    ;;
+			*)          echo "'${file}' cannot be extracted/mounted via extract()." ;;
 		esac
 	else
-		echo "'$1' is not a valid file."
+		echo "'${file}' is not a valid file."
 	fi
 }
 
 export BACKUP_DIR="$HOME/backup/"
-function backup {
+backup() {
 	local file="$(path $1)"
 	tar -czf "$BACKUP_DIR/${file//\//%}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
 }
 
-function tarball {
-	tar -czf $1.tar.gz ${@:2} $1
+tarball() {
+	local file="${@: -1}"
+	tar -cz "$@" -f "${file}.tar.gz"
 }
 
-function git-tarball {
-	git archive --format=tar.gz HEAD $1 > $1.tar.gz
+git-tarball() {
+	git archive --format=tar.gz HEAD "$1" > "${1}.tar.gz"
 }
 
 # SSH with automatic screen session resume
-function sshs {
-	ssh $@ -t 'screen -dRR'
+sshs() {
+	ssh "$@" -t 'screen -dRR'
 }
 
-function ssh-fix-permissions {
+ssh-fix-permissions() {
 	chmod g-w ~
 	if [[ -d ~/.ssh ]]; then
 		chmod 700 ~/.ssh
@@ -93,25 +95,25 @@ function ssh-fix-permissions {
 	fi
 }
 
-function rsyncd-auto {
+rsyncd-auto() {
 	watch -n 1 "rsync -rtv --exclude .git/ --del '$1' '$2'"
 }
 
-function srp {
-	echo "s/$1/$2/gc"
+srp() {
+	echo "s/${1}/${2}/gc"
 	for f in $(grep -rl --exclude-dir=".git" --exclude-dir="node_modules" "$1" .); do
-		vim $f -u NONE -c "%s/$1/$2/gc" -c "wq"
+		vim "$f" -u NONE -c "%s/${1}/${2}/gc" -c "wq"
 	done
 }
 
-function vimgrep {
-	echo "s/$1/$2/gc"
+vimgrep() {
+	echo "s/${1}/${2}/gc"
 	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
-		vim $f -c "execute \"normal /$1\\<CR>\""
+		vim "$f" -c "execute \"normal /${1}\\<CR>\""
 	done
 }
 
-function upload {
+upload() {
 	if ! installed curl; then
 		echo "ERROR: curl must be installed"
 		return 1
@@ -119,23 +121,23 @@ function upload {
 
 	local file="$1"
 	local should_rm=false
-	if [ -d "$file" ]; then
-		local file="/tmp/$1.tar.gz"
-		tar -cvzf $file $1
+	if [[ -d "$file" ]]; then
+		local file="/tmp/${1}.tar.gz"
+		tar -cvzf "$file" "$1"
 		should_rm=true
-	elif [ ! -f $file ]; then
-		echo "ERROR: $file is not a file or directory"
+	elif [[ ! -f "$file" ]]; then
+		echo "ERROR: ${file} is not a file or directory"
 		return 1
 	fi
 
 	local filename="$2"
-	if [ ! -n "$filename" ]; then
+	if [[ ! -n "$filename" ]]; then
 		local filename="$(basename "$file")"
 	fi
 	local filename="${filename%%.*}_$(date +'%Y-%m-%dT%H-%M-%S').${filename#*.}"
 
-	local upload_url="https://fm.isobit.io/webdav/public/$filename"
-	local download_url="https://f.isobit.io/$filename"
+	local upload_url="https://fm.isobit.io/webdav/public/${filename}"
+	local download_url="https://f.isobit.io/${filename}"
 
 	curl -T "$file" -u "admin" "$upload_url"
 	echo

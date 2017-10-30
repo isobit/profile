@@ -17,10 +17,10 @@ fi
 local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%} '
 local PROMPT_GIT='${vcs_info_msg_0_}'
 local PROMPT_DELIM='%{$fg_bold[grey]%}>%{$reset_color%} '
-PROMPT="$PROMPT_HOST$PROMPT_PWD$PROMPT_GIT$PROMPT_DELIM"
+PROMPT="${PROMPT_HOST}${PROMPT_PWD}${PROMPT_GIT}${PROMPT_DELIM}"
 
 # Title
-function title {
+title() {
 	[[ "$EMACS" == *term*  ]] && return
 
 	# if $2 is unset use $1 as default
@@ -52,13 +52,13 @@ function title {
 	esac
 }
 
-function prompt_title_precmd {
+prompt_title_precmd() {
 	title "%15<..<%~%<<" "%n@%m: %~"
 }
 precmd_functions+=(prompt_title_precmd)
 
-function prompt_title_preexec {
-	local CMD=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
+prompt_title_preexec() {
+	local CMD="${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}"
 	local LINE="${2:gs/%/%%}"
 	title '%10<..<%~%<<:$CMD' '%100>...>$LINE%<<'
 }

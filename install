@@ -3,7 +3,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $DIR
 source ./shaddox.sh
 
-function task_vim {
+task_vim() {
 	log_util 'TASK' 'vim'
 	install git
 	install vim
@@ -19,7 +19,7 @@ function task_vim {
 	vim +PlugUpdate +qall
 }
 
-function task_zsh {
+task_zsh() {
 	log_util 'TASK' 'zsh'
 	install git
 	install safe-rm
@@ -42,21 +42,21 @@ function task_zsh {
 	fi
 }
 
-function task_git {
+task_git() {
 	log_util 'TASK' 'git'
 	install git
 	ensure_ln_s ./git/gitconfig ~/.gitconfig
 	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 }
 
-function task_tmux {
+task_tmux() {
 	log_util 'TASK' 'tmux'
 	install tmux
 	ensure_mkdir ~/.tmux
 	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
 }
 
-function task_gnupg {
+task_gnupg() {
 	log_util 'TASK' 'gnupg'
 	install gpg
 	ensure_mkdir ~/.gnupg

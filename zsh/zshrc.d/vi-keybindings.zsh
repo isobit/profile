@@ -6,15 +6,15 @@ if $use_vim_keybindings; then
 	export KEYTIMEOUT=1
 
 	function zle-keymap-select zle-line-init {
-		case $TERM_PROGRAM in
+		case "$TERM_PROGRAM" in
 			"iTerm")
-				case $KEYMAP in
+				case "$KEYMAP" in
 					vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
 					viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
 				esac
 				;;
 			*)
-				case $KEYMAP in
+				case "$KEYMAP" in
 					vicmd)      print -n -- "\E[1 q";;  # block cursor
 					viins|main) print -n -- "\E[5 q";;  # line cursor
 				esac
@@ -26,7 +26,7 @@ if $use_vim_keybindings; then
 	}
 
 	function zle-line-finish {
-		case $TERM_PROGRAM in
+		case "$TERM_PROGRAM" in
 			"iTerm")
 				print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
 				;;

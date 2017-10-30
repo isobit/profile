@@ -1,26 +1,30 @@
 #!/bin/bash
 
 SHADDOX_VERBOSE=true
-function log_info {
+
+log_info() {
 	if ! $SHADDOX_VERBOSE; then
 		return 0
 	fi
 	echo -e "\033[36m=>\033[0m $1" >&2
 }
-function log_util {
+
+log_util() {
 	if ! $SHADDOX_VERBOSE; then
 		return 0
 	fi
 	echo -e "[\033[34m$1\033[0m] $2" >&2
 }
-function log_warn {
+
+log_warn() {
 	echo -e "[\033[33mWARNING\033[0m] $1" >&2
 }
-function log_error {
+
+log_error() {
 	echo -e "[\033[31mERROR\033[0m] $1" >&2
 }
 
-function prompt_yn {
+prompt_yn() {
 	local prompt="$1 \033[32m[Y/n]:\033[0m "
 	while true; do
 		printf "$prompt" >&2
@@ -40,11 +44,11 @@ function prompt_yn {
 	done
 }
 
-function installed {
+installed() {
 	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
 }
 
-function manual_install {
+manual_install() {
 	printf "\e[32mPlease install '$1' manually. Press [enter] to continue.\e[0m " >&2
 	read
 }
@@ -63,7 +67,7 @@ else
 	PKG_MANAGER="manual_install"
 fi
 
-function install {
+install() {
 	log_info "Ensuring installation of '$1'"
 	local dryrun=false
 	local confirm=false
@@ -159,12 +163,12 @@ function install {
 	fi
 }
 
-function resolve_path {
+resolve_path() {
 	cd $(dirname $1)
 	echo $PWD/$(basename $1)
 }
 
-function ensure_ln_s {
+ensure_ln_s() {
 	local target="$(resolve_path $1)"
 	log_info "Ensuring symlink '$target' -> '$2'"
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
@@ -192,7 +196,7 @@ function ensure_ln_s {
 	fi
 }
 
-function ensure_mkdir {
+ensure_mkdir() {
 	log_info "Ensuring directory '$1' exists"
 	if [[ ! -d "$1" ]]; then
 		log_info "Making directory '$1'"
@@ -204,7 +208,7 @@ function ensure_mkdir {
 	fi
 }
 
-function extract {
+extract() {
 	if [[ -f $1 ]]; then
 		case $1 in
 			*.tar.bz2) tar -jxvf $1
