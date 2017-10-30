@@ -1,5 +1,4 @@
-local use_vim_keybindings=false
-if $use_vim_keybindings; then
+if [[ "$ZSH_VI_MODE" = true ]]; then
 	bindkey -v
 
 	# Reduce vim mode switching delay

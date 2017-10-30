@@ -32,13 +32,8 @@ task_zsh() {
 	else
 		log_info "Shell can be changed later by running 'chsh -s $(which zsh)'"
 	fi
-	if [ ! -f ~/.zsh-prompt-hide-host ]; then
-		if prompt_yn "Show hostname in ZSH prompt?"; then
-			log_info "Hostname can be hidden at any time by creating the file ~/.zsh-prompt-hide-host"
-		else
-			log_info "Creating file ~/.zsh-prompt-hide-host"
-			touch ~/.zsh-prompt-hide-host
-		fi
+	if [[ ! -f ~/.zshenv ]]; then
+		echo "export ZSH_VI_MODE=false\nexport ZSH_PROMPT_HIDE_HOST=false" > ~/.zshenv
 	fi
 }
 
