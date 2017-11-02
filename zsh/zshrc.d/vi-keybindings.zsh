@@ -1,8 +1,15 @@
 if [[ "$ZSH_VI_MODE" = true ]]; then
+	# Enable vi keybindings
 	bindkey -v
 
 	# Reduce vim mode switching delay
 	export KEYTIMEOUT=1
+
+	# vim-like backspace
+	bindkey "^?" backward-delete-char
+
+	# ctrl-r for backward search
+	bindkey '^r' history-incremental-search-backward
 
 	# Use vertical cursor when in insert mode, block when in normal mode
 
