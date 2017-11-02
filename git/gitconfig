@@ -18,6 +18,8 @@
 	autocrlf = input
 	ignorecase = false
 	editor = vim
+[color]
+	ui = auto
 [diff]
 	mnemonicprefix = true
 	renamelimit = 0
