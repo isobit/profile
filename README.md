@@ -12,22 +12,14 @@ file does not exist already.
 
 ### Mapping Caps Lock to Escape
 
-#### Windows
-
-Get [AutoHotkey](http://www.autohotkey.com/) and use the script `Capslock::Esc`.
-
-#### Antergos
-
-Look in the keyboard settings.
-
-#### Mac
-
-Use [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements).
+- **GNOME**: Use the tweak tool keyboard settings.
+- **macOS**: Use [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements).
+- **Windows**: Get [AutoHotkey](http://www.autohotkey.com/) and use the script `Capslock::Esc`.
 
 ## Usage
 
 ### Local Config
 
 System-local configuration will be sourced from the following locations:
-- zsh: `~/.zshrc.local`, `~/.localrc`
-- vim: `~/.vimrc.local`
+- **zsh**: `~/.zshrc.local`, `~/.localrc`
+- **vim**: `~/.vimrc.local`
