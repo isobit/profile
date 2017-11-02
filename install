@@ -33,7 +33,9 @@ task_zsh() {
 		log_info "Shell can be changed later by running 'chsh -s $(which zsh)'"
 	fi
 	if [[ ! -f ~/.zshenv ]]; then
-		echo "export ZSH_VI_MODE=false\nexport ZSH_PROMPT_HIDE_HOST=false" > ~/.zshenv
+		log_info "Creating default ~/.zshenv"
+		echo "export ZSH_VI_MODE=true" > ~/.zshenv
+		echo "export ZSH_PROMPT_HIDE_HOST=false" >> ~/.zshenv
 	fi
 }
 
