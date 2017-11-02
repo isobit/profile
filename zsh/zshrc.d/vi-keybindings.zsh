@@ -4,38 +4,32 @@ if [[ "$ZSH_VI_MODE" = true ]]; then
 	# Reduce vim mode switching delay
 	export KEYTIMEOUT=1
 
-	function zle-keymap-select zle-line-init {
-		case "$TERM_PROGRAM" in
-			"iTerm")
-				case "$KEYMAP" in
-					vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
-					viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
-				esac
-				;;
-			*)
-				case "$KEYMAP" in
-					vicmd)      print -n -- "\E[1 q";;  # block cursor
-					viins|main) print -n -- "\E[5 q";;  # line cursor
-				esac
-				;;
-		esac
+	# Use vertical cursor when in insert mode, block when in normal mode
 
+	if [[ "$TERM" =~ "screen.*" ]]; then
+		local cursor_esc_block="\eP\e[1 q\e\\"
+		local cursor_esc_line="\eP\e[5 q\e\\"
+	elif [[ "$TERM_PROGRAM" =~ "iTerm.*" ]]; then
+		local cursor_esc_block="\E]50;CursorShape=0\C-G"
+		local cursor_esc_line="\E]50;CursorShape=1\C-G"
+	else
+		local cursor_esc_block="\E[1 q"
+		local cursor_esc_line="\E[5 q"
+	fi
+
+	function zle-keymap-select zle-line-init {
+		case "$KEYMAP" in
+			vicmd)      print -n -- "$cursor_esc_block";;
+			viins|main) print -n -- "$cursor_esc_line";;
+		esac
 		zle reset-prompt
 		zle -R
 	}
+	zle -N zle-line-init
+	zle -N zle-keymap-select
 
 	function zle-line-finish {
-		case "$TERM_PROGRAM" in
-			"iTerm")
-				print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
-				;;
-			*)
-				print -n -- "\E[1 q"
-				;;
-		esac
+		print -n -- "$cursor_esc_block"
 	}
-
-	zle -N zle-line-init
 	zle -N zle-line-finish
-	zle -N zle-keymap-select
 fi
