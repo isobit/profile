@@ -5,10 +5,10 @@ profile
 
 Run `./install` in the repo directory. Everything is installed relative to `~`.
 
-### Local Config
-System-local configuration will be sourced from the following locations:
-- zsh: `~/.zshrc.local`, `~/.localrc`
-- vim: `~/.vimrc.local`
+### ZSH Configuration
+
+ZSH configuration should automatically be populated into `~/.zshenv`, if that
+file does not exist already.
 
 ### Mapping Caps Lock to Escape
 
@@ -26,4 +26,8 @@ Use [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements).
 
 ## Usage
 
-Put any machine-specific `zshrc` commands in `~/.localrc`. It will be sourced automatically by `~/.zshrc`.
+### Local Config
+
+System-local configuration will be sourced from the following locations:
+- zsh: `~/.zshrc.local`, `~/.localrc`
+- vim: `~/.vimrc.local`
