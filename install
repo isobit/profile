@@ -26,11 +26,16 @@ task_zsh() {
 	install zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
-	if prompt_yn "Change shell to zsh?"; then
-		log_info "Changing shell to zsh"
-		chsh -s $(which zsh) || log_warn "'chsh -s $(which zsh)' failed, please do this manually"
+	local shell_bin="$(cat /etc/shells | grep zsh)"
+	if [ ! "$SHELL" = "$shell_bin" ]; then
+		if prompt_yn "Change shell to zsh?"; then
+			log_info "Changing shell to zsh"
+			chsh -s "$shell_bin" || log_warn "'chsh -s $shell_bin' failed, please do this manually"
+		else
+			log_info "Shell can be changed later by running 'chsh -s $shell_bin'"
+		fi
 	else
-		log_info "Shell can be changed later by running 'chsh -s $(which zsh)'"
+		log_info "$shell_bin is already the default shell"
 	fi
 	if [[ ! -f ~/.zshenv ]]; then
 		log_info "Creating default ~/.zshenv"
