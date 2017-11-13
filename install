@@ -22,7 +22,6 @@ task_vim() {
 task_zsh() {
 	log_util 'TASK' 'zsh'
 	install git
-	install safe-rm
 	install zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
