@@ -48,6 +48,11 @@ task_bash() {
 	ensure_ln_s ./bash/bashrc ~/.bashrc
 }
 
+task_screen() {
+	log_util 'TASK' 'screen'
+	ensure_ln_s ./screen/bashrc ~/.screenrc
+}
+
 task_git() {
 	log_util 'TASK' 'git'
 	install git
