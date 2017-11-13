@@ -43,6 +43,11 @@ task_zsh() {
 	fi
 }
 
+task_bash() {
+	log_util 'TASK' 'bash'
+	ensure_ln_s ./bash/bashrc ~/.bashrc
+}
+
 task_git() {
 	log_util 'TASK' 'git'
 	install git

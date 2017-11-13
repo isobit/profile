@@ -1,0 +1,86 @@
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Env
+export EDITOR=vim
+export VISUAL=vim
+export GIT_EDITOR=vim
+
+# History
+shopt -s histappend
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# Vi-mode
+set editing-mode vi
+
+# Prompt
+case "$TERM" in
+	screen*)
+		PROMPT_SCREEN='\[\ek\w\e\\\]'
+		;;
+	*)
+		PROMPT_SCREEN=''
+		;;
+esac
+case "$TERM" in
+	xterm-color|*-256color)
+		# Enable ls colors
+		export LSCOLORS="Gxfxcxdxbxegedabagacad"
+		if [[ "$OSTYPE" =~ "darwin" ]]; then
+			alias ls="ls -G"
+		else
+			alias ls="ls --color"
+		fi
+		alias grep="grep --color=auto"
+		PROMPT="\e[90m[\e[35m\u@\h\e[90m] \e[34m\w \e[90m$ \e[39m"
+		;;
+	*)
+		PROMPT="[\u@\h] \w $ "
+		;;
+esac
+export PS1="${PROMPT_SCREEN}${PROMPT}"
+
+# Custom
+alias rm="rm -I"
+alias dus="du -sh * | sort -h"
+alias grep-multiline="grep -Pzo"
+alias timestamp="date +'%Y-%m-%dT%H-%M-%S'"
+alias datestamp="date +'%Y-%m-%d'"
+extract() {
+	local file="${@: -1}"
+	if [[ -f "$file" ]]; then
+		case "$file" in
+			*.tar)      tar -xf "$@"       ;;
+			*.tar.gz)   tar -zxf "$@"      ;;
+			*.tgz)      tar -zxf "$@"      ;;
+			*.tar.xz)   tar -xf "$@"       ;;
+			*.txz)      tar -xf "$@"       ;;
+			*.tar.bz2)  tar -jxf "$@"      ;;
+			*.tbz2)     tar -jxf "$@"      ;;
+			*.bz2)      bunzip2 "$@"       ;;
+			*.dmg)      hdiutul mount "$@" ;;
+			*.gz)       gunzip "$@"        ;;
+			*.zip)      unzip "$@"         ;;
+			*.Z)        uncompress "$@"    ;;
+			*)          echo "'${file}' cannot be extracted/mounted via extract()." ;;
+		esac
+	else
+		echo "'${file}' is not a valid file."
+	fi
+}
+tarball() {
+	local file="${@: -1}"
+	tar -cz "$@" -f "${file}.tar.gz"
+}
+path() {
+	cd "$(dirname $1)"
+	echo "$PWD/$(basename $1)"
+}
+
+# Local Config
+if [[ -e "${HOME}/.bashrc.local" ]]; then
+	source "${HOME}/.bashrc.local"
+fi
