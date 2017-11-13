@@ -13,9 +13,6 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# Vi-mode
-set editing-mode vi
-
 # Prompt
 case "$TERM" in
 	screen*)
