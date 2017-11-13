@@ -90,6 +90,11 @@ case "$1" in
 	gnupg | gpg)
 		task_gnupg
 		;;
+	server)
+		task_bash
+		task_screen
+		task_vim
+		;;
 	'')
 		task_vim
 		task_zsh
