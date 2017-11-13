@@ -111,19 +111,19 @@ install() {
 
 	if ! $confirm; then
 		case $PKG_MANAGER in
-			apt-get | yum)		
+			apt-get | yum)
 				cmd_opts="-y"
 				;;
 			pacman | yaourt)
 				cmd_opts="--noconfirm"
 				;;
-			*) 
+			*)
 				;;
 		esac
 	fi
 
 	case $PKG_MANAGER in
-		apt-get)	
+		apt-get)
 			cmd="sudo $cmd"
 			cmd_args="install "$1""
 			;;
