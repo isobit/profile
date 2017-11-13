@@ -50,6 +50,7 @@ task_bash() {
 
 task_screen() {
 	log_util 'TASK' 'screen'
+	install screen
 	ensure_ln_s ./screen/bashrc ~/.screenrc
 }
 
