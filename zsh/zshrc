@@ -8,16 +8,16 @@ autoload -U colors && colors
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
 # ZSH conf.d
-if [[ -d $HOME/.zshrc.d ]]; then
-	for plugin in $HOME/.zshrc.d/*.zsh; do
+if [[ -d "${HOME}/.zshrc.d" ]]; then
+	for plugin in ${HOME}/.zshrc.d/*.zsh; do
 		source "$plugin"
 	done
 fi
 
 # Local Config
-if [[ -e $HOME/.localrc ]]; then
-	source $HOME/.localrc
+if [[ -e "${HOME}/.localrc" ]]; then
+	source "${HOME}/.localrc"
 fi
-if [[ -e $HOME/.zshrc.local ]]; then
-	source $HOME/.zshrc.local
+if [[ -e "${HOME}/.zshrc.local" ]]; then
+	source "${HOME}/.zshrc.local"
 fi
