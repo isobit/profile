@@ -7,48 +7,49 @@ set nocompatible
 call plug#begin()
 
 Plug 'tpope/vim-sensible' " Sensible default options
-Plug 'xolox/vim-misc'
-Plug 'mattn/webapi-vim'
+Plug 'mattn/webapi-vim'   " Web API client framework, needed for gist-vim
+Plug 'xolox/vim-misc'    " Needed for vim-session
 
 " Interface
 Plug 'scrooloose/nerdtree'     " Project directory tree
 Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
-Plug 'yggdroot/indentline'     " Indentation guide lines
-Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
 Plug 'mattn/gist-vim'          " :Gist to post to GitHub Gist
 
 " Editing
-Plug 'ervandew/supertab'    " Tab completion
-Plug 'godlygeek/tabular'    " :Tab to align given format
-Plug 'jiangmiao/auto-pairs' " Autoclose quotes and other delimiters
-Plug 'scrooloose/syntastic' " Syntax checking
-Plug 'sickill/vim-pasta'    " Adjust pasting to destination context
-Plug 'tomtom/tcomment_vim'  " gc to comment
-Plug 'tpope/vim-abolish'    " :S to do smart substitute (understands capitalization)
-Plug 'tpope/vim-sleuth'     " Autodetect tabbing
-Plug 'tpope/vim-surround'   " cs to change surrounding delimiters
-Plug 'xolox/vim-session' 	" Better sessions, :SaveSession and :OpenSession
+Plug 'ervandew/supertab'     " Tab completion
+Plug 'godlygeek/tabular'     " :Tab to align given format
+" Plug 'jiangmiao/auto-pairs'  " Autoclose quotes and other delimiters
+Plug 'scrooloose/syntastic'  " Syntax checking
+Plug 'sickill/vim-pasta'     " Adjust pasting to destination context
+" Plug 'tomtom/tcomment_vim'   " gc to comment
+Plug 'tpope/vim-abolish'     " :S to do smart substitute (understands capitalization)
+Plug 'tpope/vim-commentary'  " gc to comment
+Plug 'tpope/vim-sleuth'      " Autodetect tabbing
+Plug 'tpope/vim-speeddating' " Support for datetime incrementing
+Plug 'tpope/vim-surround'    " cs to change surrounding delimiters
+Plug 'xolox/vim-session'     " Better sessions, :SaveSession and :OpenSession
 
 " Languages
 Plug 'sheerun/vim-polyglot'
+Plug 'gutenye/json5.vim'
 Plug 'isobit/vim-caddyfile'
 Plug 'posva/vim-vue'
-Plug 'gutenye/json5.vim'
 
 " Colors
 Plug 'isobit/vim-darcula-colors'
+
+" Plugin dev
+" Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
 
 call plug#end()
 
 " ================ Plugin Settings ===================
 
-let g:indentLine_char = '|'
-let g:indentLine_setColors = 0
 let g:jsx_ext_required = 1
 let g:nerdtree_tabs_focus_on_files = 1
-let g:nerdtree_tabs_synchronize_view = 0
-let g:polyglot_disabled = ['arduino']
-let g:session_autosave = 'no'
+" let g:nerdtree_tabs_synchronize_view = 0
+let g:polyglot_disabled = ['arduino', 'caddyfile']
+" let g:session_autosave = 'no'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
 let g:vim_markdown_conceal = 0
@@ -246,7 +247,7 @@ if &term =~ '256color'
 	set t_Co=256
 endif
 
-" vp doesn't replace paste buffer
+" Don't replace paste buffer when using vp
 function! RestoreRegister()
 	let @" = s:restore_reg
 	return ''
