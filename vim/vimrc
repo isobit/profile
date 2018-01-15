@@ -18,10 +18,9 @@ Plug 'mattn/gist-vim'          " :Gist to post to GitHub Gist
 " Editing
 Plug 'ervandew/supertab'     " Tab completion
 Plug 'godlygeek/tabular'     " :Tab to align given format
-" Plug 'jiangmiao/auto-pairs'  " Autoclose quotes and other delimiters
+Plug 'jiangmiao/auto-pairs'  " Autoclose quotes and other delimiters
 Plug 'scrooloose/syntastic'  " Syntax checking
 Plug 'sickill/vim-pasta'     " Adjust pasting to destination context
-" Plug 'tomtom/tcomment_vim'   " gc to comment
 Plug 'tpope/vim-abolish'     " :S to do smart substitute (understands capitalization)
 Plug 'tpope/vim-commentary'  " gc to comment
 Plug 'tpope/vim-sleuth'      " Autodetect tabbing
