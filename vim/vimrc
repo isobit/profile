@@ -322,6 +322,12 @@ vnoremap J :left<cr>gv:join!<cr>gv:s/,/, /ge<cr>gv=gv:s/\s\+$//e<cr>
 " K to split line
 vnoremap K <esc>o<esc>mkgv:s/\([({\[,]\)/\1\r/ge<cr>`<v`k:s/\([)}\]]\)/\r\1/ge<cr>`<v`k=`kddk
 
+if exists(":Tabularize")
+	vnoremap <leader>a= :Tabularize /=<cr>
+	vnoremap <leader>a: :Tabularize /:\zs<cr>
+	vnoremap <leader>as :Tabularize /^\@<! \{2,}\zs<cr>
+endif
+
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
 
