@@ -79,6 +79,9 @@ case "$1" in
 	vim)
 		task_vim
 		;;
+	bash)
+		task_bash
+		;;
 	zsh)
 		task_zsh
 		;;
@@ -98,6 +101,7 @@ case "$1" in
 		;;
 	'')
 		task_vim
+		task_bash
 		task_zsh
 		task_git
 		task_tmux
