@@ -338,3 +338,6 @@ set secure
 if filereadable(glob('~/.vimrc.local'))
 	source ~/.vimrc.local
 endif
+
+set exrc
+set secure
