@@ -167,13 +167,21 @@ endfunction
 command -nargs=? SetTab :call SetTab(<f-args>)
 
 " Indentation style
-" set cinoptions=*200
-set cinoptions=(0,m1,h0,l1,t0,J1,j1,*200
+set cino= " Reset cinoptions
+set cino+=l1 " Align with case label instead of statement after it in same line
+set cino+=h0 " No indent inside C++ scope declarations (public/private)
+set cino+=t0 " No indent for function return type on separate line
+set cino+=(0 " When in parens, line up with the next non-white char
+set cino+=m1 " Line up closing paren with the first char of opening paren line
+set cino+=j1 " Indent Java anonymous classes correctly
+set cino+=J1 " Indent JavaScript object declarations correctly
+set cino+=*500 " Search for unclosed comments at most N lines away
 
 " ================= Line Wrapping ===================
 
 set textwidth=79 " Use 80 as the max line length
 set nowrap       " Don't wrap lines by default
+set fo=croqn
 
 " Allow toggling between wrapping and not wrapping
 function WrapToggle()
