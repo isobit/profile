@@ -1,8 +1,33 @@
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
-alias timestamp="date +'%Y-%m-%dT%H-%M-%S'"
-alias datestamp="date +'%Y-%m-%d'"
+alias datestamp="date -u +'%Y%m%d'"
+
+# alias timestamp="date -u +'%Y%m%dT%H%M%SZ'"
+timestamp() {
+	local fmt='%Y%m%dT'
+	case "${1:l}" in
+		-h|--hour)
+			fmt+='%H'
+			;;
+		-m|--min|--minute)
+			fmt+='%H%M'
+			;;
+		''|-s|--sec|--second)
+			fmt+='%H%M%S'
+			;;
+		*)
+			echo "Unknown option: ${1}" 1>&2
+			echo "Usage: timestamp [OPTION]..." 1>&2
+			echo "Print an ISO8601-compatible timestamp for use in filenames." 1>&2
+			echo "  -h, --hour           Omit minutes and seconds" 1>&2
+			echo "  -m, --min, --minute  Omit seconds" 1>&2
+			echo "  -s, --sec, --second  Do not omit anything (the default)." 1>&2
+			return 1
+	esac
+	fmt+='Z'
+	date -u +"${fmt}"
+}
 
 # Resolve a relative path
 path() {
@@ -62,7 +87,7 @@ extract() {
 export BACKUP_DIR="$HOME/backup/"
 backup() {
 	local file="$(path $1)"
-	tar -czf "$BACKUP_DIR/${file//\//%}_$(date +'%Y-%m-%dT%H-%M-%S').tar.gz" ${@:2} $1
+	tar -czf "$BACKUP_DIR/${file//\//%}_$(timestamp).tar.gz" ${@:2} $1
 }
 
 tarball() {
@@ -134,7 +159,7 @@ upload() {
 	if [[ ! -n "$filename" ]]; then
 		local filename="$(basename "$file")"
 	fi
-	local filename="${filename%%.*}_$(date +'%Y-%m-%dT%H-%M-%S').${filename#*.}"
+	local filename="${filename%%.*}-$(timestamp).${filename#*.}"
 
 	local upload_url="https://fm.isobit.io/webdav/public/${filename}"
 	local download_url="https://f.isobit.io/${filename}"

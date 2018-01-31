@@ -44,8 +44,23 @@ export PS1="${PROMPT_SCREEN}${PROMPT}"
 alias rm="rm -I"
 alias dus="du -sh * | sort -h"
 alias grep-multiline="grep -Pzo"
-alias timestamp="date +'%Y-%m-%dT%H-%M-%S'"
 alias datestamp="date +'%Y-%m-%d'"
+timestamp() {
+	local fmt='%Y%m%dT'
+	case "${1,,}" in
+		h|hour)
+			fmt+='%H'
+			;;
+		m|min|minute)
+			fmt+='%H%M'
+			;;
+		*)
+			fmt+='%H%M%S'
+			;;
+	esac
+	fmt+='Z'
+	date -u +"${fmt}"
+}
 extract() {
 	local file="${@: -1}"
 	if [[ -f "$file" ]]; then
