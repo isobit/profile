@@ -2,6 +2,13 @@ scriptencoding utf-8
 set encoding=utf-8
 set nocompatible
 
+" autocommand group for vimrc, autocommands in this file should all be assigned
+" to this group
+augroup vimrc
+	" Delete existing, makes it safe to reload vimrc
+	autocmd!
+augroup END
+
 " ===================== Plugins ============================
 
 call plug#begin()
@@ -94,26 +101,40 @@ silent! colors darcula
 set fillchars=""
 
 " Highlight trailing whitespace when not in insert mode
-function! SetTrailingWhitespaceEnabled(enabled)
-	if a:enabled && !exists('w:tws_id')
-		let w:tws_id = matchadd('TrailingWhitespace', '\s\+$')
-	end
-	if !a:enabled && exists('w:tws_id')
-		call matchdelete(w:tws_id)
-		unlet w:tws_id
-	end
+try
+	" Check if the highlight group exists first by attempting to get
+	" information about it from the highlight command (redirected to the black
+	" hole register to prevent output)
+	redir @_
+	highlight TrailingWhitespace
+	redir END
+	function! SetTrailingWhitespaceEnabled(enabled)
+		if a:enabled && !exists('w:tws_id')
+			let w:tws_id = matchadd('TrailingWhitespace', '\s\+$')
+		end
+		if !a:enabled && exists('w:tws_id')
+			call matchdelete(w:tws_id)
+			unlet w:tws_id
+		end
+	endfunction
+	autocmd vimrc InsertEnter * call SetTrailingWhitespaceEnabled(0)
+	autocmd vimrc BufNewFile,BufRead,InsertLeave * call SetTrailingWhitespaceEnabled(1)
+catch
+	" Do nothing if highlight group is not found
+endtry
+
+" Custom function for cleaning up trailing whitespace
+function! CleanWhitespace()
+	let l:search=&hlsearch
+	:%s/\s\+$//e
+	let &hlsearch=l:search
 endfunction
-augroup vimrc_match_trailingwhitespace
-	autocmd!
-	autocmd InsertEnter * call SetTrailingWhitespaceEnabled(0)
-	autocmd BufNewFile,BufRead,InsertLeave * call SetTrailingWhitespaceEnabled(1)
-augroup END
+command -nargs=? CleanWhitespace :call CleanWhitespace(<f-args>)
 
 " Custom listchars
+set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<
 if has("patch-7.4.710")
-	set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<,space:·
-else
-	set listchars=eol:$,tab:>-,trail:·,extends:>,precedes:<
+	set listchars+=space:·
 endif
 
 " Turn off swap files.
@@ -135,7 +156,7 @@ set sidescrolloff=15
 
 " Disable bell
 set noeb vb t_vb=
-au GUIEnter * set vb t_vb=
+autocmd vimrc GUIEnter * set vb t_vb=
 
 " ================ Search  ==========================
 
@@ -147,7 +168,7 @@ set smartcase
 
 set smartindent
 
-" Use \t with a width of 4 by default
+" Use tabs with a width of 4 by default
 set noexpandtab
 set shiftwidth=4
 set tabstop=4
@@ -190,17 +211,24 @@ function WrapToggle()
 		set wrap
 	endif
 endfunction
-" Mapped to \w
-map <leader>w mz:execute WrapToggle()<cr>`z
+command -nargs=? WrapToggle :call SetTab(<f-args>)
+" See mapping section for key binding
 
 " Wrap lines at convenient points
 set linebreak
 
 " Highlights characters past the textwidth
-augroup vimrc_match_overlength
-	autocmd!
-	autocmd FileType * execute 'match OverLength /\%'.(&textwidth + 1).'v.\+/'
-augroup END
+try
+	" Check if the highlight group exists first by attempting to get
+	" information about it from the highlight command (redirected to the black
+	" hole register to prevent output)
+	redir @_
+	hi OverLength
+	redir END
+	autocmd vimrc FileType * execute 'match OverLength /\%'.(&textwidth + 1).'v.\+/'
+catch
+	" Do nothing if highlight group is not found
+endtry
 
 " ================ Folds ============================
 
@@ -267,15 +295,10 @@ endfunction
 vmap <silent> <expr> p <sid>Repl()
 
 " Turn on spell checking in git commits
-augroup vimrc_gitcommit_spell
-	autocmd!
-	autocmd FileType gitcommit setlocal spell
-augroup END
+autocmd vimrc FileType gitcommit setlocal spell
 
 " Properly indent c++11 lambdas
-" augroup vimrc_cpp11_lambda_cino
-" 	autocmd FileType cpp setlocal cindent cino=j1,(0,ws,Ws
-" augroup END
+" autocmd vimrc FileType cpp setlocal cindent cino=j1,(0,ws,Ws
 
 " Hide ~ for empty lines
 highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
@@ -287,6 +310,9 @@ nmap <silent> gk :wincmd k<cr>
 nmap <silent> gj :wincmd j<cr>
 nmap <silent> gh :wincmd h<cr>
 nmap <silent> gl :wincmd l<cr>
+
+" \w to toggle line wrapping
+map <leader>w mz:execute WrapToggle()<cr>`z
 
 " \g to go to buf
 noremap <silent> <leader>g :ls<cr>:b
