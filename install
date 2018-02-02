@@ -1,13 +1,13 @@
 #!/bin/bash
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd $DIR
-source ./shaddox.sh
+source ./install_utils.sh
 
 task_vim() {
 	log_util 'TASK' 'vim'
-	install git
-	install vim
-	install curl
+	ensure_pkg git
+	ensure_pkg vim
+	ensure_pkg curl
 	ensure_mkdir ~/.vim
 	ensure_ln_s ./vim/vimrc ~/.vimrc
 	if [ ! -f ~/.vim/autoload/plug.vim ]; then
@@ -21,8 +21,8 @@ task_vim() {
 
 task_zsh() {
 	log_util 'TASK' 'zsh'
-	install git
-	install zsh
+	ensure_pkg git
+	ensure_pkg zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
 	local shell_bin="$(cat /etc/shells | grep zsh)"
@@ -50,27 +50,27 @@ task_bash() {
 
 task_screen() {
 	log_util 'TASK' 'screen'
-	install screen
+	ensure_pkg screen
 	ensure_ln_s ./screen/bashrc ~/.screenrc
 }
 
 task_git() {
 	log_util 'TASK' 'git'
-	install git
+	ensure_pkg git
 	ensure_ln_s ./git/gitconfig ~/.gitconfig
 	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 }
 
 task_tmux() {
 	log_util 'TASK' 'tmux'
-	install tmux
+	ensure_pkg tmux
 	ensure_mkdir ~/.tmux
 	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
 }
 
 task_gnupg() {
 	log_util 'TASK' 'gnupg'
-	install gpg
+	ensure_pkg gpg
 	ensure_mkdir ~/.gnupg
 	ensure_ln_s ./gnupg/gpg.conf ~/.gnupg/gpg.conf
 }

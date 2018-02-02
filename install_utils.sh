@@ -1,16 +1,14 @@
-#!/bin/bash
-
-SHADDOX_VERBOSE=true
+VERBOSE=true
 
 log_info() {
-	if ! $SHADDOX_VERBOSE; then
+	if ! $VERBOSE; then
 		return 0
 	fi
 	echo -e "\033[36m=>\033[0m $1" >&2
 }
 
 log_util() {
-	if ! $SHADDOX_VERBOSE; then
+	if ! $VERBOSE; then
 		return 0
 	fi
 	echo -e "[\033[34m$1\033[0m] $2" >&2
@@ -67,8 +65,8 @@ else
 	PKG_MANAGER="manual_install"
 fi
 
-install() {
-	log_info "Ensuring installation of '$1'"
+ensure_pkg() {
+	log_info "Ensuring installation of package '$1'"
 	local dryrun=false
 	local confirm=false
 	local force=false
