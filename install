@@ -51,7 +51,7 @@ task_bash() {
 task_screen() {
 	log_util 'TASK' 'screen'
 	ensure_pkg screen
-	ensure_ln_s ./screen/bashrc ~/.screenrc
+	ensure_ln_s ./screen/screenrc ~/.screenrc
 }
 
 task_git() {
