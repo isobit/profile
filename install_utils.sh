@@ -22,6 +22,10 @@ log_error() {
 	echo -e "[\033[31mERROR\033[0m] $1" >&2
 }
 
+timestamp() {
+	date +'%Y%m%dT%H%M%S'
+}
+
 prompt_yn() {
 	local prompt="$1 \033[32m[Y/n]:\033[0m "
 	while true; do
@@ -173,8 +177,9 @@ ensure_ln_s() {
 		if [[ -e "$2" ]]; then
 			log_warn "File '$2' already exists"
 			if prompt_yn "Would you like to replace '$2'?"; then
-				log_info "Moving '$2' to '$2.orig'"
-				mv "$2" "$2.orig"
+				local backup="$2.backup-$(timestamp)"
+				log_info "Moving '$2' to '${backup}'"
+				mv "$2" "$backup"
 				if [ $? -ne 0 ]; then
 					log_error "Failed to move existing file '$2'"
 					return 1
