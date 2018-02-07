@@ -75,6 +75,14 @@ task_gnupg() {
 	ensure_ln_s ./gnupg/gpg.conf ~/.gnupg/gpg.conf
 }
 
+task_pgcli() {
+	log_util 'TASK' 'pgcli'
+	ensure_ln_s ./pgcli/config ~/.config/pgcli/config
+	if ! installed pgcli; then
+		pip install pgcli
+	fi
+}
+
 case "$1" in
 	vim)
 		task_vim
@@ -94,6 +102,9 @@ case "$1" in
 	gnupg | gpg)
 		task_gnupg
 		;;
+	pgcli)
+		task_pgcli
+		;;
 	server)
 		task_bash
 		task_screen
@@ -106,6 +117,7 @@ case "$1" in
 		task_git
 		task_tmux
 		task_gnupg
+		task_pgcli
 		;;
 	*)
 		log_error "Unknown task '$1'"
