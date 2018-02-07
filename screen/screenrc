@@ -1,3 +1,4 @@
 term "screen-256color"
+altscreen on
 mousetrack on
 shelltitle "$ |bash"
