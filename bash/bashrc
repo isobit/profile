@@ -76,7 +76,7 @@ extract() {
 			*.tar.bz2)  tar -jxf "$@"      ;;
 			*.tbz2)     tar -jxf "$@"      ;;
 			*.bz2)      bunzip2 "$@"       ;;
-			*.dmg)      hdiutul mount "$@" ;;
+			*.dmg)      hdiutil mount "$@" ;;
 			*.gz)       gunzip "$@"        ;;
 			*.zip)      unzip "$@"         ;;
 			*.Z)        uncompress "$@"    ;;
