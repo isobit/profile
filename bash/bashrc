@@ -34,7 +34,7 @@ case "$TERM" in
 			alias ls="ls --color"
 		fi
 		alias grep="grep --color=auto"
-		PROMPT="\e[90m[\e[35m\u@\h\e[90m] \e[34m\w \e[90m$ \e[39m"
+		PROMPT="\[\e[90m\][\[\e[35m\]\u@\h\[\e[90m\]] \[\e[34m\]\w \[\e[90m\]$ \[\e[39m\]"
 		;;
 	*)
 		PROMPT="[\u@\h] \w $ "
