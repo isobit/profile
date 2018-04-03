@@ -43,6 +43,7 @@ esac
 export PS1="${PROMPT_SCREEN}${PROMPT}"
 
 # Custom
+alias trim="sed 's/^ *//;s/ *$//'"
 alias rm="rm -I"
 alias dus="du -sh * | sort -h"
 alias grep-multiline="grep -Pzo"

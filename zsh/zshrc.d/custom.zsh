@@ -1,3 +1,4 @@
+alias trim="sed 's/^ *//;s/ *$//'"
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
