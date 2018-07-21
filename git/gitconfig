@@ -38,7 +38,7 @@
 	default = simple
 [user]
 	name = Josh Glendenning
-	email = joshglendenning@gmail.com
+	email = josh@isobit.io
 [github]
 	user = isobit
 [include]
