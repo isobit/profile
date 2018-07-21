@@ -11,6 +11,10 @@ if [[ "$ZSH_VI_MODE" = true ]]; then
 	# ctrl-r for backward search
 	bindkey '^r' history-incremental-search-backward
 
+	# v to edit command line in editor
+	autoload -Uz edit-command-line
+	zle -N edit-command-line
+	bindkey -M vicmd v edit-command-line
 	# Use vertical cursor when in insert mode, block when in normal mode
 
 	if [[ "$TERM" =~ "screen.*" ]]; then
