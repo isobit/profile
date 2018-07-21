@@ -2,7 +2,7 @@ if [[ "$ZSH_VI_MODE" = true ]]; then
 	# Enable vi keybindings
 	bindkey -v
 
-	# Reduce vim mode switching delay
+	# Reduce vi mode switching delay
 	export KEYTIMEOUT=1
 
 	# vim-like backspace
