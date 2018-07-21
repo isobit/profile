@@ -12,6 +12,7 @@
 	fork = checkout -b
 	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ; }; gi"
 	lg = log --graph --date=relative --decorate
+	lga = log --graph --date=relative --decorate --all --oneline
 	st = status
 	unfuck = !git fsck && git remote prune origin && git gc
 [core]
