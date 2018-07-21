@@ -25,6 +25,7 @@
 	mnemonicprefix = true
 	renamelimit = 0
 	renames = copies
+	wsErrorHighlight = all
 [git-p4]
 	detectRenames = true
 [grep]
