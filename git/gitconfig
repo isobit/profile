@@ -8,7 +8,7 @@
 	br = branch
 	c = commit -v
 	co  = checkout
-	cp = cherry-pick
+	cp = cherry-pick -x
 	fork = checkout -b
 	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ; }; gi"
 	lg = log --graph --date=relative --decorate
