@@ -167,22 +167,27 @@ set smartcase
 
 " ================ Indentation ======================
 
-set smartindent
+"set smartindent
 
 " Use tabs with a width of 4 by default
 set noexpandtab
-set shiftwidth=4
 set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 
 function SetTab(...)
 	if a:0 == 0
+		" No arguments means use tabs and make them look like 4 spaces
 		set noexpandtab
 		set shiftwidth=4
 		set tabstop=4
+		set softtabstop=4
 	else
+		" If argument is passed, use n spaces (where n is the argument)
 		set expandtab
-		let &shiftwidth=a:1
 		let &tabstop=a:1
+		let &softtabstop=a:1
+		let &shiftwidth=a:1
 	endif
 endfunction
 command -nargs=? SetTab :call SetTab(<f-args>)
