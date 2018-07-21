@@ -26,6 +26,8 @@
 	renamelimit = 0
 	renames = copies
 	wsErrorHighlight = all
+[fetch]
+	prune = true
 [git-p4]
 	detectRenames = true
 [grep]
