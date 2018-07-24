@@ -1,4 +1,5 @@
-term "screen-256color"
 altscreen on
 mousetrack on
 shelltitle "$ |bash"
+startup_message off
+term "screen-256color"
