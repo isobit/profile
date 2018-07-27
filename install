@@ -17,6 +17,7 @@ task_vim() {
 	fi
 	log_info "Running PlugUpdate"
 	vim +PlugUpdate +qall
+	ensure_ln_s ./vim/after ~/.vim/after
 }
 
 task_zsh() {

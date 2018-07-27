@@ -356,7 +356,7 @@ vnoremap K <esc>o<esc>mkgv:s/\([({\[,]\)/\1\r/ge<cr>`<v`k:s/\([)}\]]\)/\r\1/ge<c
 " \a for aligning/tabularizing
 vnoremap <leader>a= :Tabularize /=<cr>
 vnoremap <leader>a: :Tabularize /:\zs<cr>
-vnoremap <leader>as :Tabularize /^\@<! \{2,}\zs<cr>
+vnoremap <leader>as :Tabularize multiple_spaces<cr>
 
 " :w!! to sudo write
 cmap w!! w !sudo tee % >/dev/null
