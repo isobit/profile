@@ -1,4 +1,5 @@
 VERBOSE=true
+INSTALL_PKG_NOCONFIRM=false
 
 log_info() {
 	if ! $VERBOSE; then
@@ -46,8 +47,8 @@ prompt_yn() {
 	done
 }
 
-installed() {
-	hash $1 2>/dev/null || alias $1 > /dev/null 2>&1
+is_installed() {
+	hash "$1" 2>/dev/null || alias "$1" > /dev/null 2>&1
 }
 
 manual_install() {
@@ -55,47 +56,29 @@ manual_install() {
 	read
 }
 
-if installed apt-get; then
+if is_installed apt-get; then
 	PKG_MANAGER="apt-get"
-elif installed brew; then
+elif is_installed brew; then
 	PKG_MANAGER="brew"
-elif installed yaourt; then
+elif is_installed yaourt; then
 	PKG_MANAGER="yaourt"
-elif installed pacman; then
+elif is_installed pacman; then
 	PKG_MANAGER="pacman"
-elif installed yum; then
+elif is_installed yum; then
 	PKG_MANAGER="yum"
+elif is_installed nix-env; then
+	PKG_MANAGER="nix-env"
 else
 	PKG_MANAGER="manual_install"
 fi
 
 ensure_pkg() {
-	log_info "Ensuring installation of package '$1'"
-	local dryrun=false
-	local confirm=false
 	local force=false
-	local cmd="$PKG_MANAGER"
-	local cmd_args=""
-	local cmd_opts=""
-
-	while :
-	do
-		case "$1" in
-			--dry-run)
-				dryrun=true
-				shift
-				;;
-			-n | --confirm)
-				confirm=true
-				shift
-				;;
+	while true; do
+		case "${1:-}" in
 			-f)
 				force=true
 				shift
-				;;
-			--) # End of all options
-				shift
-				break
 				;;
 			-*)
 				log_error "Unknown option: $1"
@@ -106,68 +89,57 @@ ensure_pkg() {
 				;;
 		esac
 	done
-	if ! $force  && installed "$1"; then
-		log_info "'$1' is already installed"
-		return 0
-	fi
 
-	if ! $confirm; then
-		case $PKG_MANAGER in
-			apt-get | yum)
-				cmd_opts="-y"
-				;;
-			pacman | yaourt)
-				cmd_opts="--noconfirm"
-				;;
-			*)
-				;;
-		esac
+	local bin="$1"
+	local pkg="${2:-${bin}}"
+	log_info "Ensuring installation of ${bin}"
+
+	if ! $force  && is_installed "$bin"; then
+		return 0
 	fi
 
 	case $PKG_MANAGER in
 		apt-get)
-			cmd="sudo $cmd"
-			cmd_args="install "$1""
+			local cmd="sudo apt-get install -y ${pkg}"
 			;;
 		brew)
-			cmd_args="install "$1""
+			local cmd="brew install ${pkg}"
 			;;
 		yaourt)
-			cmd_args="-S "$1""
+			local cmd="yaourt -S ${pkg}"
 			;;
 		pacman)
-			cmd="sudo $cmd"
-			cmd_args="-S "$1""
+			local cmd="sudo pacman -S ${pkg}"
 			;;
 		yum)
-			cmd="sudo $cmd"
-			cmd_args="install "$1""
+			local cmd="sudo yum install -y ${pkg}"
 			;;
-		*)
-			cmd_args=""$1""
+		nix-env)
+			local cmd="nix-env -i ${pkg}"
+			;;
+		manual_install)
+			local cmd="manual_install ${pkg}"
 			;;
 	esac
 
-
-	if [ ! $dryrun ]; then
-		log_info "DRY RUN! command: '$cmd $cmd_opts $cmd_args'"
-		return 1
-	else
-		log_info "Running '$cmd $cmd_opts $cmd_args'"
-		eval $cmd $cmd_opts $cmd_args
+	if ! $INSTALL_PKG_NOCONFIRM; then
+		if ! prompt_yn "Install ${bin} with '${cmd}'?"; then
+			return 1
+		fi
 	fi
 
-	if ! installed "$1"; then
-		log_error "'$1' could not be installed"
-		return 1
-	else
+	log_info "Running '${cmd}'"
+	eval "${cmd}"
+
+	if ! is_installed "$bin"; then
+		log_error "$bin was not installed properly"
 		return 1
 	fi
 }
 
 resolve_path() {
-	cd $(dirname $1)
-	echo $PWD/$(basename $1)
+	cd "$(dirname $1)"
+	echo "${PWD}/$(basename $1)"
 }
 
 ensure_ln_s() {
@@ -175,16 +147,16 @@ ensure_ln_s() {
 	log_info "Ensuring symlink '$target' -> '$2'"
 	if [[ ! -L "$2" ]] || [[ ! "$(readlink "$2")" = "$target" ]]; then
 		if [[ -e "$2" ]]; then
-			log_warn "File '$2' already exists"
-			if prompt_yn "Would you like to replace '$2'?"; then
+			if prompt_yn "Would you like to backup and replace existing '$2'?"; then
 				local backup="$2.backup-$(timestamp)"
-				log_info "Moving '$2' to '${backup}'"
+				log_warn "Moving '$2' to '${backup}'"
 				mv "$2" "$backup"
 				if [ $? -ne 0 ]; then
 					log_error "Failed to move existing file '$2'"
 					return 1
 				fi
 			else
+				log_warn "File '$2' already exists"
 				return 1
 			fi
 		fi
@@ -200,10 +172,10 @@ ensure_ln_s() {
 
 ensure_mkdir() {
 	log_info "Ensuring directory '$1' exists"
-	if [[ ! -d "$1" ]]; then
+	if [[ ! -d $1 ]]; then
 		log_info "Making directory '$1'"
-		mkdir -p $1
-		if [ $? -ne 0 ]; then
+		mkdir -p "$1"
+		if [[ $? -ne 0 ]]; then
 			log_error "Could not make directory '$1'"
 			return 1
 		fi
@@ -213,25 +185,25 @@ ensure_mkdir() {
 extract() {
 	if [[ -f $1 ]]; then
 		case $1 in
-			*.tar.bz2) tar -jxvf $1
+			*.tar.bz2) tar -jxvf "$1"
 				;;
-			*.tar.gz) tar -zxvf $1
+			*.tar.gz) tar -zxvf "$1"
 				;;
-			*.bz2) bunzip2 $1
+			*.bz2) bunzip2 "$1"
 				;;
-			*.dmg) hdiutul mount $1
+			*.dmg) hdiutul mount "$1"
 				;;
-			*.gz) gunzip $1
+			*.gz) gunzip "$1"
 				;;
-			*.tar) tar -xvf $1
+			*.tar) tar -xvf "$1"
 				;;
-			*.tbz2) tar -jxvf $1
+			*.tbz2) tar -jxvf "$1"
 				;;
-			*.tgz) tar -zxvf $1
+			*.tgz) tar -zxvf "$1"
 				;;
-			*.zip) unzip $1
+			*.zip) unzip "$1"
 				;;
-			*.Z) uncompress $1
+			*.Z) uncompress "$1"
 				;;
 			*)
 				log_error "'$1' cannot be extracted/mounted via extract()."

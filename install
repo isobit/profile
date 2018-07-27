@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd $DIR
+set -uo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 source ./install_utils.sh
 
 task_vim() {
 	log_util 'TASK' 'vim'
-	ensure_pkg git
-	ensure_pkg vim
-	ensure_pkg curl
 	ensure_mkdir ~/.vim
 	ensure_ln_s ./vim/vimrc ~/.vimrc
+
+	ensure_pkg vim || { log_error "vim is required to install vim-plug"; return 1; }
+	ensure_pkg git || { log_error "git is required to install vim-plug"; return 1; }
+	ensure_pkg curl || { log_error "curl is required to install vim-plug"; return 1; }
+
 	if [ ! -f ~/.vim/autoload/plug.vim ]; then
 		log_info "Installing vim-plug"
 		curl -fLs -o ~/.vim/autoload/plug.vim --create-dirs \
-			    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+			    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
 	log_info "Running PlugUpdate"
 	vim +PlugUpdate +qall
@@ -22,26 +26,29 @@ task_vim() {
 
 task_zsh() {
 	log_util 'TASK' 'zsh'
-	ensure_pkg git
-	ensure_pkg zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
 	ensure_ln_s ./zsh/functions ~/.zsh-functions
-	local shell_bin="$(cat /etc/shells | grep zsh | head -n 1)"
-	if [ ! "$SHELL" = "$shell_bin" ]; then
-		if prompt_yn "Change shell to zsh?"; then
-			log_info "Changing shell to zsh"
-			chsh -s "$shell_bin" || log_warn "'chsh -s $shell_bin' failed, please do this manually"
-		else
-			log_info "Shell can be changed later by running 'chsh -s $shell_bin'"
-		fi
-	else
-		log_info "$shell_bin is already the default shell"
-	fi
+
 	if [[ ! -f ~/.zshenv ]]; then
 		log_info "Creating default ~/.zshenv"
 		echo "export ZSH_VI_MODE=true" > ~/.zshenv
 		echo "export ZSH_PROMPT_HIDE_HOST=false" >> ~/.zshenv
+	fi
+
+	ensure_pkg zsh
+
+	local shell_bin="$(cat /etc/shells | grep zsh | head -n 1)"
+	if [ ! "$SHELL" = "$shell_bin" ]; then
+		local chsh_cmd="chsh -s $shell_bin"
+		if prompt_yn "Change login shell to zsh?"; then
+			log_info "Changing login shell to zsh"
+			eval $chsh_cmd || log_warn "${chsh_cmd} failed, please do this manually"
+		else
+			log_info "Shell can be changed later by running '${chsh_cmd}'"
+		fi
+	else
+		log_info "$shell_bin is already the default shell"
 	fi
 }
 
@@ -52,13 +59,12 @@ task_bash() {
 
 task_screen() {
 	log_util 'TASK' 'screen'
-	ensure_pkg screen
 	ensure_ln_s ./screen/screenrc ~/.screenrc
+	ensure_pkg screen
 }
 
 task_git() {
 	log_util 'TASK' 'git'
-	ensure_pkg git
 	ensure_ln_s ./git/gitconfig.defaults ~/.gitconfig.defaults
 	#ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 	if [[ -L ~/.gitconfig ]]; then
@@ -88,67 +94,83 @@ task_git() {
 		[[ -s ~/.gitconfig ]] || echo > ~/.gitconfig
 		sed -i '1s|^|[include]\n\tpath = ~/.gitconfig.defaults\n|' ~/.gitconfig
 	fi
+	ensure_pkg git
 }
 
 task_tmux() {
 	log_util 'TASK' 'tmux'
-	ensure_pkg tmux
 	ensure_mkdir ~/.tmux
 	ensure_ln_s ./tmux/tmux.conf ~/.tmux.conf
+	ensure_pkg tmux
 }
 
 task_gnupg() {
 	log_util 'TASK' 'gnupg'
-	ensure_pkg gpg
 	ensure_mkdir ~/.gnupg
 	ensure_ln_s ./gnupg/gpg.conf ~/.gnupg/gpg.conf
+	ensure_pkg gpg gnupg
 }
 
 task_pgcli() {
 	log_util 'TASK' 'pgcli'
 	ensure_ln_s ./pgcli/config ~/.config/pgcli/config
-	if ! installed pgcli; then
-		pip install pgcli
-	fi
+	ensure_pkg pgcli
 }
 
-case "$1" in
-	vim)
-		task_vim
-		;;
-	bash)
-		task_bash
-		;;
-	zsh)
-		task_zsh
-		;;
-	git)
-		task_git
-		;;
-	tmux)
-		task_tmux
-		;;
-	gnupg | gpg)
-		task_gnupg
-		;;
-	pgcli)
-		task_pgcli
-		;;
-	server)
-		task_bash
-		task_screen
-		task_vim
-		;;
-	'')
-		task_vim
-		task_bash
-		task_zsh
-		task_git
-		task_tmux
-		task_gnupg
-		task_pgcli
-		;;
-	*)
-		log_error "Unknown task '$1'"
-		;;
-esac
+while true; do
+	case "${1:-}" in
+		-y | --install-pkg-noconfirm)
+			INSTALL_PKG_NOCONFIRM=true
+			shift
+			;;
+		--) # End of all options
+			shift
+			break
+			;;
+		-*)
+			log_error "Unknown option: ${1:-}"
+			break
+			;;
+		*)  # No more options
+			break
+			;;
+	esac
+done
+
+if [[ $# -eq 0 ]]; then
+	TASKS="home sh vim bash zsh git screen gnupg"
+else
+	TASKS="$@"
+fi
+
+for task in $TASKS; do
+	case $task in
+		vim)
+			task_vim
+			;;
+		zsh)
+			task_zsh
+			;;
+		bash)
+			task_bash
+			;;
+		screen)
+			task_screen
+			;;
+		git)
+			task_git
+			;;
+		tmux)
+			task_tmux
+			;;
+		gnupg | gpg)
+			task_gnupg
+			;;
+		pgcli)
+			task_pgcli
+			;;
+		*)
+			log_error "Unknown task '$task'"
+			;;
+	esac
+done
