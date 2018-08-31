@@ -26,6 +26,7 @@ Plug 'mattn/gist-vim'          " :Gist to post to GitHub Gist
 Plug 'ervandew/supertab'     " Tab completion
 Plug 'godlygeek/tabular'     " :Tab to align given format
 Plug 'jiangmiao/auto-pairs'  " Autoclose quotes and other delimiters
+Plug 'markonm/traces.vim'    " Range, pattern, and substitute live preview
 Plug 'scrooloose/syntastic'  " Syntax checking
 Plug 'sickill/vim-pasta'     " Adjust pasting to destination context
 Plug 'tpope/vim-abolish'     " :S to do smart substitute (understands capitalization)
