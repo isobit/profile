@@ -26,6 +26,7 @@ task_zsh() {
 	ensure_pkg zsh
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
+	ensure_ln_s ./zsh/functions ~/.zsh-functions
 	local shell_bin="$(cat /etc/shells | grep zsh | head -n 1)"
 	if [ ! "$SHELL" = "$shell_bin" ]; then
 		if prompt_yn "Change shell to zsh?"; then
