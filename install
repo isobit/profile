@@ -60,7 +60,7 @@ task_git() {
 	log_util 'TASK' 'git'
 	ensure_pkg git
 	ensure_ln_s ./git/gitconfig.defaults ~/.gitconfig.defaults
-	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
+	#ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 	if [[ -L ~/.gitconfig ]]; then
 		log_warn "~/.gitconfig appears to be a symlink, perhaps from an old install..."
 		if prompt_yn "Remove ~/.gitconfig symlink and replace with a new one which includes ~/.gitconfig.defaults (the new symlink)?"; then
