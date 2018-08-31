@@ -59,8 +59,35 @@ task_screen() {
 task_git() {
 	log_util 'TASK' 'git'
 	ensure_pkg git
-	ensure_ln_s ./git/gitconfig ~/.gitconfig
+	ensure_ln_s ./git/gitconfig.defaults ~/.gitconfig.defaults
 	ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
+	if [[ -L ~/.gitconfig ]]; then
+		log_warn "~/.gitconfig appears to be a symlink, perhaps from an old install..."
+		if prompt_yn "Remove ~/.gitconfig symlink and replace with a new one which includes ~/.gitconfig.defaults (the new symlink)?"; then
+			log_info "Removing ~/.gitconfig"
+			rm ~/.gitconfig
+			if [ $? -ne 0 ]; then
+				log_error "Failed to remove ~/.gitconfig"
+				exit 1
+			fi
+			if [[ -f ~/.gitconfig.local ]] && prompt_yn "Use existing ~/.gitconfig.local as base for new ~/.gitconfig?"; then
+				log_nfo "Moving ~/.gitconfig.local to ~/.gitconfig"
+				mv ~/.gitconfig.local ~/.gitconfig
+				if [ $? -ne 0 ]; then
+					log_error "Failed to move ~/.gitconfig.local to ~/.gitconfig"
+					return 1
+				fi
+			fi
+		else
+			log_error "Failed to install git"
+			exit 1
+		fi
+	fi
+	log_info "Ensuring that ~/.gitconfig includes ~/.gitconfig.defaults"
+	if ! git config --get include.path '~/.gitconfig.defaults' > /dev/null; then
+		[[ -s ~/.gitconfig ]] || echo > ~/.gitconfig
+		sed -i '1s|^|[include]\n\tpath = ~/.gitconfig.defaults\n|' ~/.gitconfig
+	fi
 }
 
 task_tmux() {
