@@ -184,7 +184,6 @@ ensure_ln_s() {
 					log_error "Failed to move existing file '$2'"
 					return 1
 				fi
-
 			else
 				return 1
 			fi
