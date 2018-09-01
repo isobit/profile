@@ -4,6 +4,14 @@ set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ./install_utils.sh
 
+task_sh() {
+	[[ -z ${_TASK_SH+x} ]] || return 0
+	[[ -n ${1+x} ]] || log_util 'TASK' 'sh'
+	ensure_ln_s ./sh/inputrc ~/.inputrc
+	ensure_ln_s ./sh/profile ~/.profile
+	_TASK_SH=true
+}
+
 task_vim() {
 	log_util 'TASK' 'vim'
 	ensure_mkdir ~/.vim
@@ -26,6 +34,7 @@ task_vim() {
 
 task_zsh() {
 	log_util 'TASK' 'zsh'
+	task_sh true
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
 	ensure_ln_s ./zsh/functions ~/.zsh-functions
@@ -54,6 +63,7 @@ task_zsh() {
 
 task_bash() {
 	log_util 'TASK' 'bash'
+	task_sh true
 	ensure_ln_s ./bash/bashrc ~/.bashrc
 }
 
@@ -145,6 +155,9 @@ fi
 
 for task in $TASKS; do
 	case $task in
+		sh)
+			task_sh
+			;;
 		vim)
 			task_vim
 			;;

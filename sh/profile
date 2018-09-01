@@ -1,0 +1,11 @@
+# vim: set ft=sh:
+export EDITOR=vim
+export VISUAL=vim
+export GIT_EDITOR=vim
+
+# Set tab stop to 4 spaces
+tabs -4
+
+if [ -f "${HOME}/.profile.local" ]; then
+	source "${HOME}/.profile.local"
+fi

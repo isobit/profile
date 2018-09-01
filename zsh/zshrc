@@ -1,3 +1,10 @@
+if [[ -f /etc/zshrc ]]; then
+	source /etc/zshrc
+fi
+if [[ -f "${HOME}/.profile" ]]; then
+	source "${HOME}/.profile"
+fi
+
 setopt extended_glob
 setopt no_beep
 
@@ -7,10 +14,6 @@ autoload -U colors && colors
 # Enable ls colors
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
-# Set tab stop to 4 spaces
-# TODO: Move to shared .profile
-tabs -4
-
 # ZSH conf.d
 if [[ -d "${HOME}/.zshrc.d" ]]; then
 	for plugin in ${HOME}/.zshrc.d/*.zsh; do
@@ -18,10 +21,7 @@ if [[ -d "${HOME}/.zshrc.d" ]]; then
 	done
 fi
 
-# Local Config
-if [[ -e "${HOME}/.localrc" ]]; then
-	source "${HOME}/.localrc"
-fi
+# Local config
 if [[ -e "${HOME}/.zshrc.local" ]]; then
 	source "${HOME}/.zshrc.local"
 fi

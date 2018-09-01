@@ -1,18 +1,12 @@
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+if [[ -f "/etc/bashrc" ]]; then
+	source /etc/bashrc
+fi
+if [[ -f "${HOME}/.profile" ]]; then
+	source "${HOME}/.profile"
 fi
 
+# Enable vi mode
 set -o vi
-
-# Set tab stop to 4 spaces
-# TODO: Move to shared .profile
-tabs -4
-
-# Env
-# TODO: Move to shared .profile
-export EDITOR=vim
-export VISUAL=vim
-export GIT_EDITOR=vim
 
 # History
 shopt -s histappend
@@ -97,10 +91,10 @@ tarball() {
 }
 path() {
 	cd "$(dirname $1)"
-	echo "$PWD/$(basename $1)"
+	echo "${PWD}/$(basename $1)"
 }
 
-# Local Config
-if [[ -e "${HOME}/.bashrc.local" ]]; then
+# Local config
+if [[ -f "${HOME}/.bashrc.local" ]]; then
 	source "${HOME}/.bashrc.local"
 fi
