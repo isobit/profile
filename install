@@ -12,6 +12,14 @@ task_sh() {
 	_TASK_SH=true
 }
 
+task_home() {
+	log_util 'TASK' 'home'
+	ensure_mkdir  ~/.config
+	ensure_ln_s ./xdg/user-dirs.conf ~/.config/user-dirs.conf
+	ensure_ln_s ./xdg/user-dirs.dirs ~/.config/user-dirs.dirs
+	ensure_ln_s ./xdg/user-dirs.locale ~/.config/user-dirs.locale
+}
+
 task_vim() {
 	log_util 'TASK' 'vim'
 	ensure_mkdir ~/.vim
@@ -157,6 +165,9 @@ for task in $TASKS; do
 	case $task in
 		sh)
 			task_sh
+			;;
+		home | xdg)
+			task_home
 			;;
 		vim)
 			task_vim
