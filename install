@@ -15,7 +15,6 @@ task_sh() {
 task_home() {
 	log_util 'TASK' 'home'
 	ensure_mkdir  ~/.config
-	ensure_ln_s ./xdg/user-dirs.conf ~/.config/user-dirs.conf
 	ensure_ln_s ./xdg/user-dirs.dirs ~/.config/user-dirs.dirs
 	ensure_ln_s ./xdg/user-dirs.locale ~/.config/user-dirs.locale
 }
@@ -85,6 +84,8 @@ task_git() {
 	log_util 'TASK' 'git'
 	ensure_ln_s ./git/gitconfig.defaults ~/.gitconfig.defaults
 	#ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
+	ensure_ln_s ./git/diff-so-fancy ~/bin/diff-so-fancy
+
 	if [[ -L ~/.gitconfig ]]; then
 		log_warn "~/.gitconfig appears to be a symlink, perhaps from an old install..."
 		if prompt_yn "Remove ~/.gitconfig symlink and replace with a new one which includes ~/.gitconfig.defaults (the new symlink)?"; then
@@ -107,11 +108,13 @@ task_git() {
 			exit 1
 		fi
 	fi
+
 	log_info "Ensuring that ~/.gitconfig includes ~/.gitconfig.defaults"
 	if ! git config --get include.path '~/.gitconfig.defaults' > /dev/null; then
 		[[ -s ~/.gitconfig ]] || echo > ~/.gitconfig
 		sed -i '1s|^|[include]\n\tpath = ~/.gitconfig.defaults\n|' ~/.gitconfig
 	fi
+
 	ensure_pkg git
 }
 

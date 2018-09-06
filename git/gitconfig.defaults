@@ -14,12 +14,14 @@
 	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ; }; gi"
 	lg = log --graph --date=relative --decorate
 	lga = log --graph --date=relative --decorate --all --oneline
+	patch = !git --no-pager diff --no-color
 	st = status
 	unfuck = !git fsck && git remote prune origin && git gc
 [core]
 	autocrlf = input
-	ignorecase = false
 	editor = vim
+	ignorecase = false
+	pager = diff-so-fancy | less --tabs=4 -RFX --pattern '^(added|deleted|modified):'
 [color]
 	ui = auto
 [diff]

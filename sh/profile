@@ -1,4 +1,9 @@
 # vim: set ft=sh:
+
+# Path
+export PATH="$PATH:$HOME/bin"
+
+# Environment
 export EDITOR=vim
 export VISUAL=vim
 export GIT_EDITOR=vim
