@@ -20,6 +20,7 @@
 [core]
 	autocrlf = input
 	editor = vim
+	excludesfile = ~/.gitignore.global
 	ignorecase = false
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]

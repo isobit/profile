@@ -83,6 +83,7 @@ task_screen() {
 task_git() {
 	log_util 'TASK' 'git'
 	ensure_ln_s ./git/gitconfig.defaults ~/.gitconfig.defaults
+	ensure_ln_s ./git/gitignore.global ~/.gitignore.global
 	#ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 	ensure_ln_s ./git/diff-so-fancy ~/bin/diff-so-fancy
 
