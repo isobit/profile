@@ -180,3 +180,9 @@ upload() {
 		rm -rf "$file"
 	fi
 }
+
+# Docker utils
+
+docker-debug() {
+	docker run -it --rm --user root --entrypoint '/bin/bash' $@
+}
