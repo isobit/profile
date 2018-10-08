@@ -36,8 +36,8 @@
 	detectRenames = true
 [grep]
 	lineNumber = true
-[init]
-	templatedir = ~/profile/git/template
+# [init]
+#	templatedir = ~/profile/git/template
 [push]
 	default = simple
 [user]
