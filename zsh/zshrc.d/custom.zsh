@@ -105,13 +105,11 @@ backup() {
 }
 
 tarball() {
-	local file="${@: -1}"
-	tar-gz -cf "${file}.tar.gz" "$@"
+	tar-gz -cf "${2:-$(basename "$1")}.tar.gz" "$1"
 }
 
 tarball-xz() {
-	local file="${@: -1}"
-	tar-xz -cf "${file}.tar.xz" "$@"
+	tar-xz -cf "${2:-$(basename "$1")}.tar.gz" "$1"
 }
 
 git-tarball() {
