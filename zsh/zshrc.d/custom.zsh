@@ -86,15 +86,32 @@ extract() {
 	fi
 }
 
+if installed pigz; then
+	alias tar-gz="tar -I pigz"
+else
+	alias tar-gz="tar -z"
+fi
+
+if installed pxz; then
+	alias tar-xz="tar -I pxz"
+else
+	alias tar-xz="tar -J"
+fi
+
 export BACKUP_DIR="$HOME/backup/"
 backup() {
 	local file="$(path $1)"
-	tar -czf "$BACKUP_DIR/${file//\//%}_$(timestamp).tar.gz" ${@:2} $1
+	tar-xz -cf "$BACKUP_DIR/${file//\//%}_$(timestamp).tar.gz" ${@:2} $1
 }
 
 tarball() {
 	local file="${@: -1}"
-	tar -cz "$@" -f "${file}.tar.gz"
+	tar-gz -cf "${file}.tar.gz" "$@"
+}
+
+tarball-xz() {
+	local file="${@: -1}"
+	tar-xz -cf "${file}.tar.xz" "$@"
 }
 
 git-tarball() {
