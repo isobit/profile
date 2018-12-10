@@ -3,6 +3,7 @@ alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
 alias datestamp="date -u +'%Y%m%d'"
+alias download="curl -fLOJ"
 
 # alias timestamp="date -u +'%Y%m%dT%H%M%SZ'"
 timestamp() {
