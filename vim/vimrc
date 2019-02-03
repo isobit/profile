@@ -62,10 +62,11 @@ let g:session_autosave = 'no'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_python_checkers = ['python']
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_json_frontmatter = 1
-let g:vim_markdown_math = 1
 let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_yaml_frontmatter = 1
 
 " ================ General Config ====================
 
@@ -176,7 +177,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-function SetTab(...)
+function! SetTab(...)
 	if a:0 == 0
 		" No arguments means use tabs and make them look like 4 spaces
 		set noexpandtab
@@ -191,7 +192,7 @@ function SetTab(...)
 		let &shiftwidth=a:1
 	endif
 endfunction
-command -nargs=? SetTab :call SetTab(<f-args>)
+command! -nargs=? SetTab :call SetTab(<f-args>)
 
 " Indentation style
 set cino= " Reset cinoptions
@@ -211,14 +212,14 @@ set nowrap       " Don't wrap lines by default
 set fo=croqn
 
 " Allow toggling between wrapping and not wrapping
-function WrapToggle()
+function! WrapToggle()
 	if &wrap
 		set nowrap
 	else
 		set wrap
 	endif
 endfunction
-command -nargs=? WrapToggle :call SetTab(<f-args>)
+command! -nargs=? WrapToggle :call SetTab(<f-args>)
 " See mapping section for key binding
 
 " Wrap lines at convenient points
