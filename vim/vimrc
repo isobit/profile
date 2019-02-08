@@ -14,13 +14,11 @@ augroup END
 call plug#begin()
 
 Plug 'tpope/vim-sensible' " Sensible default options
-Plug 'mattn/webapi-vim'   " Web API client framework, needed for gist-vim
-Plug 'xolox/vim-misc'    " Needed for vim-session
 
 " Interface
 Plug 'scrooloose/nerdtree'     " Project directory tree
 Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
-Plug 'mattn/gist-vim'          " :Gist to post to GitHub Gist
+Plug 'airblade/vim-gitgutter'  " Show git diff info in the gutter
 
 " Editing
 Plug 'ervandew/supertab'     " Tab completion
@@ -34,14 +32,9 @@ Plug 'tpope/vim-commentary'  " gc to comment
 Plug 'tpope/vim-sleuth'      " Autodetect tabbing
 Plug 'tpope/vim-speeddating' " Support for datetime incrementing
 Plug 'tpope/vim-surround'    " cs to change surrounding delimiters
-Plug 'xolox/vim-session'     " Better sessions, :SaveSession and :OpenSession
 
 " Languages
 Plug 'sheerun/vim-polyglot'
-Plug 'gutenye/json5.vim'
-Plug 'isobit/vim-caddyfile'
-Plug 'posva/vim-vue'
-Plug 'gutenye/json5.vim'
 
 " Colors
 Plug 'isobit/vim-darcula-colors'
