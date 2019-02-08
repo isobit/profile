@@ -194,10 +194,12 @@ set cino+=l1 " Align with case label instead of statement after it in same line
 set cino+=h0 " No indent inside C++ scope declarations (public/private)
 set cino+=t0 " No indent for function return type on separate line
 set cino+=(0 " When in parens, line up with the next non-white char
+set cino+=Ws " Don't align in parens when opening paren is the last char in its line
 set cino+=m1 " Line up closing paren with the first char of opening paren line
 set cino+=j1 " Indent Java anonymous classes correctly
 set cino+=J1 " Indent JavaScript object declarations correctly
 set cino+=*500 " Search for unclosed comments at most N lines away
+set cino+=)500 " Search for unclosed parens at most N lines away
 
 " ================= Line Wrapping ===================
 
