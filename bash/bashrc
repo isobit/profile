@@ -30,7 +30,7 @@ case "$TERM" in
 		if [[ "$OSTYPE" =~ "darwin" ]]; then
 			alias ls="ls -G"
 		else
-			alias ls="ls --color"
+			alias ls="ls --color=auto"
 		fi
 		alias grep="grep --color=auto"
 		PROMPT="\[\e[90m\][\[\e[35m\]\u@\h\[\e[90m\]] \[\e[34m\]\w \[\e[90m\]$ \[\e[39m\]"
