@@ -34,8 +34,7 @@ Plug 'tpope/vim-speeddating' " Support for datetime incrementing
 Plug 'tpope/vim-surround'    " cs to change surrounding delimiters
 
 " Languages
-" Plug 'sheerun/vim-polyglot'
-Plug 'b-ggs/vim-polyglot' " Temporarily use forked vim-polyglot with fixed dockerfile
+Plug 'sheerun/vim-polyglot'
 
 " Colors
 Plug 'isobit/vim-darcula-colors'

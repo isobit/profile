@@ -35,7 +35,7 @@ task_vim() {
 				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
 	log_info "Running PlugUpdate"
-	vim +PlugUpdate +qall
+	vim +PlugClean +PlugUpdate +qa
 	ensure_ln_s ./vim/after ~/.vim/after
 }
 
