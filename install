@@ -39,6 +39,27 @@ task_vim() {
 	ensure_ln_s ./vim/after ~/.vim/after
 }
 
+task_neovim() {
+	log_util 'TASK' 'neovim'
+	ensure_mkdir ~/.config/nvim
+	ensure_ln_s ./vim/vimrc ~/.config/nvim/init.vim
+
+	ensure_pkg nvim neovim || { log_error "neovim is required to install vim-plug"; return 1; }
+	ensure_pkg git || { log_error "git is required to install vim-plug"; return 1; }
+	ensure_pkg curl || { log_error "curl is required to install vim-plug"; return 1; }
+
+	ensure_mkdir ~/.local/share/nvim/site/autoload
+	if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
+		log_info "Installing vim-plug"
+		curl -fLs -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+				https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+				|| { log_error "Failed to download plug.vim"; return 1; }
+	fi
+	log_info "Running PlugUpdate"
+	nvim +PlugClean +PlugUpdate +qa
+	ensure_ln_s ./vim/after ~/.config/nvim/after
+}
+
 task_zsh() {
 	log_util 'TASK' 'zsh'
 	task_sh true
@@ -182,6 +203,9 @@ for task in $TASKS; do
 			;;
 		vim)
 			task_vim
+			;;
+		neovim | nvim)
+			task_neovim
 			;;
 		zsh)
 			task_zsh
