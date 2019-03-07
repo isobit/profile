@@ -3,10 +3,15 @@
 # Path
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-# Environment
-export EDITOR=vim
-export VISUAL=vim
-export GIT_EDITOR=vim
+if [ -x "$(command -v nvim)" ]; then
+	export EDITOR=nvim
+	export VISUAL=nvim
+	export GIT_EDITOR=nvim
+else
+	export EDITOR=vim
+	export VISUAL=vim
+	export GIT_EDITOR=vim
+fi
 
 # Set tab stop to 4 spaces
 tabs -4
