@@ -119,6 +119,13 @@ task_git() {
 	ensure_pkg git
 }
 
+task_icdiff() {
+	log_util 'TASK' 'icdiff'
+	ensure_mkdir ~/bin
+	curl -s -o ~/bin/icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.2/icdiff
+	chmod ugo+rx ~/bin/icdiff
+}
+
 task_tmux() {
 	log_util 'TASK' 'tmux'
 	ensure_mkdir ~/.tmux
@@ -187,6 +194,9 @@ for task in $TASKS; do
 			;;
 		git)
 			task_git
+			;;
+		icdiff)
+			task_icdiff
 			;;
 		tmux)
 			task_tmux
