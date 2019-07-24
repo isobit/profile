@@ -20,6 +20,12 @@ Plug 'scrooloose/nerdtree'     " Project directory tree
 Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 Plug 'airblade/vim-gitgutter'  " Show git diff info in the gutter
 
+" FZF
+if isdirectory(expand('~/.fzf'))
+	Plug '~/.fzf'
+	Plug 'junegunn/fzf.vim'
+endif
+
 " Editing
 Plug 'ervandew/supertab'     " Tab completion
 Plug 'godlygeek/tabular'     " :Tab to align given format
