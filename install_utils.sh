@@ -82,6 +82,7 @@ ensure_pkg() {
 				;;
 			-*)
 				log_error "Unknown option: $1"
+				return 1
 				break
 				;;
 			*)  # No more options

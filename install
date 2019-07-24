@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ./install_utils.sh
@@ -167,8 +167,16 @@ task_pgcli() {
 	ensure_pkg pgcli
 }
 
+
+DEFAULT_TASKS="home sh vim bash zsh git screen gnupg"
+
 while true; do
 	case "${1:-}" in
+		-h | --help)
+			echo "Arguments should be a list of install tasks. If none are passed, the following defaults will be used:"
+			echo "    $DEFAULT_TASKS"
+			exit 1
+			;;
 		-y | --install-pkg-noconfirm)
 			INSTALL_PKG_NOCONFIRM=true
 			shift
@@ -188,7 +196,8 @@ while true; do
 done
 
 if [[ $# -eq 0 ]]; then
-	TASKS="home sh vim bash zsh git screen gnupg"
+	TASKS="$DEFAULT_TASKS"
+	log_info "Installing default tasks"
 else
 	TASKS="$@"
 fi
