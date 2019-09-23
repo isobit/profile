@@ -97,6 +97,11 @@ path() {
 	echo "${PWD}/$(basename $1)"
 }
 
+# Enable FZF if installed
+if [[ -f "${HOME}/.fzf.bash" ]]; then
+	source "${HOME}/.fzf.bash"
+fi
+
 # Local config
 if [[ -f "${HOME}/.bashrc.local" ]]; then
 	source "${HOME}/.bashrc.local"

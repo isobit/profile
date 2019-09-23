@@ -23,6 +23,11 @@ if [[ -d "${HOME}/.zshrc.d" ]]; then
 	done
 fi
 
+# Enable FZF if installed
+if [[ -f "${HOME}/.fzf.zsh" ]]; then
+	source "${HOME}/.fzf.zsh"
+fi
+
 # Local config
 if [[ -e "${HOME}/.zshrc.local" ]]; then
 	source "${HOME}/.zshrc.local"
