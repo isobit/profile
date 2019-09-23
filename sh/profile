@@ -14,9 +14,6 @@ else
 	export GIT_EDITOR=vim
 fi
 
-# Set tab stop to 4 spaces
-tabs -4
-
 if [ -f "${HOME}/.profile.local" ]; then
 	source "${HOME}/.profile.local"
 fi

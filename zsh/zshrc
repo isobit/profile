@@ -4,6 +4,8 @@ fi
 if [[ -f "${HOME}/.profile" ]]; then
 	source "${HOME}/.profile"
 fi
+# Set tab stop to 4 spaces
+tabs -4
 
 setopt extended_glob
 setopt no_beep
