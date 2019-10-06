@@ -101,6 +101,10 @@ path() {
 if [[ -f "${HOME}/.fzf.bash" ]]; then
 	source "${HOME}/.fzf.bash"
 fi
+# FZF in nixos
+if command -v fzf-share >/dev/null; then
+  source "$(fzf-share)/key-bindings.bash"
+fi
 
 # Local config
 if [[ -f "${HOME}/.bashrc.local" ]]; then
