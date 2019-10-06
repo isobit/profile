@@ -17,6 +17,8 @@ fi
 # Set tab stop to 4 spaces
 tabs -4
 
+export TIME_STYLE=long-iso
+
 if [ -f "${HOME}/.profile.local" ]; then
 	source "${HOME}/.profile.local"
 fi
