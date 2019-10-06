@@ -4,6 +4,8 @@ fi
 if [[ -f "${HOME}/.profile" ]]; then
 	source "${HOME}/.profile"
 fi
+# Set tab stop to 4 spaces
+tabs -4
 
 setopt extended_glob
 setopt no_beep
@@ -19,6 +21,11 @@ if [[ -d "${HOME}/.zshrc.d" ]]; then
 	for plugin in ${HOME}/.zshrc.d/*.zsh; do
 		source "$plugin"
 	done
+fi
+
+# Enable FZF if installed
+if [[ -f "${HOME}/.fzf.zsh" ]]; then
+	source "${HOME}/.fzf.zsh"
 fi
 
 # Local config

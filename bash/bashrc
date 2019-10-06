@@ -5,6 +5,9 @@ if [[ -f "${HOME}/.profile" ]]; then
 	source "${HOME}/.profile"
 fi
 
+# Set tab stop to 4 spaces
+tabs -4
+
 # Enable vi mode
 set -o vi
 
@@ -93,6 +96,11 @@ path() {
 	cd "$(dirname $1)"
 	echo "${PWD}/$(basename $1)"
 }
+
+# Enable FZF if installed
+if [[ -f "${HOME}/.fzf.bash" ]]; then
+	source "${HOME}/.fzf.bash"
+fi
 
 # Local config
 if [[ -f "${HOME}/.bashrc.local" ]]; then
