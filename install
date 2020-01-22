@@ -144,8 +144,10 @@ task_git() {
 task_icdiff() {
 	log_util 'TASK' 'icdiff'
 	ensure_mkdir ~/bin
-	curl -s -o ~/bin/icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.2/icdiff
+	curl -s -o ~/bin/icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/icdiff
+	curl -s -o ~/bin/git-icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/git-icdiff
 	chmod ugo+rx ~/bin/icdiff
+	chmod ugo+rx ~/bin/git-icdiff
 }
 
 task_tmux() {
