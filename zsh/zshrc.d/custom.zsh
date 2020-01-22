@@ -148,6 +148,13 @@ srp() {
 	done
 }
 
+rg-vim-replace() {
+	echo "s/${1}/${2}/gc"
+	for f in $(rg -l "$1"); do
+		vim "$f" -c "%s/${1}/${2}/gc" -c "wq"
+	done
+}
+
 vimgrep() {
 	echo "s/${1}/${2}/gc"
 	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
@@ -197,8 +204,23 @@ upload() {
 	fi
 }
 
-# Docker utils
-
 docker-debug() {
 	docker run -it --rm --user root --entrypoint '/bin/bash' $@
+}
+
+wget-site() {
+	wget -H -E -k -p "$1"
+}
+
+
+git-bigfiles() {
+	local output='Size (KiB),Size compressed (KiB),SHA-1,Path'
+	while IFS='\n' read -r y; do
+		local size="$(( $(echo $y | cut -f 5 -d ' ') / 1024 ))"
+		local size_compressed="$(( $(echo $y | cut -f 6 -d ' ') / 1024 ))"
+		local sha="$(echo "$y" | cut -f 1 -d ' ')"
+		local loc="$(git rev-list --all --objects | grep "$sha" | cut -f 2 -d ' ')"
+		local output="${output}\n${size},${size_compressed},${sha},${loc}"
+	done <<< "$(git verify-pack -v .git/objects/pack/pack-*.idx | grep -v chain | sort -k3nr | head)"
+	echo -e "$output" | column -t -s ','
 }
