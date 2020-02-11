@@ -1,36 +1,37 @@
 # vim: set ft=gitconfig:
 [alias]
-	a = add
-	aa = add -A
-	aap = add -A -p
-	ac = !git add -A && git commit -v
-	ai = add -i
-	ap = add -p
-	br = branch
-	c = commit -v
-	co  = checkout
-	cp = cherry-pick -x
-	fork = checkout -b
+	a            = add
+	aa           = add -A
+	aap          = add -A -p
+	ac           = !git add -A && git commit -v
+	ai           = add -i
+	ap           = add -p
+	br           = branch
+	c            = commit -v
+	co           = checkout
+	cp           = cherry-pick -x
+	fork         = checkout -b
 	fork-feature = "!ff(){ git fork \"feature/$(date -u +'%Y%m%d')-$1\" ; }; ff"
 	fork-release = "!fr(){ if [ -z ${1:+x} ]; then git fork \"release/$(date -u +'%Y%m%dT%H%M')\"; else git fork \"release/$(date -u +'%Y%m%d')-$1\"; fi; }; fr"
-	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ; }; gi"
-	lg = log --graph --date=relative --decorate
-	lga = log --graph --date=relative --decorate --all --oneline
-	patch = !git --no-pager diff --no-color
-	st = status
-	unfuck = !git fsck && git remote prune origin && git gc
+	ignore       = "!gi(){ curl -L -s https://www.gitignore.io/api/$@ ; }; gi"
+	lg           = log --graph --date=relative --decorate
+	lga          = log --graph --date=relative --decorate --all --oneline
+	patch        = !git --no-pager diff --no-color
+	prune-merged = "!git branch --merged master | grep -v '^[ *]*master$' | xargs git branch -d"
+	st           = status
+	unfuck       = !git fsck && git remote prune origin && git gc
 [core]
-	autocrlf = input
-	editor = vim
+	autocrlf     = input
+	editor       = vim
 	excludesfile = ~/.gitignore.global
-	ignorecase = false
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	ignorecase   = false
+	pager        = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	ui = auto
 [diff]
-	mnemonicprefix = true
-	renamelimit = 0
-	renames = copies
+	mnemonicprefix   = true
+	renamelimit      = 0
+	renames          = copies
 	wsErrorHighlight = all
 [fetch]
 	prune = true
@@ -43,7 +44,7 @@
 [push]
 	default = simple
 [user]
-	name = Josh Glendenning
+	name  = Josh Glendenning
 	email = git@isobit.io
 [github]
 	user = isobit
