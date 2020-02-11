@@ -41,6 +41,7 @@ Plug 'tpope/vim-surround'    " cs to change surrounding delimiters
 
 " Languages
 Plug 'sheerun/vim-polyglot'
+Plug 'hashivim/vim-terraform'
 
 " Colors
 Plug 'isobit/vim-darcula-colors'
@@ -67,6 +68,8 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_json_frontmatter = 1
 let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_yaml_frontmatter = 1
+let g:terraform_align=1
+let g:terraform_fold_sections=1
 
 " ================ General Config ====================
 
