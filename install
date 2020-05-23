@@ -166,6 +166,7 @@ task_gnupg() {
 
 task_pgcli() {
 	log_util 'TASK' 'pgcli'
+	ensure_mkdir ~/.config/pgcli
 	ensure_ln_s ./pgcli/config ~/.config/pgcli/config
 	ensure_pkg pgcli
 }
