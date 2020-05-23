@@ -15,6 +15,14 @@ task_sh() {
 task_home() {
 	log_util 'TASK' 'home'
 	ensure_mkdir  ~/.config
+	ensure_mkdir ~/desktop
+	ensure_mkdir ~/doc
+	ensure_mkdir ~/tmp
+	ensure_mkdir ~/doc/templates
+	ensure_mkdir ~/media/music
+	ensure_mkdir ~/media/images
+	ensure_mkdir ~/media/videos
+	ensure_mkdir ~/public
 	ensure_ln_s ./xdg/user-dirs.dirs ~/.config/user-dirs.dirs
 	ensure_ln_s ./xdg/user-dirs.locale ~/.config/user-dirs.locale
 }
