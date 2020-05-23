@@ -325,6 +325,14 @@ autocmd vimrc FileType gitcommit setlocal spell
 " Hide ~ for empty lines
 highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
+" Better filetype detection for Go HTML templates
+function DetectGoHtmlTmpl()
+    if expand('%:e') == "html" && search("{{") != 0
+        set filetype=gohtmltmpl
+    endif
+endfunction
+autocmd vimrc BufRead,BufNewFile * call DetectGoHtmlTmpl()
+
 " ================ Mappings ==========================
 
 " Window moving shortcuts
