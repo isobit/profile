@@ -59,9 +59,6 @@ let g:NERDTreeIgnore = ['\.o$', '\.pyc$', '\.egg-info$', '^__pycache__$']
 " let g:nerdtree_tabs_synchronize_view = 0
 let g:polyglot_disabled = ['arduino', 'caddyfile']
 let g:session_autosave = 'no'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_python_checkers = ['python', 'flake8']
-let g:syntastic_python_python_exec = 'python3'
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
@@ -70,6 +67,18 @@ let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_yaml_frontmatter = 1
 let g:terraform_align=1
 let g:terraform_fold_sections=1
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
 
 " ================ General Config ====================
 
