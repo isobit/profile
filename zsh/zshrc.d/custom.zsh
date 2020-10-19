@@ -2,10 +2,9 @@ alias trim="sed 's/^ *//;s/ *$//'"
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
 alias grep-multiline="grep -Pzo"
-alias datestamp="date -u +'%Y%m%d'"
 alias download="curl -fLOJ"
+alias datestamp="date -u +'%Y%m%d'"
 
-# alias timestamp="date -u +'%Y%m%dT%H%M%SZ'"
 timestamp() {
 	local fmt='%Y%m%dT'
 	case "${1:l}" in
@@ -109,7 +108,7 @@ tarball() {
 }
 
 tarball-xz() {
-	tar-xz -cf "${2:-$(basename "$1")}.tar.gz" "$1"
+	tar-xz -cf "${2:-$(basename "$1")}.tar.xz" "$1"
 }
 
 git-tarball() {
@@ -205,13 +204,21 @@ upload() {
 }
 
 docker-debug() {
-	docker run -it --rm --user root --entrypoint '/bin/bash' $@
+	docker run -it --rm --user root --entrypoint '/bin/sh' $@
+}
+docker-sh() {
+	docker run -it --rm --entrypoint '/bin/sh' $@
+}
+docker-bash() {
+	docker run -it --rm --entrypoint '/bin/bash' $@
+}
+docker-image-size() {
+	docker image inspect "$1" --format '{{.Size}}' | numfmt --to iec-i --suffix B
 }
 
 wget-site() {
 	wget -H -E -k -p "$1"
 }
-
 
 git-bigfiles() {
 	local output='Size (KiB),Size compressed (KiB),SHA-1,Path'
