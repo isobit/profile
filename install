@@ -84,12 +84,13 @@ task_zsh() {
 
 	ensure_pkg zsh
 
-	local shell_bin="$(cat /etc/shells | grep zsh | head -n 1)"
+	local shell_bin
+	shell_bin="$(grep zsh /etc/shells | head -n 1)"
 	if [ ! "$SHELL" = "$shell_bin" ]; then
 		local chsh_cmd="chsh -s $shell_bin"
 		if prompt_yn "Change login shell to zsh?"; then
 			log_info "Changing login shell to zsh"
-			eval $chsh_cmd || log_warn "${chsh_cmd} failed, please do this manually"
+			eval "$chsh_cmd" || log_warn "${chsh_cmd} failed, please do this manually"
 		else
 			log_info "Shell can be changed later by running '${chsh_cmd}'"
 		fi
@@ -192,7 +193,7 @@ while true; do
 			exit 1
 			;;
 		-y | --install-pkg-noconfirm)
-			INSTALL_PKG_NOCONFIRM=true
+			export INSTALL_PKG_NOCONFIRM=true
 			shift
 			;;
 		--) # End of all options
@@ -213,7 +214,7 @@ if [[ $# -eq 0 ]]; then
 	TASKS="$DEFAULT_TASKS"
 	log_info "Installing default tasks"
 else
-	TASKS="$@"
+	TASKS="$*"
 fi
 
 for task in $TASKS; do
