@@ -154,6 +154,16 @@ rg-vim-replace() {
 	done
 }
 
+rgr() {
+	if [ $# -lt 2 ]
+	then
+		echo "rg with interactive text replacement"
+		echo "Usage: rgr text replacement-text"
+		return
+	fi
+	vim --clean -c ":execute ':argdo %s%$1%$2%gc | update' | :q" -- $(rg "$1" -l ${@:3})
+}
+
 vimgrep() {
 	echo "s/${1}/${2}/gc"
 	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
@@ -230,4 +240,10 @@ git-bigfiles() {
 		local output="${output}\n${size},${size_compressed},${sha},${loc}"
 	done <<< "$(git verify-pack -v .git/objects/pack/pack-*.idx | grep -v chain | sort -k3nr | head)"
 	echo -e "$output" | column -t -s ','
+}
+
+tmp() {
+    dir="${HOME}/tmp/$(datestamp)-$1"
+    mkdir "$dir"
+    pushd "$dir"
 }
