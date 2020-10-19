@@ -25,11 +25,12 @@
 	prune-merged = "!git branch --merged \"$1\" --format '%(refname:short)' | grep -vF \"$1\" | vipe | xargs echo git branch -d"
 	st           = status
 [core]
-	autocrlf     = input
-	editor       = vim
-	excludesfile = ~/.gitignore.global
-	ignorecase   = false
-	pager        = diff-so-fancy | less --tabs=4 -RFX
+	autocrlf       = input
+	editor         = vim
+	excludesfile   = ~/.gitignore.global
+	attributesFile = ~/.gitattributes.global
+	ignorecase     = false
+	pager          = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	ui = auto
 [diff]
