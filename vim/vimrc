@@ -151,13 +151,11 @@ if has("patch-7.4.710")
 	set listchars+=space:·
 endif
 
-" Turn off swap files.
-set noswapfile
-set nobackup
-set nowb
+" Don't clutter working directories with backup and swap files
+set directory=~/.vim/backups//
+set backupdir=~/.vim/backups
 
 " Keep undo history across sessions
-silent !mkdir ~/.vim/backups > /dev/null 2>&1
 set undodir=~/.vim/backups
 set undofile
 

@@ -30,6 +30,7 @@ task_home() {
 task_vim() {
 	log_util 'TASK' 'vim'
 	ensure_mkdir ~/.vim
+	ensure_mkdir ~/.vim/backups
 	ensure_ln_s ./vim/vimrc ~/.vimrc
 
 	ensure_pkg vim || { log_error "vim is required to install vim-plug"; return 1; }
