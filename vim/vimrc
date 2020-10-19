@@ -27,17 +27,18 @@ if isdirectory(expand('~/.fzf'))
 endif
 
 " Editing
-Plug 'ervandew/supertab'     " Tab completion
-Plug 'godlygeek/tabular'     " :Tab to align given format
-Plug 'jiangmiao/auto-pairs'  " Autoclose quotes and other delimiters
-Plug 'markonm/traces.vim'    " Range, pattern, and substitute live preview
-Plug 'scrooloose/syntastic'  " Syntax checking
-Plug 'sickill/vim-pasta'     " Adjust pasting to destination context
-Plug 'tpope/vim-abolish'     " :S to do smart substitute (understands capitalization)
-Plug 'tpope/vim-commentary'  " gc to comment
-Plug 'tpope/vim-sleuth'      " Autodetect tabbing
-Plug 'tpope/vim-speeddating' " Support for datetime incrementing
-Plug 'tpope/vim-surround'    " cs to change surrounding delimiters
+Plug 'editorconfig/editorconfig-vim' " .editorconfig file
+Plug 'ervandew/supertab'             " Tab completion
+Plug 'godlygeek/tabular'             " :Tab to align given format
+Plug 'jiangmiao/auto-pairs'          " Autoclose quotes and other delimiters
+Plug 'markonm/traces.vim'            " Range, pattern, and substitute live preview
+Plug 'scrooloose/syntastic'          " Syntax checking
+Plug 'sickill/vim-pasta'             " Adjust pasting to destination context
+Plug 'tpope/vim-abolish'             " :S to do smart substitute (understands capitalization)
+Plug 'tpope/vim-commentary'          " gc to comment
+Plug 'tpope/vim-sleuth'              " Autodetect tabbing
+Plug 'tpope/vim-speeddating'         " Support for datetime incrementing
+Plug 'tpope/vim-surround'            " cs to change surrounding delimiters
 
 " Languages
 Plug 'sheerun/vim-polyglot'
