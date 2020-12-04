@@ -116,7 +116,14 @@ ensure_pkg() {
 			local cmd="sudo yum install -y ${pkg}"
 			;;
 		nix-env)
-			local cmd="nix-env -i ${pkg}"
+			case "$pkg" in
+				git-delta)
+					local cmd="nix-env -i delta"
+					;;
+				*)
+					local cmd="nix-env -i ${pkg}"
+					;;
+			esac
 			;;
 		manual_install)
 			local cmd="manual_install ${pkg}"

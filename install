@@ -118,7 +118,7 @@ task_git() {
 	ensure_ln_s ./git/gitattributes.global ~/.gitattributes.global
 	#ensure_ln_s ./git/git-p4 /usr/lib/git-core/git-p4
 	ensure_mkdir ~/bin
-	ensure_ln_s ./git/diff-so-fancy ~/bin/diff-so-fancy
+	ensure_pkg delta git-delta
 
 	if [[ -L ~/.gitconfig ]]; then
 		log_warn "~/.gitconfig appears to be a symlink, perhaps from an old install..."
