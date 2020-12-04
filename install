@@ -150,6 +150,8 @@ task_git() {
 	fi
 
 	ensure_pkg git
+	ensure_pkg git-lfs
+	git lfs install
 }
 
 task_icdiff() {
