@@ -33,7 +33,12 @@ task_vim() {
 	ensure_mkdir ~/.vim/backups
 	ensure_ln_s ./vim/vimrc ~/.vimrc
 
-	ensure_pkg vim || { log_error "vim is required to install vim-plug"; return 1; }
+	if is_installed nvim; then
+		local vim=nvim
+	else
+		local vim=vim
+		ensure_pkg vim || { log_error "vim is required to install vim-plug"; return 1; }
+	fi
 	ensure_pkg git || { log_error "git is required to install vim-plug"; return 1; }
 	ensure_pkg curl || { log_error "curl is required to install vim-plug"; return 1; }
 
@@ -44,7 +49,7 @@ task_vim() {
 				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
 	log_info "Running PlugUpdate"
-	vim +PlugClean +PlugUpdate +qa
+	$vim +PlugClean +PlugUpdate +qa
 	ensure_ln_s ./vim/after ~/.vim/after
 }
 
