@@ -1,12 +1,15 @@
+#!/usr/bin/env bash
+
+# Standard convention to load the system bashrc
 if [[ -f "/etc/bashrc" ]]; then
 	source /etc/bashrc
 fi
-if [[ -f "${HOME}/.profile" ]]; then
-	source "${HOME}/.profile"
-fi
 
-# Set tab stop to 4 spaces
-tabs -4
+source ~/.profile
+source ~/.common.sh
+
+# ----------------------------------------------------------------------------
+# Options
 
 # Enable vi mode
 set -o vi
@@ -28,14 +31,6 @@ case "$TERM" in
 esac
 case "$TERM" in
 	xterm-color|*-256color)
-		# Enable ls colors
-		export LSCOLORS="Gxfxcxdxbxegedabagacad"
-		if [[ "$OSTYPE" =~ "darwin" ]]; then
-			alias ls="ls -G"
-		else
-			alias ls="ls --color=auto"
-		fi
-		alias grep="grep --color=auto"
 		PROMPT="\[\e[90m\][\[\e[35m\]\u@\h\[\e[90m\]] \[\e[34m\]\w \[\e[90m\]$ \[\e[39m\]"
 		;;
 	*)
@@ -44,58 +39,8 @@ case "$TERM" in
 esac
 export PS1="${PROMPT_SCREEN}${PROMPT}"
 
-# Custom
-alias trim="sed 's/^ *//;s/ *$//'"
-alias rm="rm -I"
-alias dus="du -sh * | sort -h"
-alias grep-multiline="grep -Pzo"
-alias datestamp="date +'%Y-%m-%d'"
-alias download="curl -fLOJ"
-timestamp() {
-	local fmt='%Y%m%dT'
-	case "${1,,}" in
-		h|hour)
-			fmt+='%H'
-			;;
-		m|min|minute)
-			fmt+='%H%M'
-			;;
-		*)
-			fmt+='%H%M%S'
-			;;
-	esac
-	fmt+='Z'
-	date -u +"${fmt}"
-}
-extract() {
-	local file="${@: -1}"
-	if [[ -f "$file" ]]; then
-		case "$file" in
-			*.tar)      tar -xf "$@"       ;;
-			*.tar.gz)   tar -zxf "$@"      ;;
-			*.tgz)      tar -zxf "$@"      ;;
-			*.tar.xz)   tar -xf "$@"       ;;
-			*.txz)      tar -xf "$@"       ;;
-			*.tar.bz2)  tar -jxf "$@"      ;;
-			*.tbz2)     tar -jxf "$@"      ;;
-			*.bz2)      bunzip2 "$@"       ;;
-			*.dmg)      hdiutil mount "$@" ;;
-			*.gz)       gunzip "$@"        ;;
-			*.zip)      unzip "$@"         ;;
-			*.Z)        uncompress "$@"    ;;
-			*)          echo "'${file}' cannot be extracted/mounted via extract()." ;;
-		esac
-	else
-		echo "'${file}' is not a valid file."
-	fi
-}
-tarball() {
-	tar -cz "$1" -f "${2:-$(basename "$1")}.tar.gz"
-}
-path() {
-	cd "$(dirname $1)"
-	echo "${PWD}/$(basename $1)"
-}
+# ----------------------------------------------------------------------------
+# Sourcing
 
 # Enable FZF if installed
 if [[ -f "${HOME}/.fzf.bash" ]]; then

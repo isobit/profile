@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Note: this file only exists to load zshrc in login shells.
+source ~/.zshrc

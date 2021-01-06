@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Note: this file only exists to load bashrc in login shells.
+source ~/.bashrc

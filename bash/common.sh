@@ -1,3 +1,14 @@
+#!/usr/bin/env bash
+# Utility functions and aliases for bash and zsh.
+# This file is intended to be symlinked to ~/.common.sh and then sourced by
+# both bashrc and zshrc.
+
+if [[ "$OSTYPE" =~ "darwin" ]]; then
+	alias ls="ls -G"
+else
+	alias ls="ls --color=auto"
+fi
+
 alias trim="sed 's/^ *//;s/ *$//'"
 alias dus="du -sh * | sort -h"
 alias grep="grep --color=auto"
@@ -5,6 +16,7 @@ alias grep-multiline="grep -Pzo"
 alias download="curl -fLOJ"
 alias datestamp="date -u +'%Y%m%d'"
 
+# shellcheck disable=SC2120
 timestamp() {
 	local fmt='%Y%m%dT'
 	case "${1:l}" in
@@ -32,8 +44,8 @@ timestamp() {
 
 # Resolve a relative path
 path() {
-	cd "$(dirname $1)"
-	echo "$PWD/$(basename $1)"
+	cd "$(dirname "$1")" || return 1
+	echo "$PWD/$(basename "$1")"
 }
 
 # Determine if command is available
@@ -55,15 +67,9 @@ elif installed xclip; then
 	alias clip="xclip -selection c"
 fi
 
-# Compile .java, then run its .class
-runjava() {
-	javac -g "${1}.java"
-	java "$1"
-}
-
 # Extract function, courtesy of Itai Ferber
 extract() {
-	local file="${@: -1}"
+	local file="${*:-1}"
 	if [[ -f "$file" ]]; then
 		case "$file" in
 			*.tar)      tar -xf "$@"       ;;
@@ -99,8 +105,9 @@ fi
 
 export BACKUP_DIR="$HOME/backup/"
 backup() {
-	local file="$(path $1)"
-	tar-xz -cf "$BACKUP_DIR/${file//\//%}_$(timestamp).tar.gz" ${@:2} $1
+	local file
+	file="$(path "$1")"
+	tar-xz -cf "$BACKUP_DIR/${file//\//%}_$(timestamp).tar.gz" "${@:2}" "$1"
 }
 
 tarball() {
@@ -136,24 +143,6 @@ ssh-fix-permissions() {
 	fi
 }
 
-rsyncd-auto() {
-	watch -n 1 "rsync -rtv --exclude .git/ --del '$1' '$2'"
-}
-
-srp() {
-	echo "s/${1}/${2}/gc"
-	for f in $(grep -rl --exclude-dir=".git" --exclude-dir="node_modules" "$1" .); do
-		vim "$f" -u NONE -c "%s/${1}/${2}/gc" -c "wq"
-	done
-}
-
-rg-vim-replace() {
-	echo "s/${1}/${2}/gc"
-	for f in $(rg -l "$1"); do
-		vim "$f" -c "%s/${1}/${2}/gc" -c "wq"
-	done
-}
-
 rgr() {
 	if [ $# -lt 2 ]
 	then
@@ -161,66 +150,17 @@ rgr() {
 		echo "Usage: rgr text replacement-text"
 		return
 	fi
-	vim --clean -c ":execute ':argdo %s%$1%$2%gc | update' | :q" -- $(rg "$1" -l ${@:3})
-}
-
-vimgrep() {
-	echo "s/${1}/${2}/gc"
-	for f in $(grep -rl --exclude-dir=".git" "$1" .); do
-		vim "$f" -c "execute \"normal /${1}\\<CR>\""
-	done
-}
-
-upload() {
-	if ! installed curl; then
-		echo "ERROR: curl must be installed"
-		return 1
-	fi
-
-	local file="$1"
-	local should_rm=false
-	if [[ -d "$file" ]]; then
-		local file="/tmp/${1}.tar.gz"
-		tar -cvzf "$file" "$1"
-		should_rm=true
-	elif [[ ! -f "$file" ]]; then
-		echo "ERROR: ${file} is not a file or directory"
-		return 1
-	fi
-
-	local filename="$2"
-	if [[ ! -n "$filename" ]]; then
-		local filename="$(basename "$file")"
-	fi
-	local filename="${filename%%.*}-$(timestamp).${filename#*.}"
-
-	local upload_url="https://fm.isobit.io/webdav/public/${filename}"
-	local download_url="https://f.isobit.io/${filename}"
-
-	curl -T "$file" -u "admin" "$upload_url"
-	echo
-
-	echo "$download_url"
-
-	if installed clip; then
-		printf "$download_url" | clip
-	else
-		echo "WARNING: could not copy to clipbord"
-	fi
-
-	if $should_rm; then
-		rm -rf "$file"
-	fi
+	vim --clean -c ":execute ':argdo %s%$1%$2%gc | update' | :q" -- "$(rg "$1" -l "${@:3}")"
 }
 
 docker-debug() {
-	docker run -it --rm --user root --entrypoint '/bin/sh' $@
+	docker run -it --rm --user root --entrypoint '/bin/sh' "$@"
 }
 docker-sh() {
-	docker run -it --rm --entrypoint '/bin/sh' $@
+	docker run -it --rm --entrypoint '/bin/sh' "$@"
 }
 docker-bash() {
-	docker run -it --rm --entrypoint '/bin/bash' $@
+	docker run -it --rm --entrypoint '/bin/bash' "$@"
 }
 docker-image-size() {
 	docker image inspect "$1" --format '{{.Size}}' | numfmt --to iec-i --suffix B
@@ -231,19 +171,32 @@ wget-site() {
 }
 
 git-bigfiles() {
-	local output='Size (KiB),Size compressed (KiB),SHA-1,Path'
-	while IFS='\n' read -r y; do
-		local size="$(( $(echo $y | cut -f 5 -d ' ') / 1024 ))"
-		local size_compressed="$(( $(echo $y | cut -f 6 -d ' ') / 1024 ))"
-		local sha="$(echo "$y" | cut -f 1 -d ' ')"
-		local loc="$(git rev-list --all --objects | grep "$sha" | cut -f 2 -d ' ')"
-		local output="${output}\n${size},${size_compressed},${sha},${loc}"
+	local output size size_compressed sha loc
+	output='Size (KiB),Size compressed (KiB),SHA-1,Path'
+	while IFS=$'\n' read -r y; do
+		size="$(( $(echo "$y" | cut -f 5 -d ' ') / 1024 ))"
+		size_compressed="$(( $(echo "$y" | cut -f 6 -d ' ') / 1024 ))"
+		sha="$(echo "$y" | cut -f 1 -d ' ')"
+		loc="$(git rev-list --all --objects | grep "$sha" | cut -f 2 -d ' ')"
+		output="${output}\n${size},${size_compressed},${sha},${loc}"
 	done <<< "$(git verify-pack -v .git/objects/pack/pack-*.idx | grep -v chain | sort -k3nr | head)"
 	echo -e "$output" | column -t -s ','
 }
 
 tmp() {
-    dir="${HOME}/tmp/$(datestamp)-$1"
-    mkdir "$dir"
-    pushd "$dir"
+	dir="${HOME}/tmp/$(datestamp)-$1"
+	mkdir "$dir"
+	pushd "$dir" || return 1
+}
+
+# Rebuild & upgrade NixOS, do a nix-env update, and collect garbage.
+nixos-upgrade() {
+	sudo nixos-rebuild switch --upgrade
+	nix-env -u
+	# sudo nix-collect-garbage --delete-older-than 30d
+	sudo nix-collect-garbage
+}
+
+nix-search() {
+	nix-env -qaP ".*$1.*"
 }

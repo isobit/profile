@@ -1,11 +1,15 @@
-if [[ -f /etc/zshrc ]]; then
+#!/usr/bin/env zsh
+
+# Standard convention to load the system zshrc
+if [[ -f "/etc/zshrc" ]]; then
 	source /etc/zshrc
 fi
-if [[ -f "${HOME}/.profile" ]]; then
-	source "${HOME}/.profile"
-fi
-# Set tab stop to 4 spaces
-tabs -4
+
+source ~/.profile
+source ~/.common.sh
+
+# ----------------------------------------------------------------------------
+# Options
 
 setopt extended_glob
 setopt no_beep
@@ -13,19 +17,19 @@ setopt no_beep
 # Enable colors
 autoload -U colors && colors
 
-# Enable ls colors
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
+# ----------------------------------------------------------------------------
+# Sourcing
 
 # ZSH conf.d
-if [[ -d "${HOME}/.zshrc.d" ]]; then
-	for plugin in ${HOME}/.zshrc.d/*.zsh; do
+if [[ -d ~/.zshrc.d ]]; then
+	for plugin in ~/.zshrc.d/*.zsh; do
 		source "$plugin"
 	done
 fi
 
 # Enable FZF if installed
-if [[ -f "${HOME}/.fzf.zsh" ]]; then
-	source "${HOME}/.fzf.zsh"
+if [[ -f ~/.fzf.zsh ]]; then
+	source ~/.fzf.zsh
 fi
 # FZF in nixos
 if [ -n "${commands[fzf-share]}" ]; then
@@ -33,6 +37,6 @@ if [ -n "${commands[fzf-share]}" ]; then
 fi
 
 # Local config
-if [[ -e "${HOME}/.zshrc.local" ]]; then
-	source "${HOME}/.zshrc.local"
+if [[ -e ~/.zshrc.local ]]; then
+	source ~/.zshrc.local
 fi
