@@ -51,6 +51,10 @@ if command -v fzf-share >/dev/null; then
   source "$(fzf-share)/key-bindings.bash"
 fi
 
+if installed direnv; then
+	eval "$(direnv hook bash)"
+fi
+
 # Local config
 if [[ -f "${HOME}/.bashrc.local" ]]; then
 	source "${HOME}/.bashrc.local"
