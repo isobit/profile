@@ -161,7 +161,8 @@ rgr() {
 		echo "Usage: rgr text replacement-text"
 		return
 	fi
-	vim --clean -c ":execute ':argdo %s%$1%$2%gc | update' | :q" -- "$(rg "$1" -l "${@:3}")"
+	# shellcheck disable=SC2046
+	vim --clean -c ":execute ':argdo %s%$1%$2%gc | update' | :q" -- $(rg "$1" -l "${@:3}")
 }
 
 docker-debug() {
