@@ -146,6 +146,15 @@ ssh-fix-permissions() {
 	fi
 }
 
+# Wrap ripgrep to use bat as a pager
+rg() {
+	if [ -t 1 ]; then
+		command rg -p "$@" | bat -p
+	else
+		command rg "$@"
+	fi
+}
+
 rgr() {
 	if [ $# -lt 2 ]; then
 		echo "rg with interactive text replacement"
