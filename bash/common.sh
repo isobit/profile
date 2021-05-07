@@ -126,6 +126,9 @@ git-tarball() {
 sshs() {
 	ssh "$@" -t 'screen -dRR'
 }
+sshb() {
+	ssh "$@" -t 'bash -o vi'
+}
 
 ssh-fix-permissions() {
 	chmod g-w ~
@@ -144,8 +147,7 @@ ssh-fix-permissions() {
 }
 
 rgr() {
-	if [ $# -lt 2 ]
-	then
+	if [ $# -lt 2 ]; then
 		echo "rg with interactive text replacement"
 		echo "Usage: rgr text replacement-text"
 		return
@@ -165,9 +167,29 @@ docker-bash() {
 docker-image-size() {
 	docker image inspect "$1" --format '{{.Size}}' | numfmt --to iec-i --suffix B
 }
+docker-cat() {
+	docker run --rm --entrypoint cat "$1" "$2"
+}
+docker-bash-pwd-dind() {
+	docker-bash \
+		--mount "type=bind,src=${PWD},dst=/mnt/pwd,ro" \
+		-v '/var/run/docker.sock:/var/run/docker.sock' \
+		"$@"
+}
+docker-netns-exec() {
+	sudo nsenter \
+		-t "$(docker inspect --format '{{.State.Pid}}' "$1")" \
+		-n "${@:2}"
+}
+
+alias dc="docker-compose"
 
 wget-site() {
 	wget -H -E -k -p "$1"
+}
+
+git-rebase-reset-author() {
+	git rebase -i "$@" --exec "git commit --amend --reset-author --no-edit"
 }
 
 git-bigfiles() {
@@ -199,4 +221,8 @@ nixos-upgrade() {
 
 nix-search() {
 	nix-env -qaP ".*$1.*"
+}
+
+nix-zsh() {
+	nix-shell --run zsh "$@"
 }
