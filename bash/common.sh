@@ -166,13 +166,13 @@ rgr() {
 }
 
 docker-debug() {
-	docker run -it --rm --user root --entrypoint '/bin/sh' "$@"
+	docker run -it --rm --user root --entrypoint '/bin/sh' "$@" -o vi
 }
 docker-sh() {
-	docker run -it --rm --entrypoint '/bin/sh' "$@"
+	docker run -it --rm --entrypoint '/bin/sh' "$@" -o vi
 }
 docker-bash() {
-	docker run -it --rm --entrypoint '/bin/bash' "$@"
+	docker run -it --rm --entrypoint '/bin/bash' "$@" -o vi
 }
 docker-image-size() {
 	docker image inspect "$1" --format '{{.Size}}' | numfmt --to iec-i --suffix B
