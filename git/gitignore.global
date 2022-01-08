@@ -1,6 +1,10 @@
 # Standard exclude
 _tmp
 
+# ignore files prefixed with "_" but not "__" (e.g. "__init__.py")
+_*
+!__*
+
 # OS files (mainly MacOS)
 .DS_Store
 .DS_Store?
@@ -9,3 +13,7 @@ _tmp
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# IDE files
+.idea/
+.devcontainer
