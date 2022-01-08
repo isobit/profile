@@ -15,10 +15,11 @@ source ~/.common.sh
 set -o vi
 
 # History
+export HISTFILE="${HOME}/.bash-history"
 shopt -s histappend
-HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTCONTROL=ignoredups:erasedups
+HISTSIZE=1000000
+HISTFILESIZE=1000000
 
 # Prompt
 case "$TERM" in
