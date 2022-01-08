@@ -16,6 +16,10 @@ alias grep-multiline="grep -Pzo"
 alias download="curl -fLOJ"
 alias datestamp="date -u +'%Y%m%d'"
 
+alias tf="terraform"
+alias tg="terragrunt"
+alias lg="lazygit"
+
 # shellcheck disable=SC2120
 timestamp() {
 	local fmt='%Y%m%dT'
@@ -186,6 +190,18 @@ docker-bash-pwd-dind() {
 		-v '/var/run/docker.sock:/var/run/docker.sock' \
 		"$@"
 }
+docker-bash-pwd() {
+	docker-bash \
+		--mount "type=bind,src=${PWD},dst=/mnt/pwd" \
+		--workdir "/mnt/pwd" \
+		"$@"
+}
+docker-sh-pwd() {
+	docker-sh \
+		--mount "type=bind,src=${PWD},dst=/mnt/pwd" \
+		--workdir "/mnt/pwd" \
+		"$@"
+}
 docker-netns-exec() {
 	sudo nsenter \
 		-t "$(docker inspect --format '{{.State.Pid}}' "$1")" \
@@ -229,10 +245,15 @@ nixos-upgrade() {
 	sudo nix-collect-garbage
 }
 
-nix-search() {
-	nix-env -qaP ".*$1.*"
-}
-
 nix-zsh() {
 	nix-shell --run zsh "$@"
+}
+
+random-alpha-num-str() {
+	tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$1"
+}
+
+envexec() {
+	# shellcheck disable=SC2046
+	env $(awk '!/^#/' "$1" | xargs) "${@:2}"
 }
