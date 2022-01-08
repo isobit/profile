@@ -35,9 +35,11 @@
 	excludesfile   = ~/.gitignore.global
 	attributesFile = ~/.gitattributes.global
 	ignorecase     = false
-	pager          = diff-so-fancy | less --tabs=4 -RFX
+	pager          = delta
 [color]
 	ui = auto
+[delta]
+	syntax-theme = base16
 [diff]
 	mnemonicprefix   = true
 	renamelimit      = 0
