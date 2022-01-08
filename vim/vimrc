@@ -12,7 +12,7 @@ augroup END
 " ===================== Plugins ============================
 
 " Plugin settings that must be set before loading
-let g:polyglot_disabled = ['arduino', 'caddyfile', 'hcl']
+let g:polyglot_disabled = ['arduino', 'caddyfile', 'hcl', 'cue']
 
 " Load plugins using plug
 call plug#begin()
@@ -25,8 +25,8 @@ Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 Plug 'airblade/vim-gitgutter'  " Show git diff info in the gutter
 
 " FZF
-if isdirectory(expand('~/.fzf'))
-	Plug '~/.fzf'
+if executable('fzf')
+	Plug 'junegunn/fzf'
 	Plug 'junegunn/fzf.vim'
 endif
 
@@ -43,11 +43,15 @@ Plug 'tpope/vim-commentary'          " gc to comment
 Plug 'tpope/vim-sleuth'              " Autodetect tabbing
 Plug 'tpope/vim-speeddating'         " Support for datetime incrementing
 Plug 'tpope/vim-surround'            " cs to change surrounding delimiters
+Plug 'stefandtw/quickfix-reflector.vim' " modifiable quickfix
+Plug 'tpope/vim-fugitive'            " git stuff
 
 " Languages
 Plug 'sheerun/vim-polyglot'
 Plug 'isobit/vim-terraform'
 Plug 'isobit/vim-packer'
+Plug 'rust-lang/rust.vim'
+Plug 'jjo/vim-cue'
 
 " Colors
 Plug 'isobit/vim-darcula-colors'
@@ -77,12 +81,13 @@ let g:terraform_fold_sections=1
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python', 'flake8']
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
+let g:syntastic_ignore_files = ['\.env$']
 
 " ================ General Config ====================
 
@@ -141,6 +146,9 @@ try
 catch
 	" Do nothing if highlight group is not found
 endtry
+
+" Highlight NOCOMMIT like TODO
+autocmd vimrc Syntax * syn keyword Todo contained NOCOMMIT
 
 " Custom function for cleaning up trailing whitespace
 function! CleanWhitespace()
@@ -352,20 +360,39 @@ noremap <silent> <leader>g :ls<cr>:b
 " \t to toggle NERDTree
 noremap <silent> <leader>t :NERDTreeTabsToggle<cr>
 
-" \f to find file in NERDTree
-noremap <silent> <leader>f :NERDTreeTabsFind<cr>
+" \h to find file in NERDTree
+noremap <silent> <leader>h :NERDTreeTabsFind<cr>
 
 " \d to open NERDTree and find file
 noremap <silent> <leader>d :NERDTreeTabsOpen<cr><c-w><c-p>:NERDTreeTabsFind<cr><c-w><c-p>
 
-" \c clears the quickfix list
-noremap <leader>c :call setqflist([])<cr>
+" \c clears the quickfix list and the search highlight (until the next search)
+noremap <leader>c :call setqflist([])<cr>:noh<cr>
 
 " n goes to next quickfix location when active
 nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
 
 " N goes to prev quickfix location when active
 nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
+
+" \r to ripgrep word under cursor when in normal mode
+nnoremap <leader>r viw"sy:Rg <c-r>s<cr>
+" \r to ripgrep selected text when in visual mode
+vnoremap <leader>r "sy:Rg <c-r>s<cr>
+
+" \o to open a file using FZF
+nnoremap <leader>o :FZF<cr>
+
+" \f to open a live ripgrep file search
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+nnoremap <leader>f :RG<cr>
 
 " \s to substitute selected text with confirmation
 vnoremap <leader>s "sy:%s/<c-r>s//gc<left><left><left>
@@ -389,6 +416,19 @@ cmap w!! w !sudo tee % >/dev/null
 
 " :W is :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+
+" CTRL-A CTRL-Q to select all and build quickfix list
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 " ===================== Local config ==========================
 set secure
