@@ -257,3 +257,8 @@ envexec() {
 	# shellcheck disable=SC2046
 	env $(awk '!/^#/' "$1" | xargs) "${@:2}"
 }
+
+# Local config
+if [[ -f "${HOME}/.common.local.sh" ]]; then
+	source "${HOME}/.common.local.sh"
+fi
