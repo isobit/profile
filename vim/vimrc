@@ -22,7 +22,6 @@ Plug 'tpope/vim-sensible' " Sensible default options
 " Interface
 Plug 'scrooloose/nerdtree'     " Project directory tree
 Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
-Plug 'airblade/vim-gitgutter'  " Show git diff info in the gutter
 
 " FZF
 if executable('fzf')
@@ -31,20 +30,18 @@ if executable('fzf')
 endif
 
 " Editing
-Plug 'editorconfig/editorconfig-vim' " .editorconfig file
-Plug 'ervandew/supertab'             " Tab completion
-Plug 'godlygeek/tabular'             " :Tab to align given format
-Plug 'jiangmiao/auto-pairs'          " Autoclose quotes and other delimiters
-Plug 'markonm/traces.vim'            " Range, pattern, and substitute live preview
-Plug 'scrooloose/syntastic'          " Syntax checking
-Plug 'sickill/vim-pasta'             " Adjust pasting to destination context
-Plug 'tpope/vim-abolish'             " :S to do smart substitute (understands capitalization)
-Plug 'tpope/vim-commentary'          " gc to comment
-Plug 'tpope/vim-sleuth'              " Autodetect tabbing
-Plug 'tpope/vim-speeddating'         " Support for datetime incrementing
-Plug 'tpope/vim-surround'            " cs to change surrounding delimiters
+Plug 'editorconfig/editorconfig-vim'    " .editorconfig file
+Plug 'ervandew/supertab'                " Tab completion
+Plug 'godlygeek/tabular'                " :Tab to align given format
+Plug 'jiangmiao/auto-pairs'             " Autoclose quotes and other delimiters
+Plug 'markonm/traces.vim'               " Range, pattern, and substitute live preview
+Plug 'sickill/vim-pasta'                " Adjust pasting to destination context
 Plug 'stefandtw/quickfix-reflector.vim' " modifiable quickfix
-Plug 'tpope/vim-fugitive'            " git stuff
+Plug 'tpope/vim-abolish'                " :S to do smart substitute (understands capitalization)
+Plug 'tpope/vim-commentary'             " gc to comment
+Plug 'tpope/vim-sleuth'                 " Autodetect tabbing
+Plug 'tpope/vim-speeddating'            " Support for datetime incrementing
+Plug 'tpope/vim-surround'               " cs to change surrounding delimiters
 
 " Languages
 Plug 'sheerun/vim-polyglot'
@@ -59,6 +56,12 @@ Plug 'isobit/vim-darcula-colors'
 " Plugin dev
 " Plug 'gerw/vim-HiLinkTrace'    " :HLT! to show highlighting trace
 
+if has('nvim')
+	Plug 'neovim/nvim-lspconfig' " LSP
+else
+	Plug 'scrooloose/syntastic' " Syntax checking
+endif
+
 call plug#end()
 
 " ================ Plugin Settings ===================
@@ -66,7 +69,6 @@ call plug#end()
 let g:jsx_ext_required = 1
 let g:nerdtree_tabs_focus_on_files = 1
 let g:NERDTreeIgnore = ['\.o$', '\.pyc$', '\.egg-info$', '^__pycache__$']
-" let g:nerdtree_tabs_synchronize_view = 0
 let g:session_autosave = 'no'
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_math = 1
@@ -75,11 +77,9 @@ let g:vim_markdown_json_frontmatter = 1
 let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_yaml_frontmatter = 1
 let g:terraform_fold_sections=1
+let g:SuperTabDefaultCompletionType = "context"
 
 " Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
@@ -90,6 +90,11 @@ let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
 let g:syntastic_ignore_files = ['\.env$']
 
 " ================ General Config ====================
+
+" Load LUA setup if in neovim
+if has('nvim')
+	lua require('setup')
+endif
 
 set number        " Enable line numbers
 set numberwidth=4 " Use up to four digits
@@ -333,7 +338,7 @@ autocmd vimrc FileType gitcommit setlocal spell
 " autocmd vimrc FileType cpp setlocal cindent cino=j1,(0,ws,Ws
 
 " Hide ~ for empty lines
-highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+" highlight EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
 " Better filetype detection for Go HTML templates
 function DetectGoHtmlTmpl()
@@ -429,6 +434,16 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+
+" LSP navigation
+nnoremap gd <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap gD <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap gr <cmd>lua vim.lsp.buf.references()<cr>
+
+" LSP diagnostics
+nnoremap <leader>e <cmd>lua vim.diagnostic.open_float()<cr>
+nnoremap <leader>q <cmd>lua vim.diagnostic.setloclist()<cr>
+
 
 " ===================== Local config ==========================
 set secure

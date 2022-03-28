@@ -49,12 +49,6 @@ task_vim() {
 				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
 
-	# neovim config
-	ensure_mkdir ~/.config/nvim
-	ensure_ln_s ./vim/vimrc ~/.config/nvim/init.vim
-	ensure_mkdir ~/.local/share/nvim/site/autoload
-	ensure_ln_s ~/.vim/autoload/plug.vim ~/.local/share/nvim/site/autoload/plug.vim
-
 	log_info "Running PlugUpdate"
 	$vim +PlugClean +PlugUpdate +qa
 	ensure_ln_s ./vim/after ~/.vim/after
@@ -64,6 +58,7 @@ task_neovim() {
 	log_util 'TASK' 'neovim'
 	ensure_mkdir ~/.config/nvim
 	ensure_ln_s ./vim/vimrc ~/.config/nvim/init.vim
+	ensure_ln_s ./vim/lua ~/.config/nvim/lua
 
 	ensure_pkg nvim neovim || { log_error "neovim is required to install vim-plug"; return 1; }
 	ensure_pkg git || { log_error "git is required to install vim-plug"; return 1; }
@@ -146,7 +141,7 @@ task_git() {
 				exit 1
 			fi
 			if [[ -f ~/.gitconfig.local ]] && prompt_yn "Use existing ~/.gitconfig.local as base for new ~/.gitconfig?"; then
-				log_nfo "Moving ~/.gitconfig.local to ~/.gitconfig"
+				log_info "Moving ~/.gitconfig.local to ~/.gitconfig"
 				mv ~/.gitconfig.local ~/.gitconfig
 				if [ $? -ne 0 ]; then
 					log_error "Failed to move ~/.gitconfig.local to ~/.gitconfig"
@@ -200,8 +195,15 @@ task_pgcli() {
 	ensure_pkg pgcli
 }
 
+task_efmlangserver() {
+	log_util 'TASK' 'efm-langserver'
+	ensure_mkdir ~/.config/efm-langserver
+	ensure_ln_s ./efm-langserver/config.yaml ~/.config/efm-langserver/config.yaml
+	ensure_pkg efm-langserver
+}
 
-DEFAULT_TASKS="home sh vim bash zsh git screen gnupg"
+
+DEFAULT_TASKS="home sh vim nvim bash zsh git screen gnupg"
 
 while true; do
 	case "${1:-}" in
@@ -248,6 +250,7 @@ for task in $TASKS; do
 			;;
 		neovim | nvim)
 			task_neovim
+			task_efmlangserver
 			;;
 		zsh)
 			task_zsh
@@ -272,6 +275,9 @@ for task in $TASKS; do
 			;;
 		pgcli)
 			task_pgcli
+			;;
+		efm-langserver)
+			task_efmlangserver
 			;;
 		*)
 			log_error "Unknown task '$task'"
