@@ -69,6 +69,7 @@ call plug#end()
 let g:jsx_ext_required = 1
 let g:nerdtree_tabs_focus_on_files = 1
 let g:NERDTreeIgnore = ['\.o$', '\.pyc$', '\.egg-info$', '^__pycache__$']
+let g:NERDTreeCaseSensitiveSort = 1
 let g:session_autosave = 'no'
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_math = 1
