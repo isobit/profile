@@ -24,17 +24,16 @@ local lsp_config = {
 			'lua',
 			'make',
 			'markdown',
-			'python',
 			'sh',
 			'vim',
-			'yaml',
 		},
 	},
 	gopls = {},
 	solargraph = {},
 	terraformls = {},
 	yamlls = {},
-
+	rnix = {},
+	pylsp = {},
 }
 for key, val in pairs(lsp_config) do
 	val.on_attach = lsp_on_attach
