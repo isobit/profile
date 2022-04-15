@@ -202,6 +202,13 @@ task_efmlangserver() {
 	ensure_pkg efm-langserver
 }
 
+task_wezterm() {
+	log_util 'TASK' 'wezterm'
+	ensure_mkdir ~/.config/wezterm
+	ensure_ln_s ./wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+	ensure_pkg wezterm
+}
+
 
 DEFAULT_TASKS="home sh vim nvim bash zsh git screen gnupg"
 
@@ -278,6 +285,9 @@ for task in $TASKS; do
 			;;
 		efm-langserver)
 			task_efmlangserver
+			;;
+		wezterm)
+			task_wezterm
 			;;
 		*)
 			log_error "Unknown task '$task'"
