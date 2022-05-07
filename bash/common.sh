@@ -249,6 +249,10 @@ nix-zsh() {
 	nix-shell --run zsh "$@"
 }
 
+n() {
+	nix-shell --run zsh -p "$@"
+}
+
 random-alpha-num-str() {
 	tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$1"
 }
