@@ -34,6 +34,7 @@
 	fetchbase    = "!git fetch && git rebase \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
 	r            = "!git fetch && git rebase -i --autosquash \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
 	stashpull    = "!git stash save && git pull && git stash pop"
+
 [core]
 	autocrlf       = input
 	editor         = vim
@@ -41,29 +42,55 @@
 	attributesFile = ~/.gitattributes.global
 	ignorecase     = false
 	pager          = delta
+
 [color]
 	ui = auto
+
+[fetch]
+	prune = true
+
+[pull]
+	rebase = true
+
+[push]
+	default = simple
+
+[grep]
+	lineNumber = true
+
+[merge]
+	conflictStyle = diff3 # add |||| and original text to conflicts
+
+# ----------------------------------------------------------------------------
+# Diff, delta
+
+[interactive]
+	diffFilter = "delta --color-only" # use delta for git add --patch
+
 [delta]
+	navigate     = true # n/N to move between files
+	theme        = 1337
 	syntax-theme = base16
+
 [diff]
+	colorMoved       = default # color moved lines differently
 	mnemonicprefix   = true
 	renamelimit      = 0
 	renames          = copies
 	wsErrorHighlight = all
-[fetch]
-	prune = true
+
+# ----------------------------------------------------------------------------
+# External tools
+
 [git-p4]
 	detectRenames = true
-[grep]
-	lineNumber = true
-# [init]
-#	templatedir = ~/profile/git/template
-[pull]
-	rebase = true
-[push]
-	default = simple
+
+# ----------------------------------------------------------------------------
+# User config
+
 [user]
 	name  = Josh Glendenning
 	email = git@isobit.io
+
 [github]
 	user = isobit
