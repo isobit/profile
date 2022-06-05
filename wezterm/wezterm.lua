@@ -8,6 +8,8 @@ return {
   font_size = 11,
 
   color_scheme = "Builtin Tango Dark",
+
+  use_fancy_tab_bar = false;
   colors = {
     tab_bar = {
       background = "#111",
@@ -37,14 +39,21 @@ return {
     button_bg = "#222",
     button_hover_bg = "#333",
   },
+  window_padding = {
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
+  },
+  window_decorations = "RESIZE",
 
   keys = {
     {key="c", mods="ALT", action=w.action{CopyTo="Clipboard"}},
     {key="v", mods="ALT", action=w.action{PasteFrom="Clipboard"}},
     {key="t", mods="ALT", action=w.action{SpawnTab="CurrentPaneDomain"}},
     {key="[", mods="ALT", action=w.action{ActivateTabRelative=-1}},
-    {key="{", mods="ALT", action=w.action{MoveTabRelative=-1}},
+    {key="{", mods="ALT|SHIFT", action=w.action{MoveTabRelative=-1}},
     {key="]", mods="ALT", action=w.action{ActivateTabRelative=1}},
-    {key="}", mods="ALT", action=w.action{MoveTabRelative=1}},
+    {key="}", mods="ALT|SHIFT", action=w.action{MoveTabRelative=1}},
   },
 }
