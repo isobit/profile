@@ -35,15 +35,18 @@
 	ignore       = "!f(){ curl -L -s \"https://www.gitignore.io/api/$1\"; };f"
 	show-ignored = "!git ls-files -i -o --exclude-from=.gitignore | xargs git check-ignore -v"
 	rm-ignored   = "!git ls-files -i -c --exclude-from=.gitignore | xargs git rm --cached"
-	fetchbase    = "!git fetch && git rebase \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
-	r            = "!git fetch && git rebase -i --autosquash \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
 
 	# remote
 	prune        = "!git fetch && git remote prune origin && git gc"
 	prune-merged = "!f(){ git branch --merged \"$1\" --format '%(refname:short)' | grep -v \"$1\" | vipe | xargs git branch -d; };f"
 	puh          = push -u origin HEAD
 	pushfwl      = push --force-with-lease
+	r            = "!git fetch && git rebase -i --autosquash \"origin/$(git main)\""
 	stashpull    = "!git stash save && git pull && git stash pop"
+
+	# main branch
+	main = "!git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4"
+	fix-main = remote set-head origin --auto
 
 [core]
 	autocrlf       = input
