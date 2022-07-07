@@ -208,7 +208,9 @@ docker-netns-exec() {
 		-n "${@:2}"
 }
 
-alias dc="docker-compose"
+dc() {
+	docker compose "$@"
+}
 
 wget-site() {
 	wget -H -E -k -p "$1"
