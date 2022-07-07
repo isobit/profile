@@ -4,35 +4,45 @@
 	aa           = add -A
 	aap          = add -A -p
 	ac           = !git add -A && git commit -v
+	acwip        = !git add -A && commit -m "WIP"
 	ai           = add -i
 	ap           = add -p
 	br           = branch --sort=-committerdate
 	c            = commit -v
-	acwip        = !git add -A && commit -m "WIP"
 	co           = checkout
 	cp           = cherry-pick
+	patch        = !git --no-pager diff --no-color
+	st           = status
+
+	# branch management
 	f            = "!f(){ git fork \"isobit-$1\"; };f"
 	fd           = "!f(){ git fork \"isobit-$(date -u +'%Y%m%d')-$1\"; };f"
 	fork         = checkout -b
 	fork-release = "!f(){ if [ -z ${1:+x} ]; then git fork \"release/$(date -u +'%Y%m%dT%H%MZ')\"; else git fork \"release/$(date -u +'%Y%m%d')-$1\"; fi; };f"
-	ignore       = "!f(){ curl -L -s \"https://www.gitignore.io/api/$1\"; };f"
+
+	# log
 	lg           = log --date=relative --decorate --graph
+	lgv          = log --date=relative --decorate --graph --pretty=fuller
 	lgi          = log --date=iso-local --decorate --graph
-	lgi-utc      = "!TZ=UTC git log --date=iso-local --decorate --graph"
+	lgiv         = log --date=iso-local --decorate --graph --pretty=fuller
+	lgiz         = "!TZ=UTC git log --date=iso-local --decorate --graph"
+	lgizv        = "!TZ=UTC git log --date=iso-local --decorate --graph --pretty=fuller"
 	lgd          = log --graph --pretty=format:'%C(auto)%h %cI %s %d%Creset'
 	lgp          = log --date=relative --decorate --patch
 	lga          = log --graph --date=relative --decorate --all --oneline --abbrev-commit
-	lgaf         = log --graph --date=relative --decorate --all --oneline --abbrev-commit --pretty=format:'%C(auto)%h%d %s %C(black)%an, %cr%Creset'
-	patch        = !git --no-pager diff --no-color
-	puh          = push -u origin HEAD
-	pushfwl      = push --force-with-lease
-	prune        = "!git fetch && git remote prune origin && git gc"
-	prune-merged = "!f(){ git branch --merged \"$1\" --format '%(refname:short)' | grep -v \"$1\" | vipe | xargs git branch -d; };f"
-	st           = status
+
+	# ignore
+	ignore       = "!f(){ curl -L -s \"https://www.gitignore.io/api/$1\"; };f"
 	show-ignored = "!git ls-files -i -o --exclude-from=.gitignore | xargs git check-ignore -v"
 	rm-ignored   = "!git ls-files -i -c --exclude-from=.gitignore | xargs git rm --cached"
 	fetchbase    = "!git fetch && git rebase \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
 	r            = "!git fetch && git rebase -i --autosquash \"$(git symbolic-ref refs/remotes/origin/HEAD)\""
+
+	# remote
+	prune        = "!git fetch && git remote prune origin && git gc"
+	prune-merged = "!f(){ git branch --merged \"$1\" --format '%(refname:short)' | grep -v \"$1\" | vipe | xargs git branch -d; };f"
+	puh          = push -u origin HEAD
+	pushfwl      = push --force-with-lease
 	stashpull    = "!git stash save && git pull && git stash pop"
 
 [core]
