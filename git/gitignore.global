@@ -1,9 +1,8 @@
-# Standard exclude
-_tmp
-
 # ignore files prefixed with "_" but not "__" (e.g. "__init__.py")
 _*
 !__*
+
+/compose.override.yaml
 
 # OS files (mainly MacOS)
 .DS_Store
@@ -15,5 +14,5 @@ ehthumbs.db
 Thumbs.db
 
 # IDE files
-.idea/
+.idea
 .devcontainer
