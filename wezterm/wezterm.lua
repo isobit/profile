@@ -5,16 +5,16 @@ return {
   exit_behavior = "Close",
 
   font = w.font("Fira Code"),
-  font_size = 11,
+  font_size = 12,
 
   color_scheme = "Builtin Tango Dark",
 
   use_fancy_tab_bar = false;
   colors = {
     tab_bar = {
-      background = "#111",
+      background = "#112",
       active_tab = {
-        bg_color = "#333",
+        bg_color = "#445",
         fg_color = "#EEE",
       },
       inactive_tab = {
