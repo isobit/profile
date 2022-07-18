@@ -2,7 +2,7 @@
 _*
 !__*
 
-/compose.override.yaml
+compose.override.yaml
 
 # OS files (mainly MacOS)
 .DS_Store
