@@ -445,6 +445,9 @@ nnoremap gr <cmd>lua vim.lsp.buf.references()<cr>
 nnoremap <leader>e <cmd>lua vim.diagnostic.open_float()<cr>
 nnoremap <leader>q <cmd>lua vim.diagnostic.setloclist()<cr>
 
+" LSP info
+nnoremap <leader>i <cmd>lua vim.lsp.buf.hover()<cr>
+
 " LSP actions
 noremap <leader>s <cmd>lua vim.lsp.buf.rename()<cr>
 
