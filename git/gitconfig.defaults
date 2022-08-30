@@ -42,6 +42,7 @@
 	puh          = push -u origin HEAD
 	pushfwl      = push --force-with-lease
 	r            = "!git fetch && git rebase -i --autosquash \"origin/$(git main)\""
+	rc           = rebase --continue
 	stashpull    = "!git stash save && git pull && git stash pop"
 
 	# main branch
