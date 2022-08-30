@@ -3,6 +3,7 @@ _*
 !__*
 
 compose.override.yaml
+.envrc
 
 # OS files (mainly MacOS)
 .DS_Store
