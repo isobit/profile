@@ -381,11 +381,6 @@ nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
 " N goes to prev quickfix location when active
 nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
 
-" \r to ripgrep word under cursor when in normal mode
-nnoremap <leader>r viw"sy:Rg <c-r>s<cr>
-" \r to ripgrep selected text when in visual mode
-vnoremap <leader>r "sy:Rg <c-r>s<cr>
-
 " \o to open a file using FZF
 nnoremap <leader>o :FZF<cr>
 
@@ -399,6 +394,12 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 nnoremap <leader>f :RG<cr>
+
+" \f to ripgrep selected text when in visual mode
+vnoremap <leader>f "sy:RG <c-r>s<cr>
+
+" \F to ripgrep word under cursor when in normal mode
+nnoremap <leader>F viw"sy:RG <c-r>s<cr>
 
 " \s to substitute selected text with confirmation
 vnoremap <leader>s "sy:%s/<c-r>s//gc<left><left><left>
@@ -449,7 +450,7 @@ nnoremap <leader>q <cmd>lua vim.diagnostic.setloclist()<cr>
 nnoremap <leader>i <cmd>lua vim.lsp.buf.hover()<cr>
 
 " LSP actions
-noremap <leader>s <cmd>lua vim.lsp.buf.rename()<cr>
+noremap <leader>r <cmd>lua vim.lsp.buf.rename()<cr>
 
 " ===================== Local config ==========================
 set secure
