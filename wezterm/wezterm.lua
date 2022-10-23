@@ -6,6 +6,7 @@ return {
 
   font = w.font("Fira Code"),
   font_size = 12,
+  warn_about_missing_glyphs = false,
 
   color_scheme = "Builtin Tango Dark",
 
