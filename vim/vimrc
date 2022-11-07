@@ -77,7 +77,7 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_json_frontmatter = 1
 let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_yaml_frontmatter = 1
-let g:terraform_fold_sections=1
+let g:terraform_fold_sections = 1
 let g:SuperTabDefaultCompletionType = "context"
 
 " Syntastic
@@ -189,6 +189,8 @@ set sidescrolloff=15
 set noeb vb t_vb=
 autocmd vimrc GUIEnter * set vb t_vb=
 
+" Don't show preview window for completions
+set completeopt-=preview
 " ================ Search  ==========================
 
 set viminfo='100,f1  "Save up to 100 marks, enable capital marks
