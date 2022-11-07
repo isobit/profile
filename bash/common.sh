@@ -239,12 +239,9 @@ tmp() {
 	pushd "$dir" || return 1
 }
 
-# Rebuild & upgrade NixOS, do a nix-env update, and collect garbage.
+# Rebuild & upgrade NixOS and collect garbage.
 nixos-upgrade() {
-	sudo nixos-rebuild switch --upgrade
-	nix-env -u
-	# sudo nix-collect-garbage --delete-older-than 30d
-	sudo nix-collect-garbage
+	sudo nixos-rebuild switch --upgrade && sudo nix-collect-garbage --delete-older-than 60d
 }
 
 nix-zsh() {
