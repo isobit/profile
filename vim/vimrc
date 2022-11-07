@@ -15,7 +15,7 @@ augroup END
 let g:polyglot_disabled = ['arduino', 'caddyfile', 'hcl', 'cue']
 
 " Load plugins using plug
-call plug#begin()
+call plug#begin($HOME.'/.config/vim-plug')
 
 Plug 'tpope/vim-sensible' " Sensible default options
 
