@@ -17,3 +17,5 @@ Thumbs.db
 # IDE files
 .idea
 .devcontainer
+
+.gdb_history
