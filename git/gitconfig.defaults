@@ -40,7 +40,7 @@
 	prune-merged = "!f(){ git branch --merged \"$1\" --format '%(refname:short)' | grep -v \"$1\" | vipe | xargs git branch -d; };f"
 	puh          = push -u origin HEAD
 	pushfwl      = push --force-with-lease
-	r            = "!git fetch && git rebase -i --autosquash \"origin/$(git main)\""
+	r            = "!rc(){ if [ -z ${1:+x} ]; then git fetch && git rebase -i --autosquash \"origin/$(git main)\"; else git rebase -i --autosquash \"$1\"; fi; };rc"
 	rc           = rebase --continue
 	stashpull    = "!git stash save && git pull && git stash pop"
 
