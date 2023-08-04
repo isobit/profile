@@ -19,3 +19,5 @@ Thumbs.db
 .devcontainer
 
 .gdb_history
+
+/.direnv/
