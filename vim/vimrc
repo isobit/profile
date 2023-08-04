@@ -453,6 +453,7 @@ nnoremap <leader>i <cmd>lua vim.lsp.buf.hover()<cr>
 
 " LSP actions
 noremap <leader>r <cmd>lua vim.lsp.buf.rename()<cr>
+noremap <leader>a <cmd>lua vim.lsp.buf.code_action()<cr>
 
 " ===================== Local config ==========================
 set secure
