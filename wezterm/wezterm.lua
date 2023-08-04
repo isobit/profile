@@ -4,6 +4,8 @@ return {
   enable_wayland = true,
   exit_behavior = "Close",
 
+  audible_bell = "Disabled",
+
   font = w.font("Fira Code"),
   font_size = 12,
   warn_about_missing_glyphs = false,
