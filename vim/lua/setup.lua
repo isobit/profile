@@ -29,11 +29,17 @@ local lsp_config = {
 		},
 	},
 	gopls = {},
-	solargraph = {},
-	terraformls = {},
-	yamlls = {},
-	rnix = {},
 	pylsp = {},
+	rnix = {},
+	rust_analyzer = {},
+	terraformls = {},
+	yamlls = {
+		settings = {
+			yaml = {
+				keyOrdering = false,
+			}
+		}
+	},
 }
 for key, val in pairs(lsp_config) do
 	val.on_attach = lsp_on_attach
