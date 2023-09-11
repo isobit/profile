@@ -210,8 +210,17 @@ task_wezterm() {
 	ensure_pkg wezterm
 }
 
+task_isobit_tools() {
+	log_util 'TASK' 'isobit-tools'
+	ensure_pkg curl || { log_error "curl is required to install isobit tools"; return 1; }
+	ensure_mkdir ~/bin
+	ensure_download ~/bin/ndog https://github.com/isobit/ndog/releases/download/v0.0.1/ndog-linux-amd64
+	ensure_download ~/bin/pgt https://github.com/isobit/pgt/releases/download/v0.0.1/pgt-linux-amd64
+	chmod ugo+rx ~/bin/ndog
+	chmod ugo+rx ~/bin/pgt
+}
 
-DEFAULT_TASKS="home sh vim nvim bash zsh git screen gnupg"
+DEFAULT_TASKS="home sh vim nvim bash zsh git screen gnupg isobit-tools"
 
 while true; do
 	case "${1:-}" in
@@ -289,6 +298,9 @@ for task in $TASKS; do
 			;;
 		wezterm)
 			task_wezterm
+			;;
+		isobit-tools)
+			task_isobit_tools
 			;;
 		*)
 			log_error "Unknown task '$task'"
