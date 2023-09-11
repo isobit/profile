@@ -13,6 +13,7 @@
 	cp           = cherry-pick
 	patch        = !git --no-pager diff --no-color
 	st           = status
+	fu           = commit --fixup HEAD
 
 	# branch management
 	f            = "!f(){ git fork \"isobit-$1\"; };f"
