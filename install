@@ -44,7 +44,7 @@ task_vim() {
 
 	if [ ! -f ~/.vim/autoload/plug.vim ]; then
 		log_info "Installing vim-plug"
-		curl -fLs -o ~/.vim/autoload/plug.vim --create-dirs \
+		curl -sSfL -o ~/.vim/autoload/plug.vim --create-dirs \
 			    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
 				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
@@ -67,7 +67,7 @@ task_neovim() {
 	ensure_mkdir ~/.local/share/nvim/site/autoload
 	if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
 		log_info "Installing vim-plug"
-		curl -fLs -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+		curl -sSfL -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 				https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
 				|| { log_error "Failed to download plug.vim"; return 1; }
 	fi
@@ -167,9 +167,10 @@ task_git() {
 
 task_icdiff() {
 	log_util 'TASK' 'icdiff'
+	ensure_pkg curl || { log_error "curl is required to install icdiff"; return 1; }
 	ensure_mkdir ~/bin
-	curl -s -o ~/bin/icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/icdiff
-	curl -s -o ~/bin/git-icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/git-icdiff
+	curl -sSf -o ~/bin/icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/icdiff
+	curl -sSf -o ~/bin/git-icdiff https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.9.5/git-icdiff
 	chmod ugo+rx ~/bin/icdiff
 	chmod ugo+rx ~/bin/git-icdiff
 }

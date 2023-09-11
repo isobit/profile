@@ -190,6 +190,14 @@ ensure_mkdir() {
 	fi
 }
 
+ensure_download() {
+	log_info "Ensuring file '$1' is downloaded"
+	if [[ ! -f $1 ]]; then
+		log_info "curl -sSfL -o '$1' '$2'"
+		curl -sSfL -o "$1" "$2"
+	fi
+}
+
 extract() {
 	if [[ -f $1 ]]; then
 		case $1 in
