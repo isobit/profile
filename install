@@ -85,6 +85,9 @@ task_zsh() {
 	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
 	ensure_ln_s ./zsh/functions ~/.zsh-functions
 
+	ensure_mkdir ~/.config
+	ensure_ln_s ./zsh/starship.toml ~/.config/starship.toml
+
 	if [[ ! -f ~/.zshenv ]]; then
 		log_info "Creating default ~/.zshenv"
 		echo "export ZSH_VI_MODE=true" > ~/.zshenv

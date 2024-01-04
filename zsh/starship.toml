@@ -1,0 +1,256 @@
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$kubernetes\
+$directory\
+$vcsh\
+$fossil_branch\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$hg_branch\
+$docker_context\
+$guix_shell\
+$swift\
+$terraform\
+$vlang\
+$vagrant\
+$buf\
+$nix_shell\
+$spack\
+$memory_usage\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$env_var\
+$custom\
+$sudo\
+$cmd_duration\
+$line_break\
+$jobs\
+$time\
+$status\
+$os\
+$container\
+$shell\
+$character"""
+
+add_newline = false
+
+[line_break]
+disabled = true
+
+
+[character]
+format = ' $symbol '
+# format = '$symbol '
+success_symbol = '[>](bold bright-black)'
+error_symbol = '[>](bold bright-black)'
+vimcmd_symbol = '[N](bold yellow)'
+vimcmd_replace_one_symbol = '[R](bold yellow)'
+vimcmd_replace_symbol = '[R](bold yellow)'
+vimcmd_visual_symbol = '[V](bold yellow)'
+
+[username]
+format = '[\[](bright-black)[$user]($style)[\]](bright-black)'
+
+[directory]
+style = "blue"
+
+[git_branch]
+format = '[\[](bright-black)[$symbol$branch]($style)[\]](bright-black)'
+
+[git_status]
+format = '([[\[](bright-black)$all_status$ahead_behind[\]](bright-black)]($style))'
+
+[aws]
+format = '[\[](bright-black)[$symbol($profile)(\($region\))([\[](bright-black)$duration[\]](bright-black))]($style)[\]](bright-black)'
+
+[docker_context]
+format = '[\[](bright-black)[$symbol$context]($style)[\]](bright-black)'
+
+# Language-specific
+
+[bun]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[c]
+format = '[\[](bright-black)[$symbol($version(-$name))]($style)[\]](bright-black)'
+
+[cmake]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[cmd_duration]
+disabled = true
+format = '[\[](bright-black)[⏱ $duration]($style)[\]](bright-black)'
+
+[cobol]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[conda]
+format = '[\[](bright-black)[$symbol$environment]($style)[\]](bright-black)'
+
+[crystal]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[daml]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[dart]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[deno]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[dotnet]
+format = '[\[](bright-black)[$symbol($version)(🎯 $tfm)]($style)[\]](bright-black)'
+
+[elixir]
+format = '[\[](bright-black)[$symbol($version \(OTP $otp_version\))]($style)[\]](bright-black)'
+
+[elm]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[erlang]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[fennel]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[fossil_branch]
+format = '[\[](bright-black)[$symbol$branch]($style)[\]](bright-black)'
+
+[gcloud]
+format = '[\[](bright-black)[$symbol$account(@$domain)(\($region\))]($style)[\]](bright-black)'
+
+[golang]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[gradle]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[guix_shell]
+format = '[\[](bright-black)[$symbol]($style)[\]](bright-black)'
+
+[haskell]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[haxe]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[helm]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[hg_branch]
+format = '[\[](bright-black)[$symbol$branch]($style)[\]](bright-black)'
+
+[java]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[julia]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[kotlin]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[kubernetes]
+format = '[\[](bright-black)[$symbol$context( \($namespace\))]($style)[\]](bright-black)'
+
+[lua]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[memory_usage]
+format = '[\[](bright-black)$symbol[$ram( | $swap)]($style)[\]](bright-black)'
+
+[meson]
+format = '[\[](bright-black)[$symbol$project]($style)[\]](bright-black)'
+
+[nim]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[nix_shell]
+format = '[\[](bright-black)[$symbol$state]($style)[\]](bright-black)'
+symbol = ''
+
+[nodejs]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[ocaml]
+format = '[\[](bright-black)[$symbol($version)(\($switch_indicator$switch_name\))]($style)[\]](bright-black)'
+
+[opa]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[openstack]
+format = '[\[](bright-black)[$symbol$cloud(\($project\))]($style)[\]](bright-black)'
+
+[os]
+format = '[\[](bright-black)[$symbol]($style)[\]](bright-black)'
+
+[package]
+format = '[\[](bright-black)[$symbol$version]($style)[\]](bright-black)'
+
+[perl]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[php]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[pijul_channel]
+format = '[\[](bright-black)[$symbol$channel]($style)[\]](bright-black)'
+
+[pulumi]
+format = '[\[](bright-black)[$symbol$stack]($style)[\]](bright-black)'
+
+[purescript]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[python]
+format = '[\[](bright-black)[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)[\]](bright-black)'
+
+[raku]
+format = '[\[](bright-black)[$symbol($version-$vm_version)]($style)[\]](bright-black)'
+
+[red]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[ruby]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[rust]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[scala]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[spack]
+format = '[\[](bright-black)[$symbol$environment]($style)[\]](bright-black)'
+
+[sudo]
+format = '[\[](bright-black)[as $symbol]($style)[\]](bright-black)'
+
+[swift]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[terraform]
+format = '[\[](bright-black)[$symbol$workspace]($style)[\]](bright-black)'
+
+[time]
+format = '[\[](bright-black)[$time]($style)[\]](bright-black)'
+
+[vagrant]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[vlang]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[zig]
+format = '[\[](bright-black)[$symbol($version)]($style)[\]](bright-black)'
+
+[solidity]
+format = '[\[](bright-black)[$symbol($version)]($style)\]'
