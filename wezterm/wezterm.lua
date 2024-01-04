@@ -1,7 +1,6 @@
 local w = require('wezterm')
 return {
 	check_for_updates = false,
-	enable_wayland = false,
 	exit_behavior = "Close",
 
 	audible_bell = "Disabled",
