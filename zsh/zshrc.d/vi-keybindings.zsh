@@ -15,14 +15,4 @@ if [[ "$ZSH_VI_MODE" = true ]]; then
 	autoload -Uz edit-command-line
 	zle -N edit-command-line
 	bindkey -M vicmd v edit-command-line
-
-	# Right prompt indicator for vi mode
-	precmd() { RPROMPT="" }
-	function zle-line-init zle-keymap-select {
-		VI_MODE_PROMPT='%{$fg_bold[yellow]%}[NORMAL]%{$reset_color%}'
-		RPS1="${${KEYMAP/vicmd/$VI_MODE_PROMPT}/(main|viins)/}"
-		zle reset-prompt
-	}
-	zle -N zle-line-init
-	zle -N zle-keymap-select
 fi
