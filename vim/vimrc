@@ -351,6 +351,9 @@ function DetectGoHtmlTmpl()
 endfunction
 autocmd vimrc BufRead,BufNewFile * call DetectGoHtmlTmpl()
 
+" Commenting in SQL files
+autocmd vimrc FileType sql setlocal commentstring=--\ %s
+
 " ================ Mappings ==========================
 
 " Window moving shortcuts
