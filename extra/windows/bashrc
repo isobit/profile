@@ -1,3 +1,0 @@
-if [ -t 1 ]; then
-  [[ ! $TERM =~ screen ]] && [[ -z $TMUX ]] && exec tmux new-session /usr/bin/zsh
-fi
