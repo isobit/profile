@@ -79,6 +79,10 @@
 [log]
 	date = relative
 
+[rerere]
+	# Record and re-use manual conflict resolution.
+	enable = true
+
 # ----------------------------------------------------------------------------
 # Diff, delta
 
