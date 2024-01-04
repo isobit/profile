@@ -351,6 +351,8 @@ function DetectGoHtmlTmpl()
 endfunction
 autocmd vimrc BufRead,BufNewFile * call DetectGoHtmlTmpl()
 
+autocmd vimrc BufRead,BufNewFile *.tmpl :set filetype=gotexttmpl
+
 " Commenting in SQL files
 autocmd vimrc FileType sql setlocal commentstring=--\ %s
 
