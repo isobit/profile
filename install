@@ -217,10 +217,13 @@ task_isobit_tools() {
 	ensure_mkdir ~/bin
 	ndog_latest="$(curl -sSfL -H 'accept: application/json' "https://github.com/isobit/ndog/releases/latest" | jq -r .tag_name)"
 	pgt_latest="$(curl -sSfL -H 'accept: application/json' "https://github.com/isobit/pgt/releases/latest" | jq -r .tag_name)"
+	tmpl_latest="$(curl -sSfL -H 'accept: application/json' "https://github.com/isobit/tmpl/releases/latest" | jq -r .tag_name)"
 	ensure_download ~/bin/ndog "https://github.com/isobit/ndog/releases/download/${ndog_latest}/ndog-linux-amd64"
 	ensure_download ~/bin/pgt "https://github.com/isobit/pgt/releases/download/${pgt_latest}/pgt-linux-amd64"
+	ensure_download ~/bin/tmpl "https://github.com/isobit/tmpl/releases/download/${tmpl_latest}/tmpl-linux-amd64"
 	chmod ugo+rx ~/bin/ndog
 	chmod ugo+rx ~/bin/pgt
+	chmod ugo+rx ~/bin/tmpl
 }
 
 DEFAULT_TASKS="home sh vim nvim bash zsh git screen gnupg isobit-tools"
