@@ -82,14 +82,6 @@ task_zsh() {
 	ensure_ln_s ./bash/common.sh ~/.common.sh
 	ensure_ln_s ./zsh/zlogin ~/.zlogin
 	ensure_ln_s ./zsh/zshrc ~/.zshrc
-	ensure_ln_s ./zsh/zshrc.d ~/.zshrc.d
-	ensure_ln_s ./zsh/functions ~/.zsh-functions
-
-	if [[ ! -f ~/.zshenv ]]; then
-		log_info "Creating default ~/.zshenv"
-		echo "export ZSH_VI_MODE=true" > ~/.zshenv
-		echo "export ZSH_PROMPT_HIDE_HOST=false" >> ~/.zshenv
-	fi
 
 	ensure_pkg zsh
 

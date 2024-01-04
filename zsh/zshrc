@@ -14,33 +14,128 @@ source ~/.common.sh
 setopt extended_glob
 setopt no_beep
 
+# History
+export HISTFILE="${HOME}/.zsh-history"
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+setopt append_history
+setopt extended_history
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
+setopt hist_verify
+setopt share_history
+bindkey '^R' history-incremental-search-backward
+
 # Enable colors
 autoload -U colors && colors
 
-# ----------------------------------------------------------------------------
-# Sourcing
+# Completion
+zmodload zsh/complist
+autoload -U compinit && compinit -u
+zstyle ':completion:*' menu select
+zstyle ":completion:*" list-colors "$LS_COLORS"
+bindkey -M menuselect '^[[Z' reverse-menu-complete
 
-# ZSH conf.d
-if [[ -d ~/.zshrc.d ]]; then
-	for plugin in ~/.zshrc.d/*.zsh; do
-		source "$plugin"
-	done
+# ----------------------------------------------------------------------------
+# Vi keybindings
+
+# Enable vi keybindings
+bindkey -v
+
+# Reduce vi mode switching delay
+export KEYTIMEOUT=1
+
+# vim-like backspace
+bindkey "^?" backward-delete-char
+
+# ctrl-r for backward search
+bindkey '^r' history-incremental-search-backward
+
+# v to edit command line in editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
+# ----------------------------------------------------------------------------
+# Prompt
+
+setopt prompt_subst
+
+# Git prompt
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' stagedstr "%{$fg[green]%}*%{$reset_color%}"
+zstyle ':vcs_info:*' unstagedstr "%{$fg[yellow]%}*%{$reset_color%}"
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git*' actionformats "%{$fg_bold[grey]%}[%{$fg_bold[red]%}%b%c%u%a%{$reset_color%}%{$fg_bold[grey]%}] "
+zstyle ':vcs_info:git*' formats "%{$fg_bold[grey]%}[%{$fg_bold[red]%}%b%c%u%{$reset_color%}%{$fg_bold[grey]%}] "
+precmd_functions+=(vcs_info)
+
+# Show user and host name if running as part of an SSH session.
+local PROMPT_HOST=''
+if [[ -v SSH_CONNECTION ]]; then
+	PROMPT_HOST='%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[magenta]%}%n@%M%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} '
 fi
+
+# Show nix shell status if in a nix shell environment.
+local PROMPT_NIX_SHELL=''
+if [[ -v IN_NIX_SHELL ]]; then
+	PROMPT_NIX_SHELL="%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[green]%}$IN_NIX_SHELL%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} "
+fi
+
+local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%} '
+local PROMPT_GIT='${vcs_info_msg_0_}'
+
+function reset-prompt {
+	PROMPT_NIX_SHELL=''
+	if [[ -v IN_NIX_SHELL ]]; then
+		PROMPT_NIX_SHELL="%{$fg_bold[grey]%}[%{$reset_color%}%{$fg[green]%}$IN_NIX_SHELL%{$reset_color%}%{$fg_bold[grey]%}]%{$reset_color%} "
+	fi
+	PROMPT_DELIM='%{$fg_bold[grey]%}>%{$reset_color%} '
+	if [[ "$KEYMAP" == "vicmd" ]]; then
+		PROMPT_DELIM='%{$fg_bold[yellow]%}N%{$reset_color%} '
+	fi
+	PROMPT="${PROMPT_HOST}${PROMPT_PWD}${PROMPT_GIT}${PROMPT_NIX_SHELL}${PROMPT_DELIM}"
+	zle reset-prompt
+}
+
+# Call reset-prompt on init and when the keymap selection changes.
+zle -N zle-line-init reset-prompt
+zle -N zle-keymap-select reset-prompt
+
+# ----------------------------------------------------------------------------
+# Persistent starting directory
+
+# # Save working dir to ~/.zsh-last-working-dir on change.
+# function persist-pwd {
+# 	pwd > "${HOME}/.zsh-last-working-dir"
+# }
+# chpwd_functions+=(persist-pwd)
+
+# # If we're starting in ~, change to the saved last working dir.
+# if [[ "$PWD" == "$HOME" && -r "${HOME}/.zsh-last-working-dir" ]]; then
+# 	cd "$(cat "${HOME}/.zsh-last-working-dir")"
+# fi
+
+# ----------------------------------------------------------------------------
+# Third-party
 
 # Enable FZF if installed
 if [[ -f ~/.fzf.zsh ]]; then
 	source ~/.fzf.zsh
 fi
 # FZF in nixos
-if [ -n "${commands[fzf-share]}" ]; then
+if [[ -n "${commands[fzf-share]}" ]]; then
 	source "$(fzf-share)/key-bindings.zsh"
 fi
 
+# direnv
 if installed direnv; then
 	eval "$(direnv hook zsh)"
 fi
 
+# ----------------------------------------------------------------------------
 # Local config
-if [[ -e ~/.zshrc.local ]]; then
+if [[ -f ~/.zshrc.local ]]; then
 	source ~/.zshrc.local
 fi
