@@ -16,8 +16,8 @@
 	fu           = commit --fixup HEAD
 
 	# branch management
-	f            = "!f(){ git fork \"isobit-$1\"; };f"
-	fd           = "!f(){ git fork \"isobit-$(date -u +'%Y%m%d')-$1\"; };f"
+	f            = "!f(){ git fork \"isobit/$1\"; };f"
+	fd           = "!f(){ git fork \"isobit/$(date -u +'%Y-%m-%d')/$1\"; };f"
 	fork         = checkout -b
 	fork-release = "!f(){ if [ -z ${1:+x} ]; then git fork \"release/$(date -u +'%Y%m%dT%H%MZ')\"; else git fork \"release/$(date -u +'%Y%m%d')-$1\"; fi; };f"
 
