@@ -134,6 +134,11 @@ if installed direnv; then
 	eval "$(direnv hook zsh)"
 fi
 
+# CUE
+if installed cue; then
+	source <(cue completion zsh)
+fi
+
 # ----------------------------------------------------------------------------
 # Local config
 if [[ -f ~/.zshrc.local ]]; then
