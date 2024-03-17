@@ -21,3 +21,5 @@ Thumbs.db
 .gdb_history
 
 /.direnv/
+
+/node_modules/
