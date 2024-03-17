@@ -70,6 +70,7 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:git*' actionformats "%{$fg_bold[grey]%}[%{$fg_bold[red]%}%b%c%u%a%{$reset_color%}%{$fg_bold[grey]%}] "
 zstyle ':vcs_info:git*' formats "%{$fg_bold[grey]%}[%{$fg_bold[red]%}%b%c%u%{$reset_color%}%{$fg_bold[grey]%}] "
 precmd_functions+=(vcs_info)
+local PROMPT_GIT='${vcs_info_msg_0_}'
 
 # Show user and host name if running as part of an SSH session.
 local PROMPT_HOST=''
@@ -84,7 +85,6 @@ if [[ -v IN_NIX_SHELL ]]; then
 fi
 
 local PROMPT_PWD='%{$fg[blue]%}%c%{$reset_color%} '
-local PROMPT_GIT='${vcs_info_msg_0_}'
 
 function reset-prompt {
 	PROMPT_NIX_SHELL=''
