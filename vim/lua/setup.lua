@@ -13,6 +13,7 @@ local lsp_on_attach = function(client, bufnr)
 end
 
 local lsp_config = {
+	dagger = {}, -- cue
 	efm = {
 		cmd = { 'efm-langserver', '-loglevel', '10' },
 		-- single_file_support = false,
@@ -29,8 +30,8 @@ local lsp_config = {
 		},
 	},
 	gopls = {},
+	nil_ls = {}, -- nix
 	pylsp = {},
-	rnix = {},
 	rust_analyzer = {},
 	terraformls = {},
 	yamlls = {
