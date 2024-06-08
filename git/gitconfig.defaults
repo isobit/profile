@@ -58,6 +58,9 @@
 	ignorecase     = false
 	pager          = delta
 
+[init]
+	defaultBranch = main
+
 [color]
 	ui = auto
 
