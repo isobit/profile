@@ -2,7 +2,7 @@
 _*
 !__*
 
-compose.override.yaml
+/compose.override.yaml
 .envrc
 
 # OS files (mainly MacOS)
