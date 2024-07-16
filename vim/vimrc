@@ -12,7 +12,7 @@ augroup END
 " ===================== Plugins ============================
 
 " Plugin settings that must be set before loading
-let g:polyglot_disabled = ['arduino', 'caddyfile', 'hcl', 'cue']
+let g:polyglot_disabled = ['arduino', 'caddyfile', 'hcl', 'cue', 'autoindent']
 
 " Load plugins using plug
 call plug#begin($HOME.'/.config/vim-plug')
