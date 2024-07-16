@@ -25,7 +25,7 @@ Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 
 " FZF
 if executable('fzf')
-	Plug 'junegunn/fzf'
+	Plug 'junegunn/fzf', {'tag': '0.52.1'}
 	Plug 'junegunn/fzf.vim'
 endif
 
