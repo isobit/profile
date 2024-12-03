@@ -1,5 +1,9 @@
 local w = require('wezterm')
 return {
+	-- this fixes broken text on NixOS
+	front_end = "WebGpu",
+	webgpu_power_preference = 'HighPerformance',
+
 	check_for_updates = false,
 	exit_behavior = "Close",
 
