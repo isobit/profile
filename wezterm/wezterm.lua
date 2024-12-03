@@ -14,7 +14,7 @@ return {
 	use_fancy_tab_bar = false;
 	colors = {
 		tab_bar = {
-			background = "#112",
+			background = "#191919",
 			active_tab = {
 				bg_color = "#445",
 				fg_color = "#EEE",
