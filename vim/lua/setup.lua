@@ -30,7 +30,8 @@ local lsp_config = {
 	-- 	},
 	-- },
 	gopls = {},
-	nil_ls = {}, -- nix
+	-- nil_ls = {}, -- nix
+	nixd = {},
 	pylsp = {},
 	rust_analyzer = {},
 	terraformls = {},
