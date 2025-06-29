@@ -14,21 +14,21 @@ end
 
 local lsp_config = {
 	dagger = {}, -- cue
-	efm = {
-		cmd = { 'efm-langserver', '-loglevel', '10' },
-		-- single_file_support = false,
-		filetypes = {
-			'csv',
-			'dockerfile',
-			'eruby',
-			'json',
-			'lua',
-			'make',
-			'markdown',
-			'sh',
-			'vim',
-		},
-	},
+	-- efm = {
+	-- 	cmd = { 'efm-langserver', '-loglevel', '10' },
+	-- 	-- single_file_support = false,
+	-- 	filetypes = {
+	-- 		'csv',
+	-- 		'dockerfile',
+	-- 		'eruby',
+	-- 		'json',
+	-- 		'lua',
+	-- 		'make',
+	-- 		'markdown',
+	-- 		'sh',
+	-- 		'vim',
+	-- 	},
+	-- },
 	gopls = {},
 	nil_ls = {}, -- nix
 	pylsp = {},
