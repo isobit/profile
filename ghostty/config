@@ -1,0 +1,21 @@
+command = zsh
+
+theme = Builtin Tango Dark
+palette = 0=#333333
+
+# font-family = Fira Code
+# font-family = Monaspace Neon Regular
+font-family = Monaspace Krypton Regular
+
+# window-decoration = client
+# cursor-style = block
+shell-integration-features = no-cursor
+
+keybind = alt+c=copy_to_clipboard
+keybind = alt+v=paste_from_clipboard
+keybind = alt+t=new_tab
+keybind = alt+[=previous_tab
+keybind = alt+shift+[=move_tab:-1
+keybind = alt+]=next_tab
+keybind = alt+shift+]=move_tab:1
+keybind = alt+shift+r=reload_config

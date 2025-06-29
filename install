@@ -202,6 +202,13 @@ task_wezterm() {
 	ensure_pkg wezterm
 }
 
+task_ghostty() {
+	log_util 'TASK' 'ghostty'
+	ensure_mkdir ~/.config/ghostty
+	ensure_ln_s ./ghostty/config ~/.config/ghostty/config
+	ensure_pkg ghostty
+}
+
 task_isobit_tools() {
 	log_util 'TASK' 'isobit-tools'
 	ensure_pkg curl || { log_error "curl is required to install isobit tools"; return 1; }
@@ -296,6 +303,9 @@ for task in $TASKS; do
 			;;
 		wezterm)
 			task_wezterm
+			;;
+		ghostty)
+			task_ghostty
 			;;
 		isobit-tools)
 			task_isobit_tools
