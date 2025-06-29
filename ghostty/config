@@ -3,9 +3,10 @@ command = zsh
 theme = Builtin Tango Dark
 palette = 0=#333333
 
-# font-family = Fira Code
+font-family = Fira Code
 # font-family = Monaspace Neon Regular
-font-family = Monaspace Krypton Regular
+# font-family = Monaspace Krypton Regular
+# font-features = calt,ss01,ss02,ss03,ss04,ss05,ss06,ss07,ss08,ss09,liga
 
 # window-decoration = client
 # cursor-style = block
