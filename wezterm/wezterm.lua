@@ -1,8 +1,8 @@
 local w = require('wezterm')
 return {
 	-- this fixes broken text on NixOS
-	front_end = "WebGpu",
-	webgpu_power_preference = 'HighPerformance',
+	-- front_end = "WebGpu",
+	-- webgpu_power_preference = 'HighPerformance',
 
 	check_for_updates = false,
 	exit_behavior = "Close",
@@ -16,6 +16,8 @@ return {
 	color_scheme = "Builtin Tango Dark",
 
 	use_fancy_tab_bar = false;
+	-- window_decorations = "TITLE|RESIZE";
+	-- window_decorations = "INTEGRATED_BUTTONS|RESIZE";
 	colors = {
 		tab_bar = {
 			background = "#191919",
