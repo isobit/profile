@@ -39,6 +39,9 @@ local lsp_config = {
 		settings = {
 			yaml = {
 				keyOrdering = false,
+				schemaStore = {
+					enable = true,
+				},
 			}
 		}
 	},
