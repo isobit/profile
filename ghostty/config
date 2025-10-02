@@ -12,6 +12,10 @@ font-family = Fira Code
 # cursor-style = block
 shell-integration-features = no-cursor
 
+gtk-wide-tabs = false
+
+resize-overlay = never
+
 keybind = alt+c=copy_to_clipboard
 keybind = alt+v=paste_from_clipboard
 keybind = alt+t=new_tab
