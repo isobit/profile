@@ -1,56 +1,22 @@
 -- ================ LSP ======================
 
-local lsp_flags = {
-	-- This will be the default in neovim 0.7+
-	debounce_text_changes = 150,
-}
+vim.lsp.enable('gopls')
+vim.lsp.enable('nixd')
+vim.lsp.enable('pylsp')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('terraformls')
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local lsp_on_attach = function(client, bufnr)
-	-- Enable completion triggered by <c-x><c-o>
-	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
-
-local lsp_config = {
-	dagger = {}, -- cue
-	-- efm = {
-	-- 	cmd = { 'efm-langserver', '-loglevel', '10' },
-	-- 	-- single_file_support = false,
-	-- 	filetypes = {
-	-- 		'csv',
-	-- 		'dockerfile',
-	-- 		'eruby',
-	-- 		'json',
-	-- 		'lua',
-	-- 		'make',
-	-- 		'markdown',
-	-- 		'sh',
-	-- 		'vim',
-	-- 	},
-	-- },
-	gopls = {},
-	-- nil_ls = {}, -- nix
-	nixd = {},
-	pylsp = {},
-	rust_analyzer = {},
-	terraformls = {},
-	yamlls = {
-		settings = {
-			yaml = {
-				keyOrdering = false,
-				schemaStore = {
-					enable = true,
-				},
-			}
+vim.lsp.config('yamlls', {
+	settings = {
+		yaml = {
+			keyOrdering = false,
+			schemaStore = {
+				enable = true,
+			},
 		}
-	},
-}
-for key, val in pairs(lsp_config) do
-	val.on_attach = lsp_on_attach
-	val.flags = lsp_flags
-	require('lspconfig')[key].setup(val)
-end
+	}
+})
+vim.lsp.enable('yamlls')
 
 -- =============== tree-sitter ================
 --require'nvim-treesitter.configs'.setup {
