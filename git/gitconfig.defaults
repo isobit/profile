@@ -15,6 +15,9 @@
 	st           = status
 	fu           = commit --fixup HEAD
 
+	# "show message" for piping to e.g. clip
+	sm           = log --format=%B -n 1
+
 	# branch management
 	f            = "!f(){ git fork \"isobit/$1\"; };f"
 	fd           = "!f(){ git fork \"isobit/$(date -u +'%Y-%m-%d')/$1\"; };f"
