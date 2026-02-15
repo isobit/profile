@@ -58,6 +58,9 @@
 	ignorecase     = false
 	pager          = delta
 
+[protocol]
+	version = 2
+
 [init]
 	defaultBranch = main
 
