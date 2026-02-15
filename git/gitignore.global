@@ -24,4 +24,8 @@ Thumbs.db
 
 /node_modules/
 
-**/.claude/settings.local.json
+# LLM agents
+CRUSH.local.md
+**/.crush/
+CLAUDE.local.md
+**/.claude/
