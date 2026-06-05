@@ -1,6 +1,8 @@
 -- ================ LSP ======================
 
-vim.lsp.enable('gopls')
+if vim.fn.executable('go') == 1 then
+	vim.lsp.enable('gopls')
+end
 vim.lsp.enable('nixd')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('rust_analyzer')
