@@ -25,7 +25,7 @@ Plug 'jistr/vim-nerdtree-tabs' " Makes NERDTree work with tabs
 
 " FZF
 if executable('fzf')
-	Plug 'junegunn/fzf', {'tag': '0.52.1'}
+	Plug 'junegunn/fzf'
 	Plug 'junegunn/fzf.vim'
 endif
 
@@ -392,18 +392,9 @@ nnoremap <expr> n ((len(getqflist()) > 0)?':cn<cr>':'n')
 nnoremap <expr> N ((len(getqflist()) > 0)?':cp<cr>':'N')
 
 " \o to open a file using FZF
-nnoremap <leader>o :FZF<cr>
-" nnoremap <leader>o :call fzf#run({'source': 'fd -H', })<cr>
+nnoremap <leader>o :Files<cr>
 
 " \f to open a live ripgrep file search
-function! RipgrepFzf(query, fullscreen)
-	let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-	let initial_command = printf(command_fmt, shellescape(a:query))
-	let reload_command = printf(command_fmt, '{q}')
-	let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-	call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 nnoremap <leader>f :RG<cr>
 
 " \f to ripgrep selected text when in visual mode
