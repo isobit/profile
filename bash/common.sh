@@ -241,7 +241,7 @@ tmp() {
 
 # Rebuild & upgrade NixOS and collect garbage.
 nixos-upgrade() {
-	sudo nix-collect-garbage --delete-older-than 30d || return 1
+	sudo nix-collect-garbage --delete-older-than 14d || return 1
 	sudo nixos-rebuild switch --upgrade-all || return 1
 }
 
