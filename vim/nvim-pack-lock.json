@@ -1,0 +1,49 @@
+{
+  "plugins": {
+    "fzf": {
+      "rev": "abee152255387a5e0ee0543f275b792265e0ef5e",
+      "src": "https://github.com/junegunn/fzf"
+    },
+    "fzf.vim": {
+      "rev": "356608e2ae5d9127e2c964885ea2b21ea7aea9ab",
+      "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "nvim-lspconfig": {
+      "rev": "229b79051b380377664edc4cbd534930154921a1",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-tree.lua": {
+      "rev": "07f541fcaa4a5ae019598240362449ab7e9812b3",
+      "src": "https://github.com/nvim-tree/nvim-tree.lua"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
+    "tabular": {
+      "rev": "12437cd1b53488e24936ec4b091c9324cafee311",
+      "src": "https://github.com/godlygeek/tabular"
+    },
+    "vim-abolish": {
+      "rev": "dcbfe065297d31823561ba787f51056c147aa682",
+      "src": "https://github.com/tpope/vim-abolish"
+    },
+    "vim-darcula-colors": {
+      "rev": "661168803bfbb044d9315ff438e413371bcedc6f",
+      "src": "https://github.com/isobit/vim-darcula-colors"
+    },
+    "vim-sleuth": {
+      "rev": "be69bff86754b1aa5adcbb527d7fcd1635a84080",
+      "src": "https://github.com/tpope/vim-sleuth"
+    },
+    "vim-speeddating": {
+      "rev": "c17eb01ebf5aaf766c53bab1f6592710e5ffb796",
+      "src": "https://github.com/tpope/vim-speeddating"
+    },
+    "vim-surround": {
+      "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+      "src": "https://github.com/tpope/vim-surround"
+    }
+  }
+}

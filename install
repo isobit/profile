@@ -57,23 +57,15 @@ task_vim() {
 task_neovim() {
 	log_util 'TASK' 'neovim'
 	ensure_mkdir ~/.config/nvim
-	ensure_ln_s ./vim/vimrc ~/.config/nvim/init.vim
-	ensure_ln_s ./vim/lua ~/.config/nvim/lua
-
-	ensure_pkg nvim neovim || { log_error "neovim is required to install vim-plug"; return 1; }
-	ensure_pkg git || { log_error "git is required to install vim-plug"; return 1; }
-	ensure_pkg curl || { log_error "curl is required to install vim-plug"; return 1; }
-
-	ensure_mkdir ~/.local/share/nvim/site/autoload
-	if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
-		log_info "Installing vim-plug"
-		curl -sSfL -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-				https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-				|| { log_error "Failed to download plug.vim"; return 1; }
-	fi
-	log_info "Running PlugUpdate"
-	nvim +PlugClean +PlugUpdate +qa
+	ensure_ln_s ./vim/init.lua ~/.config/nvim/init.lua
+	ensure_ln_s ./vim/nvim-pack-lock.json ~/.config/nvim/nvim-pack-lock.json
 	ensure_ln_s ./vim/after ~/.config/nvim/after
+
+	ensure_pkg nvim neovim || { log_error "neovim is required"; return 1; }
+	ensure_pkg git || { log_error "git is required for plugin install"; return 1; }
+
+	log_info "Installing plugins (first launch)"
+	nvim --headless -c 'qa'
 }
 
 task_zsh() {
