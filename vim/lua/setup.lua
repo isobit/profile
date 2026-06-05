@@ -7,6 +7,7 @@ vim.lsp.enable('nixd')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('terraformls')
+vim.lsp.enable('cue')
 
 vim.lsp.config('yamlls', {
 	settings = {
