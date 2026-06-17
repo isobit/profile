@@ -8,6 +8,10 @@
       "rev": "356608e2ae5d9127e2c964885ea2b21ea7aea9ab",
       "src": "https://github.com/junegunn/fzf.vim"
     },
+    "nerdtree": {
+      "rev": "690d061b591525890f1471c6675bcb5bdc8cdff9",
+      "src": "https://github.com/preservim/nerdtree"
+    },
     "nvim-lspconfig": {
       "rev": "229b79051b380377664edc4cbd534930154921a1",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -32,6 +36,10 @@
     "vim-darcula-colors": {
       "rev": "661168803bfbb044d9315ff438e413371bcedc6f",
       "src": "https://github.com/isobit/vim-darcula-colors"
+    },
+    "vim-nerdtree-tabs": {
+      "rev": "07d19f0299762669c6f93fbadb8249da6ba9de62",
+      "src": "https://github.com/jistr/vim-nerdtree-tabs"
     },
     "vim-sleuth": {
       "rev": "be69bff86754b1aa5adcbb527d7fcd1635a84080",

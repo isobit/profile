@@ -13,10 +13,9 @@ vim.pack.add({
 	'https://github.com/junegunn/fzf.vim',
 
 	-- File explorer
-	'https://github.com/nvim-tree/nvim-tree.lua',
+	'https://github.com/preservim/nerdtree',
 
 	-- Languages
-	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
 	'https://github.com/neovim/nvim-lspconfig',
 
 	-- Colors
@@ -234,9 +233,9 @@ vim.api.nvim_create_autocmd('FileType', {
 -- ================ Mappings ==========================
 
 
--- nvim-tree
-vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>')
-vim.keymap.set('n', '<leader>h', '<cmd>NvimTreeFindFile<cr>')
+-- NERDTree
+vim.keymap.set('n', '<leader>t', '<cmd>NERDTreeToggle<cr>')
+vim.keymap.set('n', '<leader>h', '<cmd>NERDTreeFind<cr>')
 
 -- Window navigation
 vim.keymap.set('n', 'gk', '<cmd>wincmd k<cr>', { silent = true })
@@ -337,61 +336,48 @@ vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action)   -- built-in: gra
 
 -- ================ Tree-sitter ====================
 
-local ok, ts_configs = pcall(require, 'nvim-treesitter.configs')
-if ok then
-	ts_configs.setup({
-		ensure_installed = {
-			'bash',
-			'c',
-			'cue',
-			'go',
-			'gomod',
-			'hcl',
-			'json',
-			'lua',
-			'markdown',
-			'markdown_inline',
-			'nix',
-			'python',
-			'rust',
-			'sql',
-			'terraform',
-			'toml',
-			'typescript',
-			'vim',
-			'vimdoc',
-			'yaml',
-		},
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = false,
-		},
-		incremental_selection = {
-			enable = true,
-			keymaps = {
-				init_selection = 'gnn',
-				node_incremental = 'grn',
-				scope_incremental = 'grc',
-				node_decremental = 'grm',
-			},
-		},
-	})
-end
+vim.api.nvim_create_autocmd('FileType', {
+	callback = function(args)
+		pcall(vim.treesitter.start, args.buf)
+	end,
+})
+
 
 -- ================ File Explorer ==================
 
-require('nvim-tree').setup({
-	view = { width = 30 },
-	filters = {
-		custom = {
-			'__pycache__',
-			'\\.pyc$',
-			'\\.egg-info$',
-		},
-	},
+vim.g.NERDTreeIgnore = { '\\.o$', '\\.pyc$', '\\.egg-info$', '^__pycache__$' }
+vim.g.NERDTreeCaseSensitiveSort = 1
+
+-- Auto-mirror NERDTree into new tabs
+vim.api.nvim_create_autocmd('TabNewEntered', {
+	group = vimrc_group,
+	callback = function()
+		if vim.fn.exists('t:NERDTreeBufName') == 0 then
+			pcall(vim.cmd, 'NERDTreeMirror')
+			vim.cmd('wincmd p')
+		end
+	end,
+})
+
+-- Close tab if NERDTree is the only window left
+vim.api.nvim_create_autocmd('BufEnter', {
+	group = vimrc_group,
+	callback = function()
+		if vim.fn.winnr('$') == 1 and vim.b.NERDTree and vim.b.NERDTree.isTabTree then
+			vim.schedule(function()
+				if vim.fn.tabpagenr('$') > 1 then
+					vim.cmd('tabclose')
+				else
+					vim.cmd('quit')
+				end
+			end)
+		end
+	end,
 })
 
 -- ================ LSP Servers ====================
+
+vim.lsp.log.set_level('OFF')
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
@@ -405,11 +391,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 if vim.fn.executable('go') == 1 then
 	vim.lsp.enable('gopls')
 end
+
+vim.lsp.config('nixd', {
+	settings = {
+		nixd = {
+			formatting = { command = { 'alejandra' } },
+		},
+	},
+})
 vim.lsp.enable('nixd')
-vim.lsp.enable('pylsp')
-vim.lsp.enable('rust_analyzer')
-vim.lsp.enable('terraformls')
-vim.lsp.enable('cue')
 
 vim.lsp.config('yamlls', {
 	settings = {
@@ -421,6 +411,11 @@ vim.lsp.config('yamlls', {
 		}
 	}
 })
+
+vim.lsp.enable('pylsp')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('terraformls')
+vim.lsp.enable('cue')
 vim.lsp.enable('yamlls')
 
 -- ================ Local config ======================
