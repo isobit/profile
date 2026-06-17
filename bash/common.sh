@@ -257,6 +257,17 @@ random-alpha-num-str() {
 	tr -dc 'A-Za-z0-9' < /dev/urandom | head -c "$1"
 }
 
+# Silently prompt for a value on the tty and print it to stdout. Useful for
+# passing secrets via command substitution without leaking them to history,
+# e.g. aws ssm put-parameter --value "$(readpw)"
+readpw() {
+	local value
+	printf '%s: ' "${1:-Password}" >/dev/tty
+	IFS= read -rs value </dev/tty
+	printf '\n' >/dev/tty
+	printf '%s' "$value"
+}
+
 envexec() {
 	# shellcheck disable=SC2046
 	env $(awk '!/^#/' "$1" | xargs) "${@:2}"
