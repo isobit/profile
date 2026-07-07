@@ -7,6 +7,7 @@ vim.pack.add({
 	'https://github.com/tpope/vim-speeddating',   -- Datetime incrementing
 	'https://github.com/tpope/vim-surround',      -- cs to change surrounding delimiters
 	'https://github.com/godlygeek/tabular',       -- :Tab to align given format
+	'https://github.com/windwp/nvim-autopairs',   -- Auto-close brackets/quotes
 
 	-- FZF
 	'https://github.com/junegunn/fzf',
@@ -23,6 +24,8 @@ vim.pack.add({
 })
 
 vim.api.nvim_create_user_command('PackUpdate', function() vim.pack.update() end, {})
+-- Auto-close brackets, parens, and quotes as you type
+require('nvim-autopairs').setup({})
 
 -- ================ General Config ====================
 
