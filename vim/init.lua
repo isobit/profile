@@ -23,7 +23,6 @@ vim.pack.add({
 	'https://github.com/isobit/vim-darcula-colors',
 })
 
-vim.api.nvim_create_user_command('PackUpdate', function() vim.pack.update() end, {})
 -- Auto-close brackets, parens, and quotes as you type
 require('nvim-autopairs').setup({})
 
